@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "238089058839",
+    "project_id": "divice-829e1",
+    "storage_bucket": "divice-829e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238089058839:android:0f23949f4808974811fa52",
+        "android_client_info": {
+          "package_name": "com.bluewave.divice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "238089058839-3btu2oced30fvae1ddv9kag30gn2ln76.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDq7SSuHLiEi-_UC7Bx9lEgXS7XrzATNDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "238089058839-3btu2oced30fvae1ddv9kag30gn2ln76.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "238089058839-veojdrnf33n0m08kf8s7gdo4ttusdbbp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.divice"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
