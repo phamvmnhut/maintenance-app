@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:divice/ui/device/add_new_care_ui.dart';
 import 'package:divice/ui/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,7 +33,7 @@ Future<void> main() async {
 
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomePage(),
+    home: AddNewCare(),
   ));
 }
 
