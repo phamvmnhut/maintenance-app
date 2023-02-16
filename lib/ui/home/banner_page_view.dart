@@ -25,17 +25,14 @@ Widget buildPageView() {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 7),
-          child: SmoothPageIndicator(
-            controller: controller,
-            count: 3,
-            effect: SwapEffect(
-                dotHeight: 10,
-                dotWidth: 10,
-                activeDotColor: Color.fromRGBO(27, 209, 93, 1),
-                dotColor: Color.fromRGBO(217, 217, 217, 1)),
-          ),
+        SmoothPageIndicator(
+          controller: controller,
+          count: 3,
+          effect: SwapEffect(
+              dotHeight: 11,
+              dotWidth: 11,
+              activeDotColor: Color.fromRGBO(27, 209, 93, 1),
+              dotColor: Color.fromRGBO(217, 217, 217, 1)),
         )
       ],
     ),

@@ -118,7 +118,6 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: _bottomList,
-        currentIndex: selectedIndex,
         onTap: (value) {
           setState(() {
             selectedIndex = value;
