@@ -2,12 +2,18 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:divice/business/setting.dart';
 import 'package:divice/ui/home/home.dart';
+import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'config/theme.dart';
 
 import 'firebase_options.dart';
+import 'generated/l10n.dart';
 import 'ui/auth/auth.dart';
 import 'ui/auth/profile.dart';
 
@@ -30,10 +36,42 @@ Future<void> main() async {
     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   }
 
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: HomePage(),
-  ));
+  runApp(const App());
+}
+
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ThemeBloc(),
+      child: AppM(),
+    );
+  }
+}
+
+class AppM extends StatelessWidget {
+  const AppM({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: state.isDarkModeEnabled ? darkTheme : lightTheme ,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        locale: state.local,
+        home: const SettingPage(),
+      ),
+    );
+  }
 }
 
 /// The entry point of the application.
