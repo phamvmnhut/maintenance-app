@@ -20,14 +20,17 @@ class Home extends StatelessWidget {
                 behavior: DisableGlowListViewWidget(),
                 child: SingleChildScrollView(
                   child: Column(
-                    children: [buildPageView(), buildDailyReview()],
+                    children: [
+                      buildPageView(),
+                      buildDailyReview(),
+                    ],
                   ),
                 ),
               ),
             ),
           ],
         ),
-        bottomNavigationBar: buildBottomNavigationBar(),
+        //bottomNavigationBar: buildBottomNavigationBar(),
       )),
     );
   }
@@ -38,13 +41,13 @@ Widget buildNotifyIconButton() {
     mainAxisAlignment: MainAxisAlignment.end,
     children: [
       Container(
-        margin: EdgeInsets.only(top: 26, right: 35),
+        margin: const EdgeInsets.only(top: 26, right: 35),
         width: 48,
         height: 48,
         decoration: BoxDecoration(
-            color: Color.fromRGBO(248, 248, 246, 1),
+            color: const Color.fromRGBO(248, 248, 246, 1),
             borderRadius: BorderRadius.circular(14)),
-        child: Icon(
+        child: const Icon(
           Icons.notifications_active_outlined,
         ),
       ),

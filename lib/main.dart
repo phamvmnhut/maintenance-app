@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:divice/business/setting.dart';
-import 'package:divice/ui/home/home.dart';
+import 'package:divice/ui/device/add_new_care_ui.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +16,8 @@ import 'firebase_options.dart';
 import 'generated/l10n.dart';
 import 'ui/auth/auth.dart';
 import 'ui/auth/profile.dart';
+import 'ui/home/bottom_bar.dart';
+import 'ui/home/home_page.dart';
 
 /// Requires that a Firebase local emulator is running locally.
 /// See https://firebase.flutter.dev/docs/auth/start/#optional-prototype-and-test-with-firebase-local-emulator-suite
@@ -46,7 +48,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ThemeBloc(),
-      child: AppM(),
+      child: const AppM(),
     );
   }
 }
@@ -56,6 +58,15 @@ class AppM extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+  final screens = [
+    const Home(),
+    const Center(child: Text('Màn hình chưa code 01')),
+    const AddNewCare(),
+    const Center(child: Text('Màn hình chưa code 02')),
+    const SettingPage()
+  ];
+
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) => MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -68,7 +79,11 @@ class AppM extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         locale: state.local,
-        home: const SettingPage(),
+        home: Scaffold(
+          body: screens[state.index],
+          bottomNavigationBar: const buildBottomNavigationBar(),
+        ),
+        
       ),
     );
   }

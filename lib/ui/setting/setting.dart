@@ -22,7 +22,7 @@ class _SettingPageState extends State<SettingPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 24,),
+            const SizedBox(height: 24,),
             InkWell(
               child: Padding(
                 padding: const EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 8),
@@ -36,7 +36,7 @@ class _SettingPageState extends State<SettingPage> {
                         color: Colors.amberAccent,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     Expanded(
@@ -45,7 +45,7 @@ class _SettingPageState extends State<SettingPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text("Pham Nhut", style: Theme.of(context).textTheme.headline6,),
-                          Text("id, media and shopping"),
+                          const Text("id, media and shopping"),
                         ],
                       ),
                     ),
@@ -58,7 +58,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
               onTap: () {},
             ),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             BlocBuilder<ThemeBloc, ThemeState>(
@@ -72,11 +72,11 @@ class _SettingPageState extends State<SettingPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.ac_unit,
                             size: 16,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 8,
                           ),
                           Expanded(child: Text(S.of(context).language, style: Theme.of(context).textTheme.bodyMedium,)),
@@ -113,8 +113,8 @@ class _SettingPageState extends State<SettingPage> {
                           });
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
                     child: Divider(),
                   ),
                   Padding(
@@ -137,7 +137,7 @@ class _SettingPageState extends State<SettingPage> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             InkWell(
@@ -147,11 +147,11 @@ class _SettingPageState extends State<SettingPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.ac_unit,
                       size: 16,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     Expanded(child: Text(S.of(context).notification)),
@@ -164,8 +164,8 @@ class _SettingPageState extends State<SettingPage> {
               ),
               onTap: () {},
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32),
               child: Divider(),
             ),
             InkWell(
@@ -175,11 +175,11 @@ class _SettingPageState extends State<SettingPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.ac_unit,
                       size: 16,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     Expanded(child: Text(S.of(context).general)),
@@ -192,7 +192,7 @@ class _SettingPageState extends State<SettingPage> {
               ),
               onTap: () {},
             ),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             InkWell(
@@ -202,11 +202,11 @@ class _SettingPageState extends State<SettingPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.ac_unit,
                       size: 16,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
                     Expanded(child: Text(S.of(context).privacy_policy)),

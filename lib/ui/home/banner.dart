@@ -13,7 +13,7 @@ Widget buildBannerPage() {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       'Hello,',
                       style:
@@ -31,18 +31,18 @@ Widget buildBannerPage() {
             Row(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 16),
+                  margin: const EdgeInsets.only(top: 16),
                   width: 319,
                   height: 180,
                   decoration: BoxDecoration(
-                      color: Color.fromRGBO(243, 246, 200, 1),
+                      color: const Color.fromRGBO(243, 246, 200, 1),
                       borderRadius: BorderRadius.circular(28)),
                   child: Padding(
                     padding: const EdgeInsets.all(24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 88,
                           height: 48,
                           child: Text(
@@ -53,8 +53,8 @@ Widget buildBannerPage() {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 2),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 2),
                           child: Text(
                             '1 of 4 completed',
                             style: TextStyle(
@@ -63,8 +63,8 @@ Widget buildBannerPage() {
                                 color: Color.fromRGBO(0, 0, 0, 1)),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 31),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 31),
                           child: Text(
                             'Show More',
                             style: TextStyle(
@@ -74,10 +74,10 @@ Widget buildBannerPage() {
                           ),
                         ),
                         Container(
-                            margin: EdgeInsets.only(top: 3),
+                            margin: const EdgeInsets.only(top: 3),
                             width: 66,
                             height: 2,
-                            color: Color.fromRGBO(236, 118, 105, 1)),
+                            color: const Color.fromRGBO(236, 118, 105, 1)),
                       ],
                     ),
                   ),
@@ -89,7 +89,7 @@ Widget buildBannerPage() {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Image.asset('assest/home1.png'),
+            Image.asset('assets/images/home1.png'),
           ],
         ),
       ],
