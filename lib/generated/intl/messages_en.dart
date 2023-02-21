@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "general": MessageLookupByLibrary.simpleMessage("General"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
+        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "notification": MessageLookupByLibrary.simpleMessage("Notifications"),
         "privacy_policy":
             MessageLookupByLibrary.simpleMessage("Privacy and Policy"),

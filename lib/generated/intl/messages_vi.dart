@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dark_mode": MessageLookupByLibrary.simpleMessage("Chế độ tối"),
         "general": MessageLookupByLibrary.simpleMessage("Cấu hình chung"),
         "language": MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
+        "logout": MessageLookupByLibrary.simpleMessage("Đăng xuất"),
         "notification": MessageLookupByLibrary.simpleMessage("Thông báo"),
         "privacy_policy": MessageLookupByLibrary.simpleMessage(
             "Chính sách bảo mật và quyền riêng tư"),
