@@ -1,7 +1,10 @@
 import 'package:divice/business/auth.dart';
 import 'package:divice/business/auth.dart';
+import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
+import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
+import 'package:divice/ui/device/device.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -60,7 +63,7 @@ class AppM extends StatelessWidget {
       const Home(),
       const Center(child: Text('Màn hình chưa code 01')),
       const AddNewCare(),
-      const Center(child: Text('Màn hình chưa code 02')),
+      const DevicePage(),
       const SettingPage()
     ];
 
@@ -80,9 +83,19 @@ class AppM extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Scaffold(
-                body: screens[state.index],
-                bottomNavigationBar: const buildBottomNavigationBar(),
+              return MultiBlocProvider(
+                providers: [
+                  RepositoryProvider(
+                      create: (context) => DeviceRepositoryFireBase()),
+                  BlocProvider(
+                    create: (context) =>
+                        DeviceBloc(RepositoryProvider.of<DeviceRepositoryFireBase>(context)),
+                  ),
+                ],
+                child: Scaffold(
+                  body: screens[state.index],
+                  bottomNavigationBar: const buildBottomNavigationBar(),
+                ),
               );
             }
             return const AuthGate();
