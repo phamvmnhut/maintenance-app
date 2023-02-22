@@ -83,6 +83,7 @@ class AppM extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              BlocProvider.of<AuthBloc>(context, listen: false).add(LoginAuthEvent(user: snapshot.data!));
               return MultiBlocProvider(
                 providers: [
                   RepositoryProvider(
@@ -98,6 +99,7 @@ class AppM extends StatelessWidget {
                 ),
               );
             }
+            BlocProvider.of<AuthBloc>(context, listen: false).add(LogoutAuthEvent());
             return const AuthGate();
           },
         ),

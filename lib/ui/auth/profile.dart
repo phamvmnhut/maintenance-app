@@ -272,7 +272,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
-    BlocProvider.of<AuthBloc>(context, listen: false).add(LogoutAuthEvent());
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const AuthGate()), (Route<dynamic> route) => false);
   }
 }
