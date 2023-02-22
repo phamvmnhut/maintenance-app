@@ -80,7 +80,10 @@ class AppM extends StatelessWidget {
         supportedLocales: S.delegate.supportedLocales,
         locale: state.local,
         home: Scaffold(
-          body: screens[state.index],
+          body: IndexedStack(
+            index: state.index,
+            children: screens,
+          ),
           bottomNavigationBar: const buildBottomNavigationBar(),
         ),
         
