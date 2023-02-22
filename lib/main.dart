@@ -1,9 +1,10 @@
-// Copyright 2022, the Chromium project authors.  Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
+import 'package:divice/business/auth.dart';
+import 'package:divice/business/auth.dart';
+import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
+import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
+import 'package:divice/ui/device/device.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,20 +16,13 @@ import 'config/theme.dart';
 import 'firebase_options.dart';
 import 'generated/l10n.dart';
 import 'ui/auth/auth.dart';
-import 'ui/auth/profile.dart';
 import 'ui/home/bottom_bar.dart';
 import 'ui/home/home_page.dart';
 
-/// Requires that a Firebase local emulator is running locally.
-/// See https://firebase.flutter.dev/docs/auth/start/#optional-prototype-and-test-with-firebase-local-emulator-suite
 bool shouldUseFirebaseEmulator = false;
 
-// Requires that the Firebase Auth emulator is running locally
-// e.g via `melos run firebase:emulator`.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // We're using the manual installation on non-web platforms since Google sign in plugin doesn't yet support Dart initialization.
-  // See related issue: https://github.com/flutter/flutter/issues/96391
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -46,8 +40,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ThemeBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeBloc>(
+          create: (BuildContext context) => ThemeBloc(),
+        ),
+        BlocProvider<AuthBloc>(
+          create: (BuildContext context) => AuthBloc(),
+        ),
+      ],
       child: const AppM(),
     );
   }
@@ -58,19 +59,18 @@ class AppM extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-  final screens = [
-    const Home(),
-    const Center(child: Text('Màn hình chưa code 01')),
-    const AddNewCare(),
-    const Center(child: Text('Màn hình chưa code 02')),
-    const SettingPage()
-  ];
+    final screens = [
+      const Home(),
+      const Center(child: Text('Màn hình chưa code 01')),
+      const AddNewCare(),
+      const DevicePage(),
+      const SettingPage()
+    ];
 
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: state.isDarkModeEnabled ? darkTheme : lightTheme ,
+        theme: state.isDarkModeEnabled ? darkTheme : lightTheme,
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -79,72 +79,34 @@ class AppM extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         locale: state.local,
-        home: Scaffold(
-          body: IndexedStack(
-            index: state.index,
-            children: screens,
-          ),
-          bottomNavigationBar: const buildBottomNavigationBar(),
-        ),
-        
-      ),
-    );
-  }
-}
-
-/// The entry point of the application.
-///
-/// Returns a [MaterialApp].
-class AuthExampleApp extends StatelessWidget {
-  const AuthExampleApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Firebase Example App',
-      theme: ThemeData(primarySwatch: Colors.amber),
-      home: Scaffold(
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return Row(
-              children: [
-                Visibility(
-                  visible: constraints.maxWidth >= 1200,
-                  child: Expanded(
-                    child: Container(
-                      height: double.infinity,
-                      color: Theme.of(context).colorScheme.primary,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Firebase Auth Desktop',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+        home: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              BlocProvider.of<AuthBloc>(context, listen: false)
+                  .add(LoginAuthEvent(user: snapshot.data!));
+              return MultiBlocProvider(
+                providers: [
+                  RepositoryProvider(
+                      create: (context) => DeviceRepositoryFireBase()),
+                  BlocProvider(
+                    create: (context) => DeviceBloc(
+                        RepositoryProvider.of<DeviceRepositoryFireBase>(
+                            context)),
                   ),
-                ),
-                SizedBox(
-                  width: constraints.maxWidth >= 1200
-                      ? constraints.maxWidth / 2
-                      : constraints.maxWidth,
-                  child: StreamBuilder<User?>(
-                    stream: FirebaseAuth.instance.authStateChanges(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return const ProfilePage();
-                      }
-                      return const AuthGate();
-                    },
+                ],
+                child: Scaffold(
+                  body: IndexedStack(
+                    index: state.index,
+                    children: screens,
                   ),
+                  bottomNavigationBar: const buildBottomNavigationBar(),
                 ),
-              ],
-            );
+              );
+            }
+            BlocProvider.of<AuthBloc>(context, listen: false)
+                .add(LogoutAuthEvent());
+            return const AuthGate();
           },
         ),
       ),

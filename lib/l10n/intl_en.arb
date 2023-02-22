@@ -4,5 +4,6 @@
   "dark_mode": "Dark Mode",
   "notification": "Notifications",
   "general": "General",
-  "privacy_policy": "Privacy and Policy"
+  "privacy_policy": "Privacy and Policy",
+  "logout": "Logout"
 }
