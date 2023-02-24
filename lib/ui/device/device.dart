@@ -37,8 +37,6 @@ class _DevicePageState extends State<DevicePage> {
                   children: [
                     const SizedBox(height: 41),
                     Container(
-                      height: 36,
-                      width: 129,
                       alignment: Alignment.centerLeft,
                       child: const Text(
                         'Device List',
@@ -56,66 +54,115 @@ class _DevicePageState extends State<DevicePage> {
                                       color: Colors.grey[200],
                                       borderRadius: BorderRadius.circular(24),
                                     ),
-                                    child: ExpansionTile(
-                                      backgroundColor: Colors.transparent,
-                                      title: Text(
-                                        e.name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 15),
-                                      ),
-                                      subtitle: const Text('5 models',
-                                          style: TextStyle(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: ExpansionTile(
+                                        iconColor: Colors.black,
+                                        title: Text(
+                                          e.name,
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 13,
-                                              color: Color(0xFF9B9B9B))),
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 18.0),
-                                          child: ExpansionTile(
-                                            expandedCrossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            title: Text('Model 2021'),
-                                            subtitle: Text('3 item'),
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 18.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    ListTile(
-                                                        title: Text('Item 01')),
-                                                    ListTile(
-                                                        title: Text('Item 02')),
-                                                    ListTile(
-                                                        title: Text('Item 03')),
-                                                    ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                backgroundColor:
-                                                                    Color(
-                                                                        0xFF1BD15D)),
-                                                        onPressed: () =>
-                                                            print('object'),
-                                                        child: Text('Thêm mới'))
-                                                  ],
-                                                ),
+                                              fontSize: 15,
+                                              color: Colors.black),
+                                        ),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: const [
+                                            Text('5 models',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 13,
+                                                    color: Color(0xFF9B9B9B))),
+                                            Divider(color: Colors.black),
+                                          ],
+                                        ),
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 18.0),
+                                            child: ExpansionTile(
+                                              expandedCrossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              title: const Text(
+                                                'Model 2021',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 15,
+                                                    color: Colors.black),
                                               ),
-                                              ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          backgroundColor:
-                                                              Color(
-                                                                  0xFF1BD15D)),
-                                                  onPressed: () =>
-                                                      print('object2'),
-                                                  child: Text('Thêm mới'))
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                              subtitle: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: const [
+                                                  Text(
+                                                    '3 item',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 13,
+                                                        color:
+                                                            Color(0xFF9B9B9B)),
+                                                  ),
+                                                  Divider(color: Colors.black),
+                                                ],
+                                              ),
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 18.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const ListTile(
+                                                          title:
+                                                              Text('Item 01')),
+                                                      const ListTile(
+                                                          title:
+                                                              Text('Item 02')),
+                                                      const ListTile(
+                                                          title:
+                                                              Text('Item 03')),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 15),
+                                                        child: ElevatedButton(
+                                                            style: ElevatedButton.styleFrom(
+                                                                backgroundColor:
+                                                                    const Color(
+                                                                        0xFF1BD15D)),
+                                                            onPressed: () =>
+                                                                print('object'),
+                                                            child: const Text(
+                                                                'Thêm mới')),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15),
+                                                  child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              backgroundColor:
+                                                                  const Color(
+                                                                      0xFF1BD15D)),
+                                                      onPressed: () =>
+                                                          print('object2'),
+                                                      child: const Text(
+                                                          'Thêm mới')),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 14)
