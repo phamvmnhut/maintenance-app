@@ -58,7 +58,7 @@ class AppM extends StatelessWidget {
   Widget build(BuildContext context) {
     final screens = [
       const Home(),
-      BuildSearch(),
+      const BuildSearch(),
       const AddNewCare(),
       const Center(child: Text('Màn hình chưa code 02')),
       const SettingPage()
