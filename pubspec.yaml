@@ -58,6 +58,7 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
+  cloud_firestore: ^4.4.3
 
 dev_dependencies:
   flutter_test:
