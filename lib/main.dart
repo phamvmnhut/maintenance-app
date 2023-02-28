@@ -1,7 +1,7 @@
 import 'package:divice/business/auth.dart';
+import 'package:divice/business/auth.dart';
 import 'package:divice/business/setting.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
-import 'package:divice/ui/search/search.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -58,7 +58,7 @@ class AppM extends StatelessWidget {
   Widget build(BuildContext context) {
     final screens = [
       const Home(),
-      const BuildSearch(),
+      const Center(child: Text('Màn hình chưa code 01')),
       const AddNewCare(),
       const Center(child: Text('Màn hình chưa code 02')),
       const SettingPage()
