@@ -277,7 +277,7 @@ class _HomeState extends State<Home> {
                               SmoothPageIndicator(
                                 controller: controller,
                                 count: 3,
-                                effect: SwapEffect(
+                                effect: const SwapEffect(
                                   dotHeight: 11,
                                   dotWidth: 11,
                                   activeDotColor:
