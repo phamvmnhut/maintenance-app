@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class BuildSearch extends StatefulWidget {
-  const BuildSearch({Key? key}) : super(key: key);
+class Search extends StatefulWidget {
+  const Search({Key? key}) : super(key: key);
 
   @override
-  State<BuildSearch> createState() => _BuildSearchState();
+  State<Search> createState() => _SearchState();
 }
 
-class _BuildSearchState extends State<BuildSearch> {
+class _SearchState extends State<Search> {
   final fieldText = TextEditingController();
   bool _isTapped = false;
   @override

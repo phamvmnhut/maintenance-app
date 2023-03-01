@@ -15,6 +15,7 @@ import 'ui/auth/auth.dart';
 import 'ui/home/bottom_bar.dart';
 import 'ui/home/home_page.dart';
 import 'ui/search/search.dart';
+import 'ui/device/device.dart';
 
 bool shouldUseFirebaseEmulator = false;
 
@@ -58,9 +59,9 @@ class AppM extends StatelessWidget {
   Widget build(BuildContext context) {
     final screens = [
       const Home(),
-      const BuildSearch(),
+      const Search(),
       const AddNewCare(),
-      const Center(child: Text('Màn hình chưa code 02')),
+      const DevicePage(),
       const SettingPage()
     ];
 
