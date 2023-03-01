@@ -5,5 +5,11 @@
   "notification": "Thông báo",
   "general": "Cấu hình chung",
   "privacy_policy": "Chính sách bảo mật và quyền riêng tư",
-  "logout": "Đăng xuất"
+  "logout": "Đăng xuất",
+  "next_time_care": "Bào trì lần kế",
+  "reminder": "Nhắc nhở",
+  "time_used": "Sức khoẻ",
+  "care_time": "Các lần bảo trì",
+  "have_care_time": "Bạn có xx lần bảo trì",
+  "xx_day": "xx Ngày"
 }

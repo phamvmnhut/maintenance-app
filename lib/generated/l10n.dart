@@ -119,6 +119,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Next Time Care`
+  String get next_time_care {
+    return Intl.message(
+      'Next Time Care',
+      name: 'next_time_care',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reminder`
+  String get reminder {
+    return Intl.message(
+      'Reminder',
+      name: 'reminder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time used`
+  String get time_used {
+    return Intl.message(
+      'Time used',
+      name: 'time_used',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Care time`
+  String get care_time {
+    return Intl.message(
+      'Care time',
+      name: 'care_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have xx time care`
+  String get have_care_time {
+    return Intl.message(
+      'You have xx time care',
+      name: 'have_care_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `xx Days`
+  String get xx_day {
+    return Intl.message(
+      'xx Days',
+      name: 'xx_day',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

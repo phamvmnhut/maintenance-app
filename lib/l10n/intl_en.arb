@@ -5,5 +5,11 @@
   "notification": "Notifications",
   "general": "General",
   "privacy_policy": "Privacy and Policy",
-  "logout": "Logout"
+  "logout": "Logout",
+  "next_time_care": "Next Time Care",
+  "reminder": "Reminder",
+  "time_used": "Time used",
+  "care_time": "Care time",
+  "have_care_time": "You have xx time care",
+  "xx_day": "xx Days"
 }

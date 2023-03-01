@@ -2,6 +2,7 @@ import 'package:divice/business/auth.dart';
 import 'package:divice/business/auth.dart';
 import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
+import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
 import 'package:divice/ui/device/device.dart';
@@ -40,8 +41,14 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider(
+          create: (context) => DeviceRepositoryFireBase(),
+        ),
+        RepositoryProvider(
+          create: (context) => CareHistoryRepositoryFireBase(),
+        ),
         BlocProvider<ThemeBloc>(
           create: (BuildContext context) => ThemeBloc(),
         ),
@@ -87,12 +94,10 @@ class AppM extends StatelessWidget {
                   .add(LoginAuthEvent(user: snapshot.data!));
               return MultiBlocProvider(
                 providers: [
-                  RepositoryProvider(
-                      create: (context) => DeviceRepositoryFireBase()),
                   BlocProvider(
                     create: (context) => DeviceBloc(
-                        RepositoryProvider.of<DeviceRepositoryFireBase>(
-                            context)),
+                      RepositoryProvider.of<DeviceRepositoryFireBase>(context),
+                    ),
                   ),
                 ],
                 child: Scaffold(

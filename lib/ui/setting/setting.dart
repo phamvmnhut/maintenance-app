@@ -2,6 +2,7 @@ import 'package:divice/business/auth.dart';
 import 'package:divice/config/color.dart';
 import 'package:divice/generated/l10n.dart';
 import 'package:divice/ui/auth/profile.dart';
+import 'package:divice/ui/care/care_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -242,7 +243,11 @@ class _SettingPageState extends State<SettingPage> {
                     ],
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    CareDetailPage.route(care_id: "9LVgUnFcBuyQNgBgSCy3"),
+                  );
+                },
               ),
             ],
           ),
