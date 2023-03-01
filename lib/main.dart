@@ -1,6 +1,10 @@
 import 'package:divice/business/auth.dart';
+import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
+import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
+import 'package:divice/ui/device/device.dart';
+import 'package:divice/ui/search/search.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,8 +18,6 @@ import 'generated/l10n.dart';
 import 'ui/auth/auth.dart';
 import 'ui/home/bottom_bar.dart';
 import 'ui/home/home_page.dart';
-import 'ui/search/search.dart';
-import 'ui/device/device.dart';
 
 bool shouldUseFirebaseEmulator = false;
 
@@ -81,11 +83,29 @@ class AppM extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Scaffold(
-                body: screens[state.index],
-                bottomNavigationBar: const buildBottomNavigationBar(),
+              BlocProvider.of<AuthBloc>(context, listen: false)
+                  .add(LoginAuthEvent(user: snapshot.data!));
+              return MultiBlocProvider(
+                providers: [
+                  RepositoryProvider(
+                      create: (context) => DeviceRepositoryFireBase()),
+                  BlocProvider(
+                    create: (context) => DeviceBloc(
+                        RepositoryProvider.of<DeviceRepositoryFireBase>(
+                            context)),
+                  ),
+                ],
+                child: Scaffold(
+                  body: IndexedStack(
+                    index: state.index,
+                    children: screens,
+                  ),
+                  bottomNavigationBar: const buildBottomNavigationBar(),
+                ),
               );
             }
+            BlocProvider.of<AuthBloc>(context, listen: false)
+                .add(LogoutAuthEvent());
             return const AuthGate();
           },
         ),
