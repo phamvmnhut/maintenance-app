@@ -110,8 +110,8 @@ class _BuildSearchState extends State<BuildSearch> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16),
                         child: Text(
                           'Oxycodone',
                           style: TextStyle(
@@ -126,7 +126,7 @@ class _BuildSearchState extends State<BuildSearch> {
                           children: [
                             Text(
                               '${DateFormat('hh:mm a').format(DateTime.now())}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Color.fromARGB(155, 155, 155, 1),
                                   fontWeight: FontWeight.w500,
                                   fontSize: 13),
@@ -138,13 +138,14 @@ class _BuildSearchState extends State<BuildSearch> {
                               ),
                               child: Container(
                                 decoration: BoxDecoration(
-                                    color: Color.fromARGB(155, 155, 155, 1),
+                                    color:
+                                        const Color.fromARGB(155, 155, 155, 1),
                                     borderRadius: BorderRadius.circular(5)),
                                 height: 4,
                                 width: 4,
                               ),
                             ),
-                            Text(
+                            const Text(
                               'Completed',
                               style: TextStyle(
                                   color: Color.fromARGB(155, 155, 155, 1),
@@ -157,21 +158,21 @@ class _BuildSearchState extends State<BuildSearch> {
                     ],
                   ),
                 ),
-                Expanded(child: Icon(Icons.keyboard_arrow_right)),
+                const Expanded(child: Icon(Icons.keyboard_arrow_right)),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Container(
-              margin: EdgeInsets.only(
+              margin: const EdgeInsets.only(
                 right: 28,
                 left: 28,
               ),
               height: 72,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
-                color: Color(0xFFF8F8F6),
+                color: const Color(0xFFF8F8F6),
               ),
               child: Row(
                 children: [
@@ -185,8 +186,8 @@ class _BuildSearchState extends State<BuildSearch> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 16),
                           child: Text(
                             'Naloxone',
                             style: TextStyle(
@@ -213,13 +214,14 @@ class _BuildSearchState extends State<BuildSearch> {
                                 ),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: Color.fromARGB(155, 155, 155, 1),
+                                      color: const Color.fromARGB(
+                                          155, 155, 155, 1),
                                       borderRadius: BorderRadius.circular(5)),
                                   height: 4,
                                   width: 4,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 'Skipped',
                                 style: TextStyle(
                                     color: Color.fromARGB(155, 155, 155, 1),
@@ -232,7 +234,7 @@ class _BuildSearchState extends State<BuildSearch> {
                       ],
                     ),
                   ),
-                  Expanded(child: Icon(Icons.keyboard_arrow_right)),
+                  const Expanded(child: Icon(Icons.keyboard_arrow_right)),
                 ],
               ),
             ),
@@ -240,14 +242,14 @@ class _BuildSearchState extends State<BuildSearch> {
           Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Container(
-              margin: EdgeInsets.only(
+              margin: const EdgeInsets.only(
                 right: 28,
                 left: 28,
               ),
               height: 72,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
-                color: Color(0xFFF8F8F6),
+                color: const Color(0xFFF8F8F6),
               ),
               child: Row(
                 children: [
@@ -261,8 +263,8 @@ class _BuildSearchState extends State<BuildSearch> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 16),
                           child: Text(
                             'Oxycodone',
                             style: TextStyle(
@@ -276,8 +278,8 @@ class _BuildSearchState extends State<BuildSearch> {
                           child: Row(
                             children: [
                               Text(
-                                '${DateFormat('hh:mm a').format(DateTime.now())}',
-                                style: TextStyle(
+                                DateFormat('hh:mm a').format(DateTime.now()),
+                                style: const TextStyle(
                                     color: Color.fromARGB(155, 155, 155, 1),
                                     fontWeight: FontWeight.w500,
                                     fontSize: 13),
@@ -289,13 +291,14 @@ class _BuildSearchState extends State<BuildSearch> {
                                 ),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: Color.fromARGB(155, 155, 155, 1),
+                                      color: const Color.fromARGB(
+                                          155, 155, 155, 1),
                                       borderRadius: BorderRadius.circular(5)),
                                   height: 4,
                                   width: 4,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 'Before Eating',
                                 style: TextStyle(
                                     color: Color.fromARGB(155, 155, 155, 1),
@@ -308,7 +311,7 @@ class _BuildSearchState extends State<BuildSearch> {
                       ],
                     ),
                   ),
-                  Expanded(child: Icon(Icons.keyboard_arrow_right)),
+                  const Expanded(child: Icon(Icons.keyboard_arrow_right)),
                 ],
               ),
             ),
