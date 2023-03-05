@@ -1,5 +1,4 @@
 import 'package:divice/business/auth.dart';
-import 'package:divice/business/auth.dart';
 import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
@@ -7,6 +6,7 @@ import 'package:divice/domain/repositories/firebase/device_repository_firebase.d
 import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
 import 'package:divice/ui/device/device.dart';
+import 'package:divice/ui/search/search.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -74,7 +74,7 @@ class AppM extends StatelessWidget {
   Widget build(BuildContext context) {
     final screens = [
       const Home(),
-      const Center(child: Text('Màn hình chưa code 01')),
+      const Search(),
       const AddNewCare(),
       const DevicePage(),
       const SettingPage()
