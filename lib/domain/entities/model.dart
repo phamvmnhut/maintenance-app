@@ -31,4 +31,13 @@ class Model extends Equatable {
       count: count ?? this.count,
     );
   }
+
+  factory Model.fromJson(json) {
+    return Model(
+      name: json["name"],
+      id: json.id,
+      device_id: json['device_id'],
+      count: json['count'],
+    );
+  }
 }

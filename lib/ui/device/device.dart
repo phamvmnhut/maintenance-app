@@ -2,6 +2,8 @@ import 'package:divice/business/device.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'device_detail.dart';
+
 class DevicePage extends StatefulWidget {
   const DevicePage({Key? key}) : super(key: key);
 
@@ -45,131 +47,10 @@ class _DevicePageState extends State<DevicePage> {
                       ),
                     ),
                     const SizedBox(height: 21),
-                    Column(
-                      children: state.list
-                          .map((e) => ListBody(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.circular(24),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12),
-                                      child: ExpansionTile(
-                                        iconColor: Colors.black,
-                                        title: Text(
-                                          e.name,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 15,
-                                              color: Colors.black),
-                                        ),
-                                        subtitle: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: const [
-                                            Text('5 models',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 13,
-                                                    color: Color(0xFF9B9B9B))),
-                                            Divider(color: Colors.black),
-                                          ],
-                                        ),
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 18.0),
-                                            child: ExpansionTile(
-                                              expandedCrossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              title: const Text(
-                                                'Model 2021',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 15,
-                                                    color: Colors.black),
-                                              ),
-                                              subtitle: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: const [
-                                                  Text(
-                                                    '3 item',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 13,
-                                                        color:
-                                                            Color(0xFF9B9B9B)),
-                                                  ),
-                                                  Divider(color: Colors.black),
-                                                ],
-                                              ),
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 18.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const ListTile(
-                                                          title:
-                                                              Text('Item 01')),
-                                                      const ListTile(
-                                                          title:
-                                                              Text('Item 02')),
-                                                      const ListTile(
-                                                          title:
-                                                              Text('Item 03')),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 15),
-                                                        child: ElevatedButton(
-                                                            style: ElevatedButton.styleFrom(
-                                                                backgroundColor:
-                                                                    const Color(
-                                                                        0xFF1BD15D)),
-                                                            onPressed: () =>
-                                                                print('object'),
-                                                            child: const Text(
-                                                                'Thêm mới')),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15),
-                                                  child: ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              backgroundColor:
-                                                                  const Color(
-                                                                      0xFF1BD15D)),
-                                                      onPressed: () =>
-                                                          print('object2'),
-                                                      child: const Text(
-                                                          'Thêm mới')),
-                                                )
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 14)
-                                ],
-                              ))
-                          .toList(),
-                    ),
+                    
+                    //Container 1 device
+                    ListDeviceDetail(state: state,),
+
                     GestureDetector(
                       onTap: () {},
                       child: Container(
@@ -196,3 +77,5 @@ class _DevicePageState extends State<DevicePage> {
     );
   }
 }
+
+

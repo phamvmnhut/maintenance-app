@@ -3,6 +3,7 @@ import 'package:divice/business/auth.dart';
 import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
 import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
 import 'package:divice/ui/device/device.dart';
 import 'package:divice/ui/setting/setting.dart';
@@ -89,9 +90,15 @@ class AppM extends StatelessWidget {
                 providers: [
                   RepositoryProvider(
                       create: (context) => DeviceRepositoryFireBase()),
+                  //Model
+                  RepositoryProvider(
+                      create: (context) => ModelRepositoryFirebase()),
+
                   BlocProvider(
                     create: (context) => DeviceBloc(
                         RepositoryProvider.of<DeviceRepositoryFireBase>(
+                            context),
+                        RepositoryProvider.of<ModelRepositoryFirebase>(
                             context)),
                   ),
                 ],
