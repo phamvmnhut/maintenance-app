@@ -4,6 +4,7 @@ import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
 import 'package:divice/ui/device/device.dart';
 import 'package:divice/ui/setting/setting.dart';
@@ -49,12 +50,17 @@ class App extends StatelessWidget {
         RepositoryProvider(
           create: (context) => CareHistoryRepositoryFireBase(),
         ),
+        RepositoryProvider(
+          create: (context) => ModelRepositoryFirebase()),
+
+
         BlocProvider<ThemeBloc>(
           create: (BuildContext context) => ThemeBloc(),
         ),
         BlocProvider<AuthBloc>(
           create: (BuildContext context) => AuthBloc(),
         ),
+        
       ],
       child: const AppM(),
     );
@@ -96,8 +102,10 @@ class AppM extends StatelessWidget {
                 providers: [
                   BlocProvider(
                     create: (context) => DeviceBloc(
-                      RepositoryProvider.of<DeviceRepositoryFireBase>(context),
-                    ),
+                        RepositoryProvider.of<DeviceRepositoryFireBase>(
+                            context),
+                        RepositoryProvider.of<ModelRepositoryFirebase>(
+                            context)),
                   ),
                 ],
                 child: Scaffold(

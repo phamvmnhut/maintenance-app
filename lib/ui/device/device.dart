@@ -2,6 +2,8 @@ import 'package:divice/business/device.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'device_detail.dart';
+
 class DevicePage extends StatefulWidget {
   const DevicePage({Key? key}) : super(key: key);
 
@@ -24,20 +26,56 @@ class _DevicePageState extends State<DevicePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: BlocBuilder<DeviceBloc, DeviceState>(
-          builder: (context, state) {
-            return Column(
-              children: state.list
-                  .map((e) => ListTile(
-                        title: Text(e.name),
-                      ))
-                  .toList(),
-            );
-          },
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: BlocBuilder<DeviceBloc, DeviceState>(
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 23, right: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 41),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Device List',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    const SizedBox(height: 21),
+                    
+                    //Container 1 device
+                    ListDeviceDetail(state: state,),
+
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          color: const Color(0xFF1BD15D),
+                        ),
+                        child: const Text('Thêm mới',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                                color: Colors.white)),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
   }
 }
+
+
