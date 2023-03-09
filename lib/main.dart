@@ -1,8 +1,10 @@
 import 'package:divice/business/auth.dart';
 import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
+import 'package:divice/domain/repositories/equipment_repository.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/equipment_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
 import 'package:divice/ui/device/device.dart';
@@ -50,17 +52,14 @@ class App extends StatelessWidget {
         RepositoryProvider(
           create: (context) => CareHistoryRepositoryFireBase(),
         ),
-        RepositoryProvider(
-          create: (context) => ModelRepositoryFirebase()),
-
-
+        RepositoryProvider(create: (context) => ModelRepositoryFirebase()),
+        RepositoryProvider(create: (context) => EquipmentRepositoryFirebase()),
         BlocProvider<ThemeBloc>(
           create: (BuildContext context) => ThemeBloc(),
         ),
         BlocProvider<AuthBloc>(
           create: (BuildContext context) => AuthBloc(),
         ),
-        
       ],
       child: const AppM(),
     );
@@ -104,7 +103,8 @@ class AppM extends StatelessWidget {
                     create: (context) => DeviceBloc(
                         RepositoryProvider.of<DeviceRepositoryFireBase>(
                             context),
-                        RepositoryProvider.of<ModelRepositoryFirebase>(
+                        RepositoryProvider.of<ModelRepositoryFirebase>(context),
+                        RepositoryProvider.of<EquipmentRepositoryFirebase>(
                             context)),
                   ),
                 ],

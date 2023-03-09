@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business/device.dart';
 import 'model_container.dart';
@@ -13,7 +12,6 @@ class ListDeviceDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(state.list);
     return Column(
       children: state.list
           .map((device) => Column(

@@ -27,4 +27,11 @@ class Equipment extends Equatable {
       model_id: model_id ?? this.model_id,
     );
   }
+  factory Equipment.fromJson(json) {
+    return Equipment(
+      id: json.id,
+      model_id: json['model_id'],
+      name: json["name"],
+    );
+  }
 }

@@ -2,6 +2,8 @@ import 'package:divice/business/device.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'equipment_container.dart';
+
 class ModelContainer extends StatefulWidget {
   final String deviceID;
   const ModelContainer({
@@ -34,6 +36,7 @@ class _ModelContainerState extends State<ModelContainer> {
                   padding: const EdgeInsets.only(left: 18.0),
                   child: ExpansionTile(
                     expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                    expandedAlignment: Alignment.centerLeft,
                     title: Text(
                       model.name,
                       style: const TextStyle(
@@ -57,22 +60,7 @@ class _ModelContainerState extends State<ModelContainer> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 18.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const ListTile(title: Text('Item 01')),
-                            const ListTile(title: Text('Item 02')),
-                            const ListTile(title: Text('Item 03')),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF1BD15D)),
-                                  onPressed: () => print('object'),
-                                  child: const Text('Thêm mới')),
-                            )
-                          ],
-                        ),
+                        child: EquipmentContainer(modelID: model.id),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15),
