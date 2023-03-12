@@ -1,5 +1,4 @@
 import 'package:divice/domain/entities/care_history.dart';
-import 'package:divice/domain/entities/care.dart';
 import 'package:divice/domain/repositories/care_history_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +11,7 @@ class CareDetailEventGetCareHistoryList extends CareDetailEvent {}
 class CareDetailState {
   bool isLoading = true;
   Care? care;
-  List<CareHistory> careHistorylist;
+  List<Care> careHistorylist;
   String careId;
 
   CareDetailState(
@@ -24,7 +23,7 @@ class CareDetailState {
 
   CareDetailState copyWith({
     bool? isLoading,
-    List<CareHistory>? careHistorylist,
+    List<Care>? careHistorylist,
     String? careId,
     Care? care,
   }) {
@@ -38,10 +37,10 @@ class CareDetailState {
 }
 
 class CareDetailBloc extends Bloc<CareDetailEvent, CareDetailState> {
-  final CareHistoryRepository _repository;
+  final CareRepository _repository;
 
   CareDetailBloc({
-    required CareHistoryRepository careHistoryRepository,
+    required CareRepository careHistoryRepository,
     required String careId,
   })  : _repository = careHistoryRepository,
         super(CareDetailState(
@@ -52,16 +51,16 @@ class CareDetailBloc extends Bloc<CareDetailEvent, CareDetailState> {
   }
   void _getList(CareDetailEventGetCareHistoryList event,
       Emitter<CareDetailState> emit) async {
-    List<CareHistory> l = await _repository.getList(
-        param: CareHistoryRepositoryGetListParam(care_id: ""));
+    List<Care> l = await _repository.getList(
+        param: CareRepositoryGetListParam(care_id: ""));
     emit(CareDetailState(careHistorylist: l));
   }
 
   void _getAllData(
       CareDetailEventGetAllData event, Emitter<CareDetailState> emit) async {
     emit(state.copyWith(isLoading: true));
-    List<CareHistory> l = await _repository.getList(
-        param: CareHistoryRepositoryGetListParam(care_id: state.careId));
+    List<Care> l = await _repository.getList(
+        param: CareRepositoryGetListParam(care_id: state.careId));
     // Care c = awai
     emit(state.copyWith(careHistorylist: l, isLoading: false));
   }

@@ -1,14 +1,15 @@
 import 'package:divice/business/auth.dart';
+import 'package:divice/business/care.dart';
 import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
-import 'package:divice/domain/repositories/equipment_repository.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/care_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/equipment_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
 import 'package:divice/ui/device/device.dart';
-import 'package:divice/ui/search/search.dart';
+import 'package:divice/ui/search/care_search.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,6 +55,9 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider(create: (context) => ModelRepositoryFirebase()),
         RepositoryProvider(create: (context) => EquipmentRepositoryFirebase()),
+        RepositoryProvider(
+          create: (context) => CareRepositoryFireBase(),
+        ),
         BlocProvider<ThemeBloc>(
           create: (BuildContext context) => ThemeBloc(),
         ),
@@ -73,7 +77,7 @@ class AppM extends StatelessWidget {
   Widget build(BuildContext context) {
     final screens = [
       const Home(),
-      const Search(),
+      const CareSearch(),
       const AddNewCare(),
       const DevicePage(),
       const SettingPage()
@@ -106,6 +110,13 @@ class AppM extends StatelessWidget {
                         RepositoryProvider.of<ModelRepositoryFirebase>(context),
                         RepositoryProvider.of<EquipmentRepositoryFirebase>(
                             context)),
+                  ),
+                  BlocProvider(
+                    create: (context) => CareBloc(
+                      RepositoryProvider.of<CareRepositoryFireBase>(context),
+                      careRepository: CareRepositoryFireBase(),
+                      careId: '',
+                    ),
                   ),
                 ],
                 child: Scaffold(

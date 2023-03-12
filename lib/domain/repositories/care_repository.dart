@@ -1,8 +1,10 @@
-import 'package:divice/domain/entities/device.dart';
+import '../entities/care.dart';
 
 class CareRepositoryGetListParam {
-  final String searchText;
-  CareRepositoryGetListParam({required this.searchText});
+  final String careId;
+  CareRepositoryGetListParam({
+    required this.careId,
+  });
 }
 
 abstract class CareRepository {

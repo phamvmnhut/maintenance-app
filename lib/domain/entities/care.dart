@@ -1,5 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Care extends Equatable {
@@ -24,7 +23,16 @@ class Care extends Equatable {
   });
 
   @override
-  List<Object> get props => [memo_name, id, user_id, image, equipment_id, repeat, routine, start_date];
+  List<Object> get props => [
+        memo_name,
+        id,
+        user_id,
+        image,
+        equipment_id,
+        repeat,
+        routine,
+        start_date
+      ];
 
   Care copyWith({
     String? memo_name,
@@ -47,4 +55,27 @@ class Care extends Equatable {
       start_date: start_date ?? this.start_date,
     );
   }
+
+  factory Care.fromJson(DocumentSnapshot json) {
+    return Care(
+        memo_name: json['memo_name'],
+        id: json.id,
+        user_id: json['user_id'],
+        image: json['image'],
+        equipment_id: json['equipment_id'],
+        repeat: json['repeat'],
+        routine: json['routine'],
+        start_date: (json['start_date'] as Timestamp).toDate());
+  }
+
+  Map<String, Object?> toJson() => <String, dynamic>{
+        'memo_name': memo_name,
+        'id': id,
+        'user_id': user_id,
+        'image': image,
+        'equipment_id': equipment_id,
+        'repeat': repeat,
+        'routine': routine,
+        'start_date': start_date
+      };
 }

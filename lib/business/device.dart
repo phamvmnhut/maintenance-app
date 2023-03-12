@@ -23,7 +23,7 @@ class DeviceEventGetListEquipment extends DeviceEvent {
 }
 
 class DeviceState {
-  List<Device> list;
+  List<Care> list;
   Map<String, List<Model>> listModel;
   Map<String, List<Equipment>> listEquipment;
 
@@ -34,7 +34,7 @@ class DeviceState {
   DeviceState.initialState() : this(list: []);
 
   DeviceState copyWith({
-    List<Device>? list,
+    List<Care>? list,
     Map<String, List<Model>>? listModel,
     Map<String, List<Equipment>>? listEquipment,
   }) {
@@ -46,7 +46,7 @@ class DeviceState {
 }
 
 class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
-  final DeviceRepository _repository;
+  final CareRepository _repository;
   final ModelRepository _modelRepository;
   final EquipmentRepository _equipmentRepository;
 
@@ -57,8 +57,8 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     on<DeviceEventGetListEquipment>(_getListEquipment);
   }
   void _getList(DeviceEventGetList event, Emitter<DeviceState> emit) async {
-    List<Device> l = await _repository.getList(
-        param: DeviceRepositoryGetListParam(searchText: ""));
+    List<Care> l = await _repository.getList(
+        param: CareRepositoryGetListParam(searchText: ""));
     emit(DeviceState(list: l));
   }
 

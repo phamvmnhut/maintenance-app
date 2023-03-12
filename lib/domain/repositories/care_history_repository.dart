@@ -1,16 +1,14 @@
 import 'package:divice/domain/entities/care_history.dart';
 
-class CareHistoryRepositoryGetListParam {
+class CareRepositoryGetListParam {
   final String care_id;
-  CareHistoryRepositoryGetListParam({
-    required this.care_id
-  });
+  CareRepositoryGetListParam({required this.care_id});
 }
 
-abstract class CareHistoryRepository {
-  Future<List<CareHistory>> getList({required CareHistoryRepositoryGetListParam param});
-  Future<CareHistory> get({required String id});
-  Future<bool> update({required String id, required CareHistory data});
-  Future<bool> create({required CareHistory d});
+abstract class CareRepository {
+  Future<List<Care>> getList({required CareRepositoryGetListParam param});
+  Future<Care> get({required String id});
+  Future<bool> update({required String id, required Care data});
+  Future<bool> create({required Care d});
   Future<bool> delete({required String id});
 }

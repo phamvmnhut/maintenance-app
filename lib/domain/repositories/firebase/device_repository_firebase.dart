@@ -2,20 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divice/domain/entities/device.dart';
 import 'package:divice/domain/repositories/device_repository.dart';
 
-class DeviceRepositoryFireBase extends DeviceRepository {
+class DeviceRepositoryFireBase extends CareRepository {
   final CollectionReference _deviceCollection =
       FirebaseFirestore.instance.collection('devices');
 
   @override
-  Future<Device> get({required String id}) {
+  Future<Care> get({required String id}) {
     return _deviceCollection
         .doc(id)
         .get()
-        .then((value) => Device.fromJson(value));
+        .then((value) => Care.fromJson(value));
   }
 
   @override
-  Future<bool> create({required Device d}) {
+  Future<bool> create({required Care d}) {
     return _deviceCollection.add(d.toJson()).then((value) => true);
   }
 
@@ -25,14 +25,17 @@ class DeviceRepositoryFireBase extends DeviceRepository {
   }
 
   @override
-  Future<List<Device>> getList({required DeviceRepositoryGetListParam param}) {
+  Future<List<Care>> getList({required CareRepositoryGetListParam param}) {
     return _deviceCollection
         .get()
-        .then((value) => value.docs.map((e) => Device.fromJson(e)).toList());
+        .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
   }
 
   @override
-  Future<bool> update({required String id, required Device data}) {
-    return _deviceCollection.doc(id).update(data.toJson()).then((value) => true);
+  Future<bool> update({required String id, required Care data}) {
+    return _deviceCollection
+        .doc(id)
+        .update(data.toJson())
+        .then((value) => true);
   }
 }

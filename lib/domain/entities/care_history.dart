@@ -3,14 +3,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class CareHistory extends Equatable {
+class Care extends Equatable {
   final String memo;
   final String id;
   final String care_id;
   final DateTime date;
   final String image;
 
-  const CareHistory({
+  const Care({
     required this.memo,
     required this.id,
     required this.care_id,
@@ -21,14 +21,14 @@ class CareHistory extends Equatable {
   @override
   List<Object> get props => [memo, id, care_id, date];
 
-  CareHistory copyWith({
+  Care copyWith({
     String? meno,
     String? id,
     String? care_id,
     DateTime? date,
     String? image,
   }) {
-    return CareHistory(
+    return Care(
       memo: meno ?? this.memo,
       id: id ?? this.id,
       care_id: care_id ?? this.care_id,
@@ -37,8 +37,8 @@ class CareHistory extends Equatable {
     );
   }
 
-  factory CareHistory.fromJson(DocumentSnapshot json) {
-    return CareHistory(
+  factory Care.fromJson(DocumentSnapshot json) {
+    return Care(
       memo: json["memo"],
       id: json.id,
       care_id: json['care_id'],
@@ -47,8 +47,7 @@ class CareHistory extends Equatable {
     );
   }
 
-  Map<String, Object?> toJson() =>
-      <String, dynamic>{
+  Map<String, Object?> toJson() => <String, dynamic>{
         'meno': memo,
         'id': id,
         'care_id': care_id,
