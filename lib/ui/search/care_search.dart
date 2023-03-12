@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/repositories/firebase/equipment_repository_firebase.dart';
+import '../care/care_detail.dart';
 
 class CareSearch extends StatefulWidget {
   const CareSearch({Key? key}) : super(key: key);
@@ -133,97 +134,112 @@ class _CareSearchState extends State<CareSearch> {
                 : Column(
                     children: state.careList
                         .map(
-                          (e) => Container(
-                            margin: const EdgeInsets.only(
-                              top: 12,
-                              right: 28,
-                              left: 28,
-                            ),
-                            height: 72,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              color: const Color(0xFFF8F8F6),
-                            ),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 28),
-                                  child: Image.asset('assets/images/drugs.png'),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16),
-                                        child: Text(
-                                          e.memo_name,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 15,
+                          (e) => InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                CareDetailPage.route(care_id: e.id),
+                              );
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                top: 12,
+                                right: 28,
+                                left: 28,
+                              ),
+                              height: 72,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24),
+                                color: const Color(0xFFF8F8F6),
+                              ),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 28),
+                                    child:
+                                        Image.asset('assets/images/drugs.png'),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 16),
+                                          child: Text(
+                                            e.memo_name,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              e.start_date.toString(),
-                                              style: const TextStyle(
-                                                  color: Color.fromARGB(
-                                                      155, 155, 155, 1),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 13),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                left: 5,
-                                                right: 5,
-                                              ),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: const Color.fromARGB(
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 16),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                e.start_date.toString(),
+                                                style: const TextStyle(
+                                                    color: Color.fromARGB(
                                                         155, 155, 155, 1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                height: 4,
-                                                width: 4,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 13),
                                               ),
-                                            ),
-                                            FutureBuilder(
-                                                future: getData(e.equipment_id),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.done) {
-                                                    return Text(
-                                                      snapshot.data!,
-                                                      style: const TextStyle(
-                                                          color: Color.fromARGB(
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  left: 5,
+                                                  right: 5,
+                                                ),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          const Color.fromARGB(
                                                               155, 155, 155, 1),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 13),
-                                                    );
-                                                  }
-                                                  return CircularProgressIndicator();
-                                                })
-                                          ],
-                                        ),
-                                      )
-                                    ],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5)),
+                                                  height: 4,
+                                                  width: 4,
+                                                ),
+                                              ),
+                                              FutureBuilder(
+                                                  future:
+                                                      getData(e.equipment_id),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState.done) {
+                                                      return Text(
+                                                        snapshot.data!,
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    155,
+                                                                    155,
+                                                                    155,
+                                                                    1),
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13),
+                                                      );
+                                                    }
+                                                    return CircularProgressIndicator();
+                                                  })
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const Expanded(
-                                    child: Icon(Icons.keyboard_arrow_right)),
-                              ],
+                                  const Expanded(
+                                      child: Icon(Icons.keyboard_arrow_right)),
+                                ],
+                              ),
                             ),
                           ),
                         )
