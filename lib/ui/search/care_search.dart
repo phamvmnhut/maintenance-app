@@ -2,6 +2,8 @@ import 'package:divice/business/care.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/repositories/firebase/equipment_repository_firebase.dart';
+
 class CareSearch extends StatefulWidget {
   const CareSearch({Key? key}) : super(key: key);
 
@@ -10,6 +12,8 @@ class CareSearch extends StatefulWidget {
 }
 
 class _CareSearchState extends State<CareSearch> {
+  List<String> memoNames = [];
+  List<String> memoNamesSearch = [];
   final fieldText = TextEditingController();
   bool _isTapped = false;
 
@@ -17,6 +21,12 @@ class _CareSearchState extends State<CareSearch> {
   void didChangeDependencies() {
     context.read<CareBloc>().add(CareEventGetAllData());
     super.didChangeDependencies();
+  }
+
+  Future<String> getData(String id) {
+    return RepositoryProvider.of<EquipmentRepositoryFirebase>(context)
+        .get(id: id)
+        .then((value) => value.name);
   }
 
   @override
@@ -39,7 +49,7 @@ class _CareSearchState extends State<CareSearch> {
                       height: 48,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: Color(0xFFF8F8F6),
+                        color: const Color(0xFFF8F8F6),
                       ),
                       child: TextField(
                         controller: fieldText,
@@ -52,15 +62,28 @@ class _CareSearchState extends State<CareSearch> {
                                     onPressed: () {
                                       fieldText.clear();
                                     },
-                                    icon: Icon(Icons.close))
+                                    icon: const Icon(Icons.close))
                                 : null),
                         onTap: () {
                           setState(() {
                             _isTapped = true;
                           });
                         },
+                        onChanged: (value) {
+                          setState(() {
+                            memoNames =
+                                state.careList.map((e) => e.memo_name).toList();
+                            memoNamesSearch = memoNames
+                                .where((e) => e
+                                    .toLowerCase()
+                                    .contains(value.toLowerCase()))
+                                .toList();
+                          });
+                        },
                         onSubmitted: (value) {
-                          _isTapped = false;
+                          setState(() {
+                            _isTapped = false;
+                          });
                         },
                       ),
                     ),
@@ -71,7 +94,7 @@ class _CareSearchState extends State<CareSearch> {
                       height: 48,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: Color(0xF5F8FFFF),
+                        color: const Color(0xF5F8FFFF),
                       ),
                       child: Image.asset('assets/images/menu.png'),
                     ),
@@ -81,9 +104,9 @@ class _CareSearchState extends State<CareSearch> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+              children: const [
                 Padding(
-                  padding: const EdgeInsets.only(
+                  padding: EdgeInsets.only(
                     top: 51,
                     left: 32,
                   ),
@@ -100,9 +123,9 @@ class _CareSearchState extends State<CareSearch> {
             state.isLoading
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Padding(
-                        padding: const EdgeInsets.only(top: 12),
+                        padding: EdgeInsets.only(top: 12),
                         child: CircularProgressIndicator(),
                       ),
                     ],
@@ -111,7 +134,7 @@ class _CareSearchState extends State<CareSearch> {
                     children: state.careList
                         .map(
                           (e) => Container(
-                            margin: EdgeInsets.only(
+                            margin: const EdgeInsets.only(
                               top: 12,
                               right: 28,
                               left: 28,
@@ -119,7 +142,7 @@ class _CareSearchState extends State<CareSearch> {
                             height: 72,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(24),
-                              color: Color(0xFFF8F8F6),
+                              color: const Color(0xFFF8F8F6),
                             ),
                             child: Row(
                               children: [
@@ -135,10 +158,11 @@ class _CareSearchState extends State<CareSearch> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.only(left: 16),
+                                        padding:
+                                            const EdgeInsets.only(left: 16),
                                         child: Text(
                                           e.memo_name,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 15,
                                           ),
@@ -173,14 +197,24 @@ class _CareSearchState extends State<CareSearch> {
                                                 width: 4,
                                               ),
                                             ),
-                                            Text(
-                                              'man hinh',
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      155, 155, 155, 1),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 13),
-                                            )
+                                            FutureBuilder(
+                                                future: getData(e.equipment_id),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.done) {
+                                                    return Text(
+                                                      snapshot.data!,
+                                                      style: const TextStyle(
+                                                          color: Color.fromARGB(
+                                                              155, 155, 155, 1),
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 13),
+                                                    );
+                                                  }
+                                                  return CircularProgressIndicator();
+                                                })
                                           ],
                                         ),
                                       )

@@ -3,7 +3,7 @@ import 'package:divice/domain/entities/equipment.dart';
 
 import '../equipment_repository.dart';
 
-class EquipmentRepositoryFirebase extends EquipmentRepository{
+class EquipmentRepositoryFirebase extends EquipmentRepository {
   final CollectionReference _equipmentCollection =
       FirebaseFirestore.instance.collection('equipments');
   @override
@@ -16,4 +16,11 @@ class EquipmentRepositoryFirebase extends EquipmentRepository{
     });
   }
 
+  @override
+  Future<Equipment> get({required String id}) {
+    return _equipmentCollection
+        .doc(id)
+        .get()
+        .then((value) => Equipment.fromJson(value));
+  }
 }
