@@ -1,3 +1,4 @@
+import 'package:dartz/dartz_unsafe.dart';
 import 'package:divice/domain/entities/device.dart';
 import 'package:divice/domain/entities/equipment.dart';
 import 'package:divice/domain/entities/model.dart';
@@ -60,6 +61,30 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     List<Care> l = await _repository.getList(
         param: CareRepositoryGetListParam(searchText: ""));
     emit(DeviceState(list: l));
+
+    //Sau khi emit danh sách Device thì emit danh sách Model theo device
+    Map<String, List<Model>> newListModel = Map.of(state.listModel);
+    List<String> listDeviceID = l.map((e) => e.id).toList();
+    List<Model> listModel;
+    List<Equipment> listEquipment;
+
+    for (var deviceID in listDeviceID) {
+      listModel = await _modelRepository.getListModel(deviceID: deviceID);
+      newListModel[deviceID] = listModel;
+
+      //Sau khi emit danh sách Model thì emit danh sách Equipment theo Device
+      Map<String, List<Equipment>> newListEquipment =
+          Map.of(state.listEquipment);
+      List<String> listModelID = listModel.map((e) => e.id).toList();
+
+      for (var modelID in listModelID) {
+        listEquipment =
+            await _equipmentRepository.getListEquipment(modelID: modelID);
+        newListEquipment[modelID] = listEquipment;
+      }
+      emit(state.copyWith(listEquipment: newListEquipment));
+    }
+    emit(state.copyWith(listModel: newListModel));
   }
 
   void _getListModel(
