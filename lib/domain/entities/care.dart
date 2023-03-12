@@ -24,7 +24,16 @@ class Care extends Equatable {
   });
 
   @override
-  List<Object> get props => [memo_name, id, user_id, image, equipment_id, repeat, routine, start_date];
+  List<Object> get props => [
+        memo_name,
+        id,
+        user_id,
+        image,
+        equipment_id,
+        repeat,
+        routine,
+        start_date
+      ];
 
   Care copyWith({
     String? memo_name,
@@ -45,6 +54,19 @@ class Care extends Equatable {
       repeat: repeat ?? this.repeat,
       routine: routine ?? this.routine,
       start_date: start_date ?? this.start_date,
+    );
+  }
+
+  factory Care.fromJson(json) {
+    return Care(
+      memo_name: json["memo_name"],
+      id: json.id,
+      user_id: json['user_id'],
+      image: json['image'],
+      equipment_id: json['equipment_id'],
+      repeat: json['repeat'],
+      routine: json['routine'],
+      start_date: json['start_date'],
     );
   }
 }
