@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:divice/business/care.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,10 +15,10 @@ class CareSearch extends StatefulWidget {
 }
 
 class _CareSearchState extends State<CareSearch> {
-  List<String> memoNames = [];
-  List<String> memoNamesSearch = [];
   final fieldText = TextEditingController();
-  bool _isTapped = false;
+  var _isTapped = false;
+  Timer? _timer;
+  DateTime _nowTime = DateTime.now();
 
   @override
   void didChangeDependencies() {
@@ -28,6 +30,20 @@ class _CareSearchState extends State<CareSearch> {
     return RepositoryProvider.of<EquipmentRepositoryFirebase>(context)
         .get(id: id)
         .then((value) => value.name);
+  }
+
+  void timeText() {
+    // Kiểm tra xem Timer đã được khởi tạo hay chưa
+    if (_timer?.isActive ?? false) {
+      // Nếu đã được khởi tạo, hủy Timer hiện tại
+      _timer?.cancel();
+    }
+
+    // Khởi tạo lại Timer mới với thời gian chờ là 1 giây
+    _timer = Timer(const Duration(seconds: 2), () {
+      // Kích hoạt sự kiện CareEventGetAllData() khi hết thời gian chờ
+      context.read<CareBloc>().add(CareEventGetAllData());
+    });
   }
 
   @override
@@ -72,19 +88,15 @@ class _CareSearchState extends State<CareSearch> {
                         },
                         onChanged: (value) {
                           setState(() {
-                            memoNames =
-                                state.careList.map((e) => e.memo_name).toList();
-                            memoNamesSearch = memoNames
-                                .where((e) => e
-                                    .toLowerCase()
-                                    .contains(value.toLowerCase()))
-                                .toList();
+                            timeText();
                           });
                         },
                         onSubmitted: (value) {
-                          setState(() {
-                            _isTapped = false;
-                          });
+                          setState(
+                            () {
+                              _isTapped = false;
+                            },
+                          );
                         },
                       ),
                     ),
@@ -133,6 +145,9 @@ class _CareSearchState extends State<CareSearch> {
                   )
                 : Column(
                     children: state.careList
+                        .where((element) => element.memo_name
+                            .toLowerCase()
+                            .contains(fieldText.text))
                         .map(
                           (e) => InkWell(
                             onTap: () {
@@ -167,8 +182,8 @@ class _CareSearchState extends State<CareSearch> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 16),
+                                          padding: const EdgeInsets.only(
+                                              left: 16, bottom: 3),
                                           child: Text(
                                             e.memo_name,
                                             style: const TextStyle(
@@ -183,7 +198,13 @@ class _CareSearchState extends State<CareSearch> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                e.start_date.toString(),
+                                                e.start_date
+                                                            .difference(
+                                                                _nowTime)
+                                                            .inHours >
+                                                        24
+                                                    ? 'after ${e.start_date.difference(_nowTime).inDays} days'
+                                                    : 'after ${e.start_date.difference(_nowTime).inHours}h${e.start_date.difference(_nowTime).inMinutes}m',
                                                 style: const TextStyle(
                                                     color: Color.fromARGB(
                                                         155, 155, 155, 1),
@@ -228,7 +249,7 @@ class _CareSearchState extends State<CareSearch> {
                                                             fontSize: 13),
                                                       );
                                                     }
-                                                    return CircularProgressIndicator();
+                                                    return const Text('');
                                                   })
                                             ],
                                           ),
