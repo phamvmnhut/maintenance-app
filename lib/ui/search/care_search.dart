@@ -33,15 +33,11 @@ class _CareSearchState extends State<CareSearch> {
   }
 
   void timeText() {
-    // Kiểm tra xem Timer đã được khởi tạo hay chưa
     if (_timer?.isActive ?? false) {
-      // Nếu đã được khởi tạo, hủy Timer hiện tại
       _timer?.cancel();
     }
 
-    // Khởi tạo lại Timer mới với thời gian chờ là 1 giây
     _timer = Timer(const Duration(seconds: 2), () {
-      // Kích hoạt sự kiện CareEventGetAllData() khi hết thời gian chờ
       context.read<CareBloc>().add(CareEventGetAllData());
     });
   }
