@@ -42,6 +42,14 @@ class _CareSearchState extends State<CareSearch> {
     });
   }
 
+  void checkEmpty() {
+    if (fieldText.text.isNotEmpty) {
+      _isTapped = true;
+    } else {
+      _isTapped = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,17 +81,21 @@ class _CareSearchState extends State<CareSearch> {
                             suffixIcon: _isTapped
                                 ? IconButton(
                                     onPressed: () {
-                                      fieldText.clear();
+                                      setState(() {
+                                        fieldText.clear();
+                                        _isTapped = false;
+                                      });
                                     },
                                     icon: const Icon(Icons.close))
                                 : null),
                         onTap: () {
                           setState(() {
-                            _isTapped = true;
+                            checkEmpty();
                           });
                         },
                         onChanged: (value) {
                           setState(() {
+                            checkEmpty();
                             timeText();
                           });
                         },
