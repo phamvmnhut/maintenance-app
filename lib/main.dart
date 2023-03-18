@@ -58,14 +58,31 @@ class App extends StatelessWidget {
         RepositoryProvider(
           create: (context) => CareRepositoryFireBase(),
         ),
-        BlocProvider<ThemeBloc>(
-          create: (BuildContext context) => ThemeBloc(),
-        ),
-        BlocProvider<AuthBloc>(
-          create: (BuildContext context) => AuthBloc(),
-        ),
       ],
-      child: const AppM(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<ThemeBloc>(
+            create: (BuildContext context) => ThemeBloc(),
+          ),
+          BlocProvider<AuthBloc>(
+            create: (BuildContext context) => AuthBloc(),
+          ),
+          BlocProvider(
+            create: (context) => DeviceBloc(
+                RepositoryProvider.of<DeviceRepositoryFireBase>(context),
+                RepositoryProvider.of<ModelRepositoryFirebase>(context),
+                RepositoryProvider.of<EquipmentRepositoryFirebase>(context)),
+          ),
+          BlocProvider(
+            create: (context) => CareBloc(
+              RepositoryProvider.of<CareRepositoryFireBase>(context),
+              careRepository: CareRepositoryFireBase(),
+              careId: '',
+            ),
+          ),
+        ],
+        child: const AppM(),
+      ),
     );
   }
 }
@@ -101,31 +118,12 @@ class AppM extends StatelessWidget {
             if (snapshot.hasData) {
               BlocProvider.of<AuthBloc>(context, listen: false)
                   .add(LoginAuthEvent(user: snapshot.data!));
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) => DeviceBloc(
-                        RepositoryProvider.of<DeviceRepositoryFireBase>(
-                            context),
-                        RepositoryProvider.of<ModelRepositoryFirebase>(context),
-                        RepositoryProvider.of<EquipmentRepositoryFirebase>(
-                            context)),
-                  ),
-                  BlocProvider(
-                    create: (context) => CareBloc(
-                      RepositoryProvider.of<CareRepositoryFireBase>(context),
-                      careRepository: CareRepositoryFireBase(),
-                      careId: '',
-                    ),
-                  ),
-                ],
-                child: Scaffold(
-                  body: IndexedStack(
-                    index: state.index,
-                    children: screens,
-                  ),
-                  bottomNavigationBar: const buildBottomNavigationBar(),
+              return Scaffold(
+                body: IndexedStack(
+                  index: state.index,
+                  children: screens,
                 ),
+                bottomNavigationBar: const buildBottomNavigationBar(),
               );
             }
             BlocProvider.of<AuthBloc>(context, listen: false)
