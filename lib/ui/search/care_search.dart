@@ -143,7 +143,7 @@ class _CareSearchState extends State<CareSearch> {
                     children: state.careList
                         .where((element) => element.memo_name
                             .toLowerCase()
-                            .contains(fieldText.text))
+                            .contains(fieldText.text.toLowerCase()))
                         .map(
                           (e) => InkWell(
                             onTap: () {
