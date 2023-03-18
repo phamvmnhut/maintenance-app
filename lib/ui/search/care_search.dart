@@ -194,6 +194,7 @@ class _CareSearchState extends State<CareSearch> {
                                               left: 16, bottom: 3),
                                           child: Text(
                                             e.memo_name,
+                                            overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 15,
@@ -213,6 +214,7 @@ class _CareSearchState extends State<CareSearch> {
                                                         24
                                                     ? 'after ${e.start_date.difference(_nowTime).inDays} days'
                                                     : 'after ${e.start_date.difference(_nowTime).inHours}h${e.start_date.difference(_nowTime).inMinutes}m',
+                                                overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                     color: Color.fromARGB(
                                                         155, 155, 155, 1),
@@ -245,6 +247,8 @@ class _CareSearchState extends State<CareSearch> {
                                                         ConnectionState.done) {
                                                       return Text(
                                                         snapshot.data!,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         style: const TextStyle(
                                                             color:
                                                                 Color.fromARGB(
