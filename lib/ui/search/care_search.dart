@@ -53,7 +53,6 @@ class _CareSearchState extends State<CareSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       body: BlocBuilder<CareBloc, CareState>(
         builder: (context, state) => SingleChildScrollView(
           child: Column(children: [
@@ -213,7 +212,7 @@ class _CareSearchState extends State<CareSearch> {
                                                             .inHours >
                                                         24
                                                     ? 'after ${e.start_date.difference(_nowTime).inDays} days'
-                                                    : 'after ${e.start_date.difference(_nowTime).inHours}h${e.start_date.difference(_nowTime).inMinutes}m',
+                                                    : 'after ${e.start_date.difference(_nowTime).inHours}h${e.start_date.difference(_nowTime).inMinutes}',
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                     color: Color.fromARGB(
