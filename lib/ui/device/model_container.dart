@@ -1,4 +1,6 @@
 import 'package:divice/business/device.dart';
+import 'package:divice/domain/entities/model.dart';
+import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,12 +39,32 @@ class _ModelContainerState extends State<ModelContainer> {
                   child: ExpansionTile(
                     expandedCrossAxisAlignment: CrossAxisAlignment.start,
                     expandedAlignment: Alignment.centerLeft,
-                    title: Text(
-                      model.name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Colors.black),
+                    title: Row(
+                      children: [
+                        Text(
+                          model.name,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              color: Colors.black),
+                        ),
+                        const SizedBox(width: 5),
+                        GestureDetector(
+                            child: const Icon(Icons.edit, size: 15),
+                            onTap: () async {
+                              await editModel(context, model).then((value) {
+                                if(value != null){
+                                  BlocProvider.of<DeviceBloc>(context,
+                                              listen: false)
+                                          .add(DeviceEventUpdateModel(
+                                              model: value));
+                                      BlocProvider.of<DeviceBloc>(context,
+                                              listen: false)
+                                          .add(DeviceEventGetList());
+                                }
+                              });
+                            }),
+                      ],
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,14 +84,6 @@ class _ModelContainerState extends State<ModelContainer> {
                         padding: const EdgeInsets.only(left: 18.0),
                         child: EquipmentContainer(modelID: model.id),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1BD15D)),
-                            onPressed: () => print('object2'),
-                            child: const Text('Thêm mới')),
-                      ),
                     ],
                   ),
                 ),
@@ -77,4 +91,48 @@ class _ModelContainerState extends State<ModelContainer> {
               .toList());
     });
   }
+}
+
+Future<Model?> editModel(BuildContext context, Model model) async {
+  Model? newModel;
+  final modelController = TextEditingController();
+  modelController.text = model.name;
+  await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          alignment: Alignment.topCenter,
+          height: 200,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Text('Model name:'),
+                  const SizedBox(width: 10),
+                  Expanded(
+                      child: TextField(
+                    controller: modelController,
+                  )),
+                ],
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4169E1)),
+                  onPressed: () {
+                    if (modelController.text.isNotEmpty) {
+                      newModel = Model(
+                          name: modelController.text,
+                          id: model.id,
+                          device_id: model.device_id,
+                          count: model.count);
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: const Text('Lưu')),
+            ],
+          ),
+        );
+      });
+  return newModel;
 }

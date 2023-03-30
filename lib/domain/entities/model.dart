@@ -12,7 +12,7 @@ class Model extends Equatable {
     required this.name,
     required this.id,
     required this.device_id,
-    required this.count,
+     required this.count,
   });
 
   @override
@@ -40,4 +40,10 @@ class Model extends Equatable {
       count: json['count'],
     );
   }
+    Map<String, Object?> toJson() =>
+      <String, dynamic>{
+        'device_id': device_id,
+        'name': name,
+        'count': count
+      };
 }

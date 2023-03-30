@@ -2,6 +2,7 @@ import 'package:divice/business/device.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/entities/device.dart';
 import 'device_detail.dart';
 
 class DevicePage extends StatefulWidget {
@@ -47,12 +48,23 @@ class _DevicePageState extends State<DevicePage> {
                       ),
                     ),
                     const SizedBox(height: 21),
-                    
+
                     //Container 1 device
-                    ListDeviceDetail(state: state,),
+                    ListDeviceDetail(
+                      state: state,
+                    ),
 
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        await addDevice(context).then((value) {
+                          if (value != null) {
+                            BlocProvider.of<DeviceBloc>(context, listen: false)
+                                .add(DeviceEventAddDevice(device: value));
+                            BlocProvider.of<DeviceBloc>(context, listen: false)
+                                .add(DeviceEventGetList());
+                          }
+                        });
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         height: 56,
@@ -78,4 +90,40 @@ class _DevicePageState extends State<DevicePage> {
   }
 }
 
-
+Future<Device?> addDevice(BuildContext context) async {
+  Device? device;
+  final deviceController = TextEditingController();
+  await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          alignment: Alignment.topCenter,
+          height: 200,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Text('Device name:'),
+                  const SizedBox(width: 10),
+                  Expanded(
+                      child: TextField(
+                    controller: deviceController,
+                  )),
+                ],
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4169E1)),
+                  onPressed: () {
+                    device =
+                        Device(name: deviceController.text, id: '', count: 1);
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Lưu')),
+            ],
+          ),
+        );
+      });
+  return device;
+}

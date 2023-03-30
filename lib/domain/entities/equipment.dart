@@ -27,6 +27,7 @@ class Equipment extends Equatable {
       model_id: model_id ?? this.model_id,
     );
   }
+
   factory Equipment.fromJson(json) {
     return Equipment(
       id: json.id,
@@ -34,4 +35,8 @@ class Equipment extends Equatable {
       name: json["name"],
     );
   }
+  Map<String, Object?> toJson() => <String, dynamic>{
+        'model_id': model_id,
+        'name': name,
+      };
 }
