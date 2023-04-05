@@ -117,7 +117,7 @@ Future<Device?> addDevice(BuildContext context) async {
                       backgroundColor: const Color(0xFF4169E1)),
                   onPressed: () {
                     device =
-                        Device(name: deviceController.text, id: '', count: 1);
+                        Device(name: deviceController.text, id: '', count: 0);
                     Navigator.pop(context);
                   },
                   child: const Text('Lưu')),

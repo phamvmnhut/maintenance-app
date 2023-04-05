@@ -34,8 +34,9 @@ class DeviceEventUpdateDevice extends DeviceEvent {
 }
 
 class DeviceEventAddModel extends DeviceEvent {
-  final Model model;
-  DeviceEventAddModel({required this.model});
+  final String modelName;
+  final String deviceId;
+  DeviceEventAddModel({required this.deviceId, required this.modelName});
 }
 
 class DeviceEventUpdateModel extends DeviceEvent {
@@ -152,7 +153,9 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
   }
 
   void _addModel(DeviceEventAddModel event, Emitter<DeviceState> emit) async {
-    var modelId = await _modelRepository.create(model: event.model);
+    var newModel = Model(
+        name: event.modelName, id: '', device_id: event.deviceId, count: 1);
+    var modelId = await _modelRepository.create(model: newModel);
     await _equipmentRepository.create(
         equipment: Equipment(name: 'All', id: '', model_id: modelId));
     emit(state);

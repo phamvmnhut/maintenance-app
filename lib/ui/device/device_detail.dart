@@ -82,7 +82,8 @@ class ListDeviceDetail extends StatelessWidget {
                                       BlocProvider.of<DeviceBloc>(context,
                                               listen: false)
                                           .add(DeviceEventAddModel(
-                                              model: value));
+                                              modelName: value.name,
+                                              deviceId: value.device_id));
                                       BlocProvider.of<DeviceBloc>(context,
                                               listen: false)
                                           .add(DeviceEventGetList());
@@ -131,9 +132,9 @@ Future<Model?> addModel(BuildContext context, String deviceID) async {
                   onPressed: () {
                     model = Model(
                         name: modelController.text,
-                        id: 'id',
+                        id: '',
                         device_id: deviceID,
-                        count: 1);
+                        count: 0);
                     Navigator.pop(context);
                   },
                   child: const Text('Lưu')),

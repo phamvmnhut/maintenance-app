@@ -70,7 +70,7 @@ class _ModelContainerState extends State<ModelContainer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          model.count.toString(),
+                          '${model.count} enquipment',
                           style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 13,
