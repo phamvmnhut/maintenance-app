@@ -16,4 +16,20 @@ class ModelRepositoryFirebase extends ModelRepository {
       return value.docs.map((e) => Model.fromJson(e)).toList();
     });
   }
+    @override
+  Future<Model> get({required String id}) {
+    return _modelCollection
+        .doc(id)
+        .get()
+        .then((value) => Model.fromJson(value));
+  }
+  @override
+  Future<String> create({required Model model}) {
+    return _modelCollection.add(model.toJson()).then((value) => value.id);
+  }
+  
+  @override
+  Future<bool> update({required String id, required Model model}) {
+    return _modelCollection.doc(id).update(model.toJson()).then((value) => true);
+  }
 }

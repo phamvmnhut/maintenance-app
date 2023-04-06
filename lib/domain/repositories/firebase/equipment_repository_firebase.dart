@@ -23,4 +23,17 @@ class EquipmentRepositoryFirebase extends EquipmentRepository {
         .get()
         .then((value) => Equipment.fromJson(value));
   }
+
+  @override
+  Future<bool> create({required Equipment equipment}) {
+    return _equipmentCollection.add(equipment.toJson()).then((value) => true);
+  }
+
+  @override
+  Future<bool> update({required String id, required Equipment equipment}) {
+    return _equipmentCollection
+        .doc(id)
+        .update(equipment.toJson())
+        .then((value) => true);
+  }
 }

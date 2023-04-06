@@ -103,11 +103,14 @@ class _AddNewCareState extends State<AddNewCare> {
                     isDropdown: true,
                     func: () async {
                       var value = await _showButtomListExpand(context, state);
-                      setState(() {
-                        _device = '${value.keys.first} | ${value.values.first}';
-                        _modelID = value.keys.last;
-                        _deviceDetail = '';
-                      });
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          _device =
+                              '${value.keys.first} | ${value.values.first}';
+                          _modelID = value.keys.last;
+                          _deviceDetail = '';
+                        });
+                      }
                     }),
                 const SizedBox(height: 8),
                 DropdownDeviceCustom(
@@ -313,11 +316,11 @@ Future<String> _showButtomListEquipment(
       context: context,
       builder: (_) {
         return ListView(
-          children: list.map((value) {
+          children: list.map((equipment) {
             return ListTile(
-              title: Text(value.name),
+              title: Text(equipment.name),
               onTap: () {
-                result = value.name;
+                result = equipment.name;
                 Navigator.pop(context);
               },
             );

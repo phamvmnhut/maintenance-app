@@ -3,43 +3,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class Care extends Equatable {
-  final String name;
+class Device extends Equatable {
   final String id;
+  final String name;
   final int count;
 
-  const Care({
-    required this.name,
+  const Device({
     required this.id,
+    required this.name,
     required this.count,
   });
 
   @override
-  List<Object> get props => [name, id, count];
+  List<Object> get props => [id, name, count];
 
-  Care copyWith({
-    String? name,
+  Device copyWith({
     String? id,
+    String? name,
     int? count,
   }) {
-    return Care(
-      name: name ?? this.name,
+    return Device(
       id: id ?? this.id,
+      name: name ?? this.name,
       count: count ?? this.count,
     );
   }
 
-  factory Care.fromJson(DocumentSnapshot json) {
-    return Care(
-      name: json["name"],
+  factory Device.fromJson(DocumentSnapshot json) {
+    return Device(
       id: json.id,
+      name: json["name"],
       count: json['count'] as int,
     );
   }
 
-  Map<String, Object?> toJson() => <String, dynamic>{
-        'name': name,
-        'id': id,
-        'count': count,
-      };
+  Map<String, Object?> toJson() =>
+    <String, dynamic>{
+      'name': name,
+      'count': count,
+    };
 }
