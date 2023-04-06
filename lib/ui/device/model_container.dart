@@ -53,14 +53,18 @@ class _ModelContainerState extends State<ModelContainer> {
                             child: const Icon(Icons.edit, size: 15),
                             onTap: () async {
                               await editModel(context, model).then((value) {
-                                if(value != null){
+                                if (value != null) {
                                   BlocProvider.of<DeviceBloc>(context,
-                                              listen: false)
-                                          .add(DeviceEventUpdateModel(
-                                              model: value));
-                                      BlocProvider.of<DeviceBloc>(context,
-                                              listen: false)
-                                          .add(DeviceEventGetList());
+                                          listen: false)
+                                      .add(
+                                    DeviceEventUpdateModel(
+                                      modelId: model.id,
+                                      modelName: value,
+                                    ),
+                                  );
+                                  BlocProvider.of<DeviceBloc>(context,
+                                          listen: false)
+                                      .add(DeviceEventGetList());
                                 }
                               });
                             }),
@@ -93,44 +97,44 @@ class _ModelContainerState extends State<ModelContainer> {
   }
 }
 
-Future<Model?> editModel(BuildContext context, Model model) async {
-  Model? newModel;
+Future<String?> editModel(BuildContext context, Model model) async {
+  String? newModel;
   final modelController = TextEditingController();
   modelController.text = model.name;
   await showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return Container(
-          alignment: Alignment.topCenter,
-          height: 200,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text('Model name:'),
-                  const SizedBox(width: 10),
-                  Expanded(
-                      child: TextField(
-                    controller: modelController,
-                  )),
-                ],
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4169E1)),
-                  onPressed: () {
-                    if (modelController.text.isNotEmpty) {
-                      newModel = Model(
-                          name: modelController.text,
-                          id: model.id,
-                          device_id: model.device_id,
-                          count: model.count);
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Text('Lưu')),
-            ],
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            alignment: Alignment.topCenter,
+            height: 200,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Text('Model name:'),
+                    const SizedBox(width: 10),
+                    Expanded(
+                        child: TextField(
+                      controller: modelController,
+                    )),
+                  ],
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4169E1)),
+                    onPressed: () {
+                      if (modelController.text.isNotEmpty) {
+                        newModel = modelController.text;
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text('Lưu')),
+              ],
+            ),
           ),
         );
       });

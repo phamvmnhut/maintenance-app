@@ -4,35 +4,35 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Device extends Equatable {
-  final String name;
   final String id;
+  final String name;
   final int count;
 
   const Device({
-    required this.name,
     required this.id,
+    required this.name,
     required this.count,
   });
 
   @override
-  List<Object> get props => [name, id, count];
+  List<Object> get props => [id, name, count];
 
   Device copyWith({
-    String? name,
     String? id,
+    String? name,
     int? count,
   }) {
     return Device(
-      name: name ?? this.name,
       id: id ?? this.id,
+      name: name ?? this.name,
       count: count ?? this.count,
     );
   }
 
   factory Device.fromJson(DocumentSnapshot json) {
     return Device(
-      name: json["name"],
       id: json.id,
+      name: json["name"],
       count: json['count'] as int,
     );
   }
@@ -40,7 +40,6 @@ class Device extends Equatable {
   Map<String, Object?> toJson() =>
     <String, dynamic>{
       'name': name,
-      'id': id,
       'count': count,
     };
 }

@@ -24,13 +24,14 @@ class DeviceEventGetListEquipment extends DeviceEvent {
 }
 
 class DeviceEventAddDevice extends DeviceEvent {
-  final Device device;
-  DeviceEventAddDevice({required this.device});
+  final String deviceName;
+  DeviceEventAddDevice({required this.deviceName});
 }
 
 class DeviceEventUpdateDevice extends DeviceEvent {
-  final Device device;
-  DeviceEventUpdateDevice({required this.device});
+  final String deviceId;
+  final String deviceName;
+  DeviceEventUpdateDevice({required this.deviceId, required this.deviceName});
 }
 
 class DeviceEventAddModel extends DeviceEvent {
@@ -40,18 +41,24 @@ class DeviceEventAddModel extends DeviceEvent {
 }
 
 class DeviceEventUpdateModel extends DeviceEvent {
-  final Model model;
-  DeviceEventUpdateModel({required this.model});
+  final String modelId;
+  final String modelName;
+  DeviceEventUpdateModel({required this.modelId, required this.modelName});
 }
 
 class DeviceEventAddEquipment extends DeviceEvent {
-  final Equipment equipment;
-  DeviceEventAddEquipment({required this.equipment});
+  final String modelId;
+  final String equipmentName;
+  DeviceEventAddEquipment({required this.modelId, required this.equipmentName});
 }
 
 class DeviceEventUpdateEquipment extends DeviceEvent {
-  final Equipment equipment;
-  DeviceEventUpdateEquipment({required this.equipment});
+  final String equipmentId;
+  final String equipmentName;
+  DeviceEventUpdateEquipment({
+    required this.equipmentId,
+    required this.equipmentName,
+  });
 }
 
 class DeviceState {
@@ -154,8 +161,23 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
 
   void _addModel(DeviceEventAddModel event, Emitter<DeviceState> emit) async {
     var newModel = Model(
-        name: event.modelName, id: '', device_id: event.deviceId, count: 1);
+      name: event.modelName,
+      id: '',
+      device_id: event.deviceId,
+      count: 1,
+    );
     var modelId = await _modelRepository.create(model: newModel);
+
+    // Cập nhật đếm số lượng Model trong Device
+    var oldDevice = await _repository.get(id: event.deviceId);
+    var newDevice = Device(
+      id: oldDevice.id,
+      name: oldDevice.name,
+      count: oldDevice.count + 1,
+    );
+    await _repository.update(id: oldDevice.id, data: newDevice);
+
+    // Tạo mặc định Equipment - All cho Model
     await _equipmentRepository.create(
         equipment: Equipment(name: 'All', id: '', model_id: modelId));
     emit(state);
@@ -163,17 +185,29 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
 
   void _updateModel(
       DeviceEventUpdateModel event, Emitter<DeviceState> emit) async {
-    await _modelRepository.update(id: event.model.id, model: event.model);
+    var oldModel = await _modelRepository.get(id: event.modelId);
+    var newModel = Model(
+      id: oldModel.id,
+      device_id: oldModel.device_id,
+      name: event.modelName,
+      count: oldModel.count,
+    );
+    await _modelRepository.update(id: oldModel.id, model: newModel);
     emit(state);
   }
 
   void _addEquipment(
       DeviceEventAddEquipment event, Emitter<DeviceState> emit) async {
-    await _equipmentRepository.create(equipment: event.equipment);
-    Model modelOld = await _modelRepository.get(id: event.equipment.model_id);
+    var equipment = Equipment(
+      id: '',
+      model_id: event.modelId,
+      name: event.equipmentName,
+    );
+    await _equipmentRepository.create(equipment: equipment);
+    Model modelOld = await _modelRepository.get(id: event.modelId);
 
     await _modelRepository.update(
-        id: event.equipment.model_id,
+        id: event.modelId,
         model: Model(
             name: modelOld.name,
             id: modelOld.id,
@@ -184,19 +218,29 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
 
   void _updateEquipment(
       DeviceEventUpdateEquipment event, Emitter<DeviceState> emit) async {
+    var oldEquipment = await _equipmentRepository.get(id: event.equipmentId);
+    var newEquipment = Equipment(
+      id: oldEquipment.id,
+      model_id: oldEquipment.model_id,
+      name: event.equipmentName,
+    );
     await _equipmentRepository.update(
-        id: event.equipment.id, equipment: event.equipment);
+        id: oldEquipment.id, equipment: newEquipment);
     emit(state);
   }
 
   void _addDevice(DeviceEventAddDevice event, Emitter<DeviceState> emit) async {
-    await _repository.create(d: event.device);
+    var device = Device(id: '', name: event.deviceName, count: 0);
+    await _repository.create(d: device);
     emit(state);
   }
 
   void _updateDevice(
       DeviceEventUpdateDevice event, Emitter<DeviceState> emit) async {
-    await _repository.update(id: event.device.id, data: event.device);
+    var oldDevice = await _repository.get(id: event.deviceId);
+    var newDevice = Device(
+        id: oldDevice.id, name: event.deviceName, count: oldDevice.count);
+    await _repository.update(id: event.deviceId, data: newDevice);
     emit(state);
   }
 }

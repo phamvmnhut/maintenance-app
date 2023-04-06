@@ -61,7 +61,8 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
                                         BlocProvider.of<DeviceBloc>(context,
                                                 listen: false)
                                             .add(DeviceEventUpdateEquipment(
-                                                equipment: value));
+                                                equipmentId: equipment.id,
+                                                equipmentName: value));
                                         BlocProvider.of<DeviceBloc>(context,
                                                 listen: false)
                                             .add(DeviceEventGetList());
@@ -90,7 +91,10 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
                   await addEquipment(context, widget.modelID).then((value) {
                     if (value != null) {
                       BlocProvider.of<DeviceBloc>(context, listen: false)
-                          .add(DeviceEventAddEquipment(equipment: value));
+                          .add(DeviceEventAddEquipment(
+                        modelId: widget.modelID,
+                        equipmentName: value,
+                      ));
                       BlocProvider.of<DeviceBloc>(context, listen: false)
                           .add(DeviceEventGetList());
                     }
@@ -104,8 +108,8 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
   }
 }
 
-Future<Equipment?> addEquipment(BuildContext context, String modelID) async {
-  Equipment? equipment;
+Future<String?> addEquipment(BuildContext context, String modelID) async {
+  String? equipment;
   final equipmentController = TextEditingController();
 
   await showModalBottomSheet(
@@ -131,11 +135,10 @@ Future<Equipment?> addEquipment(BuildContext context, String modelID) async {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF4169E1)),
                   onPressed: () {
-                    equipment = Equipment(
-                        id: '',
-                        name: equipmentController.text,
-                        model_id: modelID);
-                    Navigator.pop(context);
+                    if (equipmentController.text.isNotEmpty) {
+                      equipment = equipmentController.text;
+                      Navigator.pop(context);
+                    }
                   },
                   child: const Text('Lưu')),
             ],
@@ -145,44 +148,44 @@ Future<Equipment?> addEquipment(BuildContext context, String modelID) async {
   return equipment;
 }
 
-Future<Equipment?> editEquipment(
-    BuildContext context, Equipment equipment) async {
-  Equipment? newEquipment;
+Future<String?> editEquipment(BuildContext context, Equipment equipment) async {
+  String? newEquipment;
   final equipmentController = TextEditingController();
   equipmentController.text = equipment.name;
   await showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return Container(
-          alignment: Alignment.topCenter,
-          height: 200,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text('Model name:'),
-                  const SizedBox(width: 10),
-                  Expanded(
-                      child: TextField(
-                    controller: equipmentController,
-                  )),
-                ],
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4169E1)),
-                  onPressed: () {
-                    if (equipmentController.text.isNotEmpty) {
-                      newEquipment = Equipment(
-                          name: equipmentController.text,
-                          id: equipment.id,
-                          model_id: equipment.model_id);
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Text('Lưu')),
-            ],
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            alignment: Alignment.topCenter,
+            height: 200,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Text('Model name:'),
+                    const SizedBox(width: 10),
+                    Expanded(
+                        child: TextField(
+                      controller: equipmentController,
+                    )),
+                  ],
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4169E1)),
+                    onPressed: () {
+                      if (equipmentController.text.isNotEmpty) {
+                        newEquipment = equipmentController.text;
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text('Lưu')),
+              ],
+            ),
           ),
         );
       });

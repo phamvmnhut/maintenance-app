@@ -1,22 +1,33 @@
+
 import 'package:divice/domain/entities/device.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business/device.dart';
-import '../../domain/entities/model.dart';
 import 'model_container.dart';
 
-class ListDeviceDetail extends StatelessWidget {
-  final DeviceState state;
+class ListDeviceDetail extends StatefulWidget {
+  final List<Device> lstDevice;
   const ListDeviceDetail({
     super.key,
-    required this.state,
+    required this.lstDevice,
   });
 
   @override
+  State<ListDeviceDetail> createState() => _ListDeviceDetailState();
+}
+
+class _ListDeviceDetailState extends State<ListDeviceDetail> {
+  @override
+  void didChangeDependencies() {
+    BlocProvider.of<DeviceBloc>(context, listen: false)
+        .add(DeviceEventGetList());
+    super.didChangeDependencies();
+  }
+  @override
   Widget build(BuildContext context) {
     return Column(
-      children: state.list
+      children: widget.lstDevice
           .map((device) => Column(
                 children: [
                   Container(
@@ -45,13 +56,19 @@ class ListDeviceDetail extends StatelessWidget {
                                   await editDevice(context, device)
                                       .then((value) {
                                     if (value != null) {
-                                      BlocProvider.of<DeviceBloc>(context,
-                                              listen: false)
-                                          .add(DeviceEventUpdateDevice(
-                                              device: value));
-                                      BlocProvider.of<DeviceBloc>(context,
-                                              listen: false)
-                                          .add(DeviceEventGetList());
+                                      BlocProvider.of<DeviceBloc>(
+                                        context,
+                                        listen: false,
+                                      ).add(
+                                        DeviceEventUpdateDevice(
+                                          deviceId: device.id,
+                                          deviceName: value,
+                                        ),
+                                      );
+                                      BlocProvider.of<DeviceBloc>(
+                                        context,
+                                        listen: false,
+                                      ).add(DeviceEventGetList());
                                     }
                                   });
                                 }),
@@ -82,8 +99,8 @@ class ListDeviceDetail extends StatelessWidget {
                                       BlocProvider.of<DeviceBloc>(context,
                                               listen: false)
                                           .add(DeviceEventAddModel(
-                                              modelName: value.name,
-                                              deviceId: value.device_id));
+                                              modelName: value,
+                                              deviceId: device.id));
                                       BlocProvider.of<DeviceBloc>(context,
                                               listen: false)
                                           .add(DeviceEventGetList());
@@ -104,82 +121,87 @@ class ListDeviceDetail extends StatelessWidget {
   }
 }
 
-Future<Model?> addModel(BuildContext context, String deviceID) async {
-  Model? model;
+Future<String?> addModel(BuildContext context, String deviceID) async {
+  String? modelName;
   final modelController = TextEditingController();
   await showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return Container(
-          alignment: Alignment.topCenter,
-          height: 200,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text('Model name:'),
-                  const SizedBox(width: 10),
-                  Expanded(
-                      child: TextField(
-                    controller: modelController,
-                  )),
-                ],
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4169E1)),
-                  onPressed: () {
-                    model = Model(
-                        name: modelController.text,
-                        id: '',
-                        device_id: deviceID,
-                        count: 0);
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Lưu')),
-            ],
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            alignment: Alignment.topCenter,
+            height: 200,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Text('Model name:'),
+                    const SizedBox(width: 10),
+                    Expanded(
+                        child: TextField(
+                      controller: modelController,
+                    )),
+                  ],
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4169E1)),
+                    onPressed: () {
+                      if (modelController.text.isNotEmpty) {
+                        modelName = modelController.text;
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text('Lưu')),
+              ],
+            ),
           ),
         );
       });
-  return model;
+  return modelName;
 }
 
-Future<Device?> editDevice(BuildContext context, Device device) async {
-  Device? newDevice;
+Future<String?> editDevice(BuildContext context, Device device) async {
+  String? newDevice;
   final deviceController = TextEditingController();
   deviceController.text = device.name;
   await showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return Container(
-          alignment: Alignment.topCenter,
-          height: 200,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text('Model name:'),
-                  const SizedBox(width: 10),
-                  Expanded(
-                      child: TextField(
-                    controller: deviceController,
-                  )),
-                ],
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4169E1)),
-                  onPressed: () {
-                    if (deviceController.text.isNotEmpty) {
-                      newDevice = Device(
-                          name: deviceController.text, id: device.id, count: 1);
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Text('Lưu')),
-            ],
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            alignment: Alignment.topCenter,
+            height: 200,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Text('Model name:'),
+                    const SizedBox(width: 10),
+                    Expanded(
+                        child: TextField(
+                      controller: deviceController,
+                    )),
+                  ],
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4169E1)),
+                    onPressed: () {
+                      if (deviceController.text.isNotEmpty) {
+                        newDevice = deviceController.text;
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text('Lưu')),
+              ],
+            ),
           ),
         );
       });

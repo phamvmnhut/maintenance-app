@@ -51,7 +51,7 @@ class _DevicePageState extends State<DevicePage> {
 
                     //Container 1 device
                     ListDeviceDetail(
-                      state: state,
+                      lstDevice: state.list,
                     ),
 
                     GestureDetector(
@@ -59,7 +59,7 @@ class _DevicePageState extends State<DevicePage> {
                         await addDevice(context).then((value) {
                           if (value != null) {
                             BlocProvider.of<DeviceBloc>(context, listen: false)
-                                .add(DeviceEventAddDevice(device: value));
+                                .add(DeviceEventAddDevice(deviceName: value));
                             BlocProvider.of<DeviceBloc>(context, listen: false)
                                 .add(DeviceEventGetList());
                           }
@@ -90,38 +90,43 @@ class _DevicePageState extends State<DevicePage> {
   }
 }
 
-Future<Device?> addDevice(BuildContext context) async {
-  Device? device;
+Future<String?> addDevice(BuildContext context) async {
+  String? device;
   final deviceController = TextEditingController();
   await showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return Container(
-          alignment: Alignment.topCenter,
-          height: 200,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text('Device name:'),
-                  const SizedBox(width: 10),
-                  Expanded(
-                      child: TextField(
-                    controller: deviceController,
-                  )),
-                ],
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4169E1)),
-                  onPressed: () {
-                    device =
-                        Device(name: deviceController.text, id: '', count: 0);
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Lưu')),
-            ],
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            alignment: Alignment.topCenter,
+            height: 200,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Text('Device name:'),
+                    const SizedBox(width: 10),
+                    Expanded(
+                        child: TextField(
+                      controller: deviceController,
+                    )),
+                  ],
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4169E1)),
+                    onPressed: () {
+                      if (deviceController.text.isNotEmpty) {
+                        device = deviceController.text;
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text('Lưu')),
+              ],
+            ),
           ),
         );
       });
