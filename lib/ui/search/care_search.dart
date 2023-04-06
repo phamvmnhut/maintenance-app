@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divice/business/care.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -207,13 +208,13 @@ class _CareSearchState extends State<CareSearch> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                e.start_date
+                                                e.start_date.toDate()
                                                             .difference(
                                                                 _nowTime)
                                                             .inHours >
                                                         24
-                                                    ? 'after ${e.start_date.difference(_nowTime).inDays} days'
-                                                    : 'after ${e.start_date.difference(_nowTime).inHours}h${e.start_date.difference(_nowTime).inMinutes}m',
+                                                    ? 'after ${e.start_date.toDate().difference(_nowTime).inDays} days'
+                                                    : 'after ${e.start_date.toDate().difference(_nowTime).inHours}h${e.start_date.toDate().difference(_nowTime).inMinutes}m',
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                     color: Color.fromARGB(

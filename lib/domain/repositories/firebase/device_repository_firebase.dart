@@ -7,15 +7,15 @@ class DeviceRepositoryFireBase extends CareRepository {
       FirebaseFirestore.instance.collection('devices');
 
   @override
-  Future<Care> get({required String id}) {
+  Future<Device> get({required String id}) {
     return _deviceCollection
         .doc(id)
         .get()
-        .then((value) => Care.fromJson(value));
+        .then((value) => Device.fromJson(value));
   }
 
   @override
-  Future<bool> create({required Care d}) {
+  Future<bool> create({required Device d}) {
     return _deviceCollection.add(d.toJson()).then((value) => true);
   }
 
@@ -25,14 +25,14 @@ class DeviceRepositoryFireBase extends CareRepository {
   }
 
   @override
-  Future<List<Care>> getList({required CareRepositoryGetListParam param}) {
+  Future<List<Device>> getList({required DeviceRepositoryGetListParam param}) {
     return _deviceCollection
         .get()
-        .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
+        .then((value) => value.docs.map((e) => Device.fromJson(e)).toList());
   }
 
   @override
-  Future<bool> update({required String id, required Care data}) {
+  Future<bool> update({required String id, required Device data}) {
     return _deviceCollection
         .doc(id)
         .update(data.toJson())
