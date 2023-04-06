@@ -2,12 +2,12 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:io';
-
+import 'package:divice/business/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -426,6 +426,8 @@ class _AuthGateState extends State<AuthGate> {
           email: emailController.text,
           password: passwordController.text,
         );
+        User user = FirebaseAuth.instance.currentUser!;
+        BlocProvider.of<AuthBloc>(context).add(LoginAuthEvent(user: user));
       } else if (mode == AuthMode.register) {
         await _auth.createUserWithEmailAndPassword(
           email: emailController.text,
@@ -509,58 +511,6 @@ class _AuthGateState extends State<AuthGate> {
     }
   }
 
-  Future<void> _signInWithTwitter() async {
-    TwitterAuthProvider twitterProvider = TwitterAuthProvider();
-
-    if (kIsWeb) {
-      await _auth.signInWithPopup(twitterProvider);
-    } else {
-      await _auth.signInWithProvider(twitterProvider);
-    }
-  }
-
-  Future<void> _signInWithApple() async {
-    final appleProvider = AppleAuthProvider();
-    appleProvider.addScope('email');
-
-    if (kIsWeb) {
-      // Once signed in, return the UserCredential
-      await _auth.signInWithPopup(appleProvider);
-    } else {
-      await _auth.signInWithProvider(appleProvider);
-    }
-  }
-
-  Future<void> _signInWithYahoo() async {
-    final yahooProvider = YahooAuthProvider();
-
-    if (kIsWeb) {
-      // Once signed in, return the UserCredential
-      await _auth.signInWithPopup(yahooProvider);
-    } else {
-      await _auth.signInWithProvider(yahooProvider);
-    }
-  }
-
-  Future<void> _signInWithGitHub() async {
-    final githubProvider = GithubAuthProvider();
-
-    if (kIsWeb) {
-      await _auth.signInWithPopup(githubProvider);
-    } else {
-      await _auth.signInWithProvider(githubProvider);
-    }
-  }
-
-  Future<void> _signInWithMicrosoft() async {
-    final microsoftProvider = MicrosoftAuthProvider();
-
-    if (kIsWeb) {
-      await _auth.signInWithPopup(microsoftProvider);
-    } else {
-      await _auth.signInWithProvider(microsoftProvider);
-    }
-  }
 }
 
 Future<String?> getSmsCodeFromUser(BuildContext context) async {

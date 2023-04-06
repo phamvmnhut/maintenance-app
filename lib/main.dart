@@ -1,27 +1,33 @@
-// Copyright 2022, the Chromium project authors.  Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
+import 'package:divice/business/auth.dart';
+import 'package:divice/business/care.dart';
+import 'package:divice/business/device.dart';
+import 'package:divice/business/setting.dart';
+import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/care_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/equipment_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
-import 'package:divice/ui/home/home.dart';
+import 'package:divice/ui/device/device.dart';
+import 'package:divice/ui/search/care_search.dart';
+import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'config/theme.dart';
 
 import 'firebase_options.dart';
+import 'generated/l10n.dart';
 import 'ui/auth/auth.dart';
-import 'ui/auth/profile.dart';
+import 'ui/home/bottom_bar.dart';
+import 'ui/home/home_page.dart';
 
-/// Requires that a Firebase local emulator is running locally.
-/// See https://firebase.flutter.dev/docs/auth/start/#optional-prototype-and-test-with-firebase-local-emulator-suite
 bool shouldUseFirebaseEmulator = false;
 
-// Requires that the Firebase Auth emulator is running locally
-// e.g via `melos run firebase:emulator`.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // We're using the manual installation on non-web platforms since Google sign in plugin doesn't yet support Dart initialization.
-  // See related issue: https://github.com/flutter/flutter/issues/96391
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -31,65 +37,98 @@ Future<void> main() async {
     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   }
 
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: AddNewCare(),
-  ));
+  runApp(const App());
 }
 
-/// The entry point of the application.
-///
-/// Returns a [MaterialApp].
-class AuthExampleApp extends StatelessWidget {
-  const AuthExampleApp({Key? key}) : super(key: key);
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Firebase Example App',
-      theme: ThemeData(primarySwatch: Colors.amber),
-      home: Scaffold(
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return Row(
-              children: [
-                Visibility(
-                  visible: constraints.maxWidth >= 1200,
-                  child: Expanded(
-                    child: Container(
-                      height: double.infinity,
-                      color: Theme.of(context).colorScheme.primary,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Firebase Auth Desktop',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => DeviceRepositoryFireBase(),
+        ),
+        RepositoryProvider(
+          create: (context) => CareHistoryRepositoryFireBase(),
+        ),
+        RepositoryProvider(create: (context) => ModelRepositoryFirebase()),
+        RepositoryProvider(create: (context) => EquipmentRepositoryFirebase()),
+        RepositoryProvider(
+          create: (context) => CareRepositoryFireBase(),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<ThemeBloc>(
+            create: (BuildContext context) => ThemeBloc(),
+          ),
+          BlocProvider<AuthBloc>(
+            create: (BuildContext context) => AuthBloc(),
+          ),
+          BlocProvider(
+            create: (context) => DeviceBloc(
+                RepositoryProvider.of<DeviceRepositoryFireBase>(context),
+                RepositoryProvider.of<ModelRepositoryFirebase>(context),
+                RepositoryProvider.of<EquipmentRepositoryFirebase>(context)),
+          ),
+          BlocProvider(
+            create: (context) => CareBloc(
+              RepositoryProvider.of<CareRepositoryFireBase>(context),
+              careRepository: CareRepositoryFireBase(),
+              careId: '',
+            ),
+          ),
+        ],
+        child: const AppM(),
+      ),
+    );
+  }
+}
+
+class AppM extends StatelessWidget {
+  const AppM({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final screens = [
+      const Home(),
+      const CareSearch(),
+      const AddNewCare(),
+      const DevicePage(),
+      const SettingPage()
+    ];
+
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: state.isDarkModeEnabled ? darkTheme : lightTheme,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        locale: state.local,
+        home: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              BlocProvider.of<AuthBloc>(context, listen: false)
+                  .add(LoginAuthEvent(user: snapshot.data!));
+              return Scaffold(
+                body: IndexedStack(
+                  index: state.index,
+                  children: screens,
                 ),
-                SizedBox(
-                  width: constraints.maxWidth >= 1200
-                      ? constraints.maxWidth / 2
-                      : constraints.maxWidth,
-                  child: StreamBuilder<User?>(
-                    stream: FirebaseAuth.instance.authStateChanges(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return const ProfilePage();
-                      }
-                      return const AuthGate();
-                    },
-                  ),
-                ),
-              ],
-            );
+                bottomNavigationBar: const buildBottomNavigationBar(),
+              );
+            }
+            BlocProvider.of<AuthBloc>(context, listen: false)
+                .add(LogoutAuthEvent());
+            return const AuthGate();
           },
         ),
       ),
