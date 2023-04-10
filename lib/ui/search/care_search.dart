@@ -206,13 +206,13 @@ class _CareSearchState extends State<CareSearch> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                e.start_date
+                                                e.care_next_time
                                                             .difference(
                                                                 _nowTime)
                                                             .inHours >
                                                         24
-                                                    ? 'after ${e.start_date.difference(_nowTime).inDays} days'
-                                                    : 'after ${e.start_date.difference(_nowTime).inHours}h${e.start_date.difference(_nowTime).inMinutes}',
+                                                    ? 'after ${e.care_next_time.difference(_nowTime).inDays} days'
+                                                    : 'after ${e.care_next_time.difference(_nowTime).inHours}h${e.care_next_time.difference(_nowTime).inMinutes}',
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                     color: Color.fromARGB(

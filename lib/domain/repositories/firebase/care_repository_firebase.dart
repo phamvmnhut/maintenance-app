@@ -24,6 +24,7 @@ class CareRepositoryFireBase extends CareRepository {
   @override
   Future<List<Care>> getList({required CareRepositoryGetListParam param}) {
     return _careCollection
+        .orderBy('care_next_time')
         .get()
         .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
   }

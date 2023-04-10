@@ -1,48 +1,54 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Care extends Equatable {
-  final String memo_name;
   final String id;
   final String user_id;
-  final String image;
   final String equipment_id;
-  final String repeat;
+  final String memo_name;
+  final String image;
+  final DateTime care_next_time;
   final String routine;
   final DateTime start_date;
+  final String status;
 
   const Care({
-    required this.memo_name,
     required this.id,
     required this.user_id,
-    required this.image,
     required this.equipment_id,
-    required this.repeat,
+    required this.memo_name,
+    required this.image,
+    required this.care_next_time,
     required this.routine,
     required this.start_date,
+    required this.status,
   });
 
   @override
   List<Object> get props => [
-        memo_name,
         id,
         user_id,
-        image,
         equipment_id,
-        repeat,
+        memo_name,
+        image,
+        care_next_time,
         routine,
-        start_date
+        start_date,
+        status
       ];
 
   Care copyWith({
-    String? memo_name,
     String? id,
     String? user_id,
-    String? image,
     String? equipment_id,
-    String? repeat,
+    String? memo_name,
+    String? image,
+    DateTime? care_next_time,
     String? routine,
     DateTime? start_date,
+    String? status,
   }) {
     return Care(
       memo_name: memo_name ?? this.memo_name,
@@ -50,32 +56,34 @@ class Care extends Equatable {
       user_id: user_id ?? this.user_id,
       image: image ?? this.image,
       equipment_id: equipment_id ?? this.equipment_id,
-      repeat: repeat ?? this.repeat,
+      care_next_time: care_next_time ?? this.care_next_time,
       routine: routine ?? this.routine,
       start_date: start_date ?? this.start_date,
+      status: status ?? this.status,
     );
   }
 
   factory Care.fromJson(DocumentSnapshot json) {
     return Care(
-        memo_name: json['memo_name'],
-        id: json.id,
-        user_id: json['user_id'],
-        image: json['image'],
-        equipment_id: json['equipment_id'],
-        repeat: json['repeat'],
-        routine: json['routine'],
-        start_date: (json['start_date'] as Timestamp).toDate());
+      id: json.id,
+      user_id: json['user_id'],
+      equipment_id: json['equipment_id'],
+      memo_name: json["memo_name"],
+      image: json['image'],
+      care_next_time: (json['care_next_time'] as Timestamp).toDate(),
+      routine: json['routine'],
+      start_date: (json['start_date'] as Timestamp).toDate(),
+      status: json['status'],
+    );
   }
-
   Map<String, Object?> toJson() => <String, dynamic>{
-        'memo_name': memo_name,
-        'id': id,
         'user_id': user_id,
-        'image': image,
         'equipment_id': equipment_id,
-        'repeat': repeat,
+        'memo_name': memo_name,
+        'image': image,
+        'care_next_time': care_next_time,
         'routine': routine,
-        'start_date': start_date
+        'start_date': start_date,
+        'status': status
       };
 }

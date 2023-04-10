@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import '../../business/care.dart';
 import '../../domain/repositories/firebase/equipment_repository_firebase.dart';
 import '../care/care_detail.dart';
@@ -316,13 +317,13 @@ class _HomeState extends State<Home> {
                                                         child: Row(
                                                           children: [
                                                             Text(
-                                                              e.start_date
+                                                              e.care_next_time
                                                                           .difference(
                                                                               _nowTime)
                                                                           .inHours >
                                                                       24
-                                                                  ? 'after ${e.start_date.difference(_nowTime).inDays} days'
-                                                                  : 'after ${e.start_date.difference(_nowTime).inHours}h${e.start_date.difference(_nowTime).inMinutes}m',
+                                                                  ? 'after ${e.care_next_time.difference(_nowTime).inDays} days'
+                                                                  : 'after ${e.care_next_time.difference(_nowTime).inHours}h${e.care_next_time.difference(_nowTime).inMinutes}m',
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
