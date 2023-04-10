@@ -1,7 +1,14 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:divice/business/care.dart';
 import 'package:divice/business/setting.dart';
+import 'package:divice/domain/entities/care.dart';
 import 'package:divice/domain/entities/equipment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../business/device.dart';
 import 'dropdown_custom.dart';
 import 'package:intl/intl.dart';
@@ -17,17 +24,21 @@ class _AddNewCareState extends State<AddNewCare> {
   String _device = 'Điện thoại | iPhone 14';
   String _modelID = '';
   String _deviceDetail = 'Màn hình';
-  String _memo = 'Bảo hành màn hình đt';
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay(
     hour: DateTime.now().hour,
     minute: DateTime.now().minute,
   );
-  String _timeReturn = 'One Time';
-
+  final memoNameController = TextEditingController();
+  final careNextTimeController = TextEditingController();
+  final numberDateController = TextEditingController();
+  String fileUpload = '';
+  Equipment? _equipment;
+  String dropDownRoutine = list.first;
   @override
   void initState() {
     super.initState();
+    careNextTimeController.text = '2023-04-08 10:00 AM';
   }
 
   @override
@@ -118,13 +129,19 @@ class _AddNewCareState extends State<AddNewCare> {
                   image: const Icon(Icons.format_list_bulleted_sharp, size: 14),
                   isDropdown: true,
                   func: () async {
-                    var value = await _showButtomListEquipment(
-                      context,
-                      state.listEquipment[_modelID]!,
-                    );
-                    setState(() {
-                      _deviceDetail = value;
-                    });
+                    if (state.listEquipment.isNotEmpty &&
+                        state.listEquipment[_modelID] != null) {
+                      var equipment = await _showButtomListEquipment(
+                        context,
+                        state.listEquipment[_modelID]!,
+                      );
+                      if (equipment != null) {
+                        setState(() {
+                          _deviceDetail = equipment.name;
+                          _equipment = equipment;
+                        });
+                      }
+                    }
                   },
                 ),
                 const SizedBox(height: 10),
@@ -137,16 +154,18 @@ class _AddNewCareState extends State<AddNewCare> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                DropdownDeviceCustom(
-                  text: _memo,
-                  image: const Icon(Icons.more_horiz_sharp, size: 14),
-                  func: () async {
-                    var value = await _showButtomList(context, _listMemo);
-                    setState(() {
-                      _memo = value;
-                    });
-                  },
-                ),
+                Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: const Color(0xFFF8F8F7)),
+                    child: TextFormField(
+                      controller: memoNameController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.more_horiz_sharp),
+                      ),
+                    )),
                 const SizedBox(height: 18),
                 const Text(
                   'Notification',
@@ -178,6 +197,14 @@ class _AddNewCareState extends State<AddNewCare> {
                           if (picked != null && picked != _date) {
                             setState(() {
                               _date = picked;
+                              if (numberDateController.text.isNotEmpty) {
+                                DateTime careNextDate = generateCareNextDate(
+                                    _date,
+                                    dropDownRoutine,
+                                    int.parse(numberDateController.text));
+                                careNextTimeController.text =
+                                    '${DateFormat('dd/MM/yyyy').format(careNextDate)} ${_time.format(context)}';
+                              }
                             });
                           }
                         },
@@ -201,6 +228,14 @@ class _AddNewCareState extends State<AddNewCare> {
                           if (picker != null && picker != _time) {
                             setState(() {
                               _time = picker;
+                              if (numberDateController.text.isNotEmpty) {
+                                DateTime careNextDate = generateCareNextDate(
+                                    _date,
+                                    dropDownRoutine,
+                                    int.parse(numberDateController.text));
+                                careNextTimeController.text =
+                                    '${DateFormat('dd/MM/yyyy').format(careNextDate)} ${_time.format(context)}';
+                              }
                             });
                           }
                         },
@@ -209,37 +244,94 @@ class _AddNewCareState extends State<AddNewCare> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: DropdownDeviceCustom(
-                        text: _timeReturn,
-                        image: const Icon(Icons.av_timer_outlined, size: 14),
-                        isDropdown: true,
-                        isSmall: true,
-                        func: () async {
-                          var value = await _showButtomList(context, _listTime);
-                          setState(() {
-                            _timeReturn = value;
-                          });
-                        },
+                Container(
+                  height: 48,
+                  width: MediaQuery.of(context).size.width / 2 - 37,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: const Color(0xFFF8F8F7)),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: numberDateController,
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              DateTime careNextDate = generateCareNextDate(
+                                  _date, dropDownRoutine, int.parse(value));
+                              careNextTimeController.text =
+                                  '${DateFormat('dd/MM/yyyy').format(careNextDate)} ${_time.format(context)}';
+                            }
+                          },
+                          textAlignVertical: TextAlignVertical.center,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              hintText: '30',
+                              border: InputBorder.none,
+                              prefixIcon: Padding(
+                                padding: EdgeInsets.only(left: 14.0),
+                                child: Icon(
+                                  Icons.wallet_travel_rounded,
+                                  size: 14,
+                                ),
+                              )),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 18),
-                    Expanded(
-                      flex: 1,
-                      child: DropdownDeviceCustom(
-                        text: '30 \t\t\t days',
-                        image:
-                            const Icon(Icons.wallet_travel_rounded, size: 14),
-                        isDropdown: true,
-                        isSmall: true,
-                        func: () {},
-                      ),
-                    ),
-                  ],
+                      DropdownButton(
+                          iconSize: 15,
+                          underline: const SizedBox(),
+                          value: dropDownRoutine,
+                          items: list.map<DropdownMenuItem>((value) {
+                            return DropdownMenuItem(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              dropDownRoutine = value;
+                              if (numberDateController.text.isNotEmpty) {
+                                DateTime careNextDate = generateCareNextDate(
+                                    _date,
+                                    dropDownRoutine,
+                                    int.parse(numberDateController.text));
+                                careNextTimeController.text =
+                                    '${DateFormat('dd/MM/yyyy').format(careNextDate)} ${_time.format(context)}';
+                              }
+                            });
+                          }),
+                    ],
+                  ),
                 ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 14.0, top: 7, bottom: 4),
+                  child: Text(
+                    'Care next time',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: const Color(0xFFF8F8F7)),
+                    child: TextFormField(
+                      readOnly: true,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w500),
+                      controller: careNextTimeController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.share_arrival_time_outlined),
+                      ),
+                    )),
                 const SizedBox(height: 17),
                 Container(
                   height: 38,
@@ -250,13 +342,70 @@ class _AddNewCareState extends State<AddNewCare> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                GestureDetector(
-                  onTap: () async {},
-                  child: Image.asset('assets/images/upload_image.png'),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        ImagePicker imagePicker = ImagePicker();
+                        XFile? file = await imagePicker.pickImage(
+                            source: ImageSource.gallery);
+                        if (file != null) {
+                          fileUpload = file.path;
+                          setState(() {});
+                        }
+                      },
+                      child: Image.asset('assets/images/upload_image.png'),
+                    ),
+                    Expanded(
+                        child: fileUpload.isNotEmpty
+                            ? SizedBox(
+                                height: 121,
+                                child: Image.file(File(fileUpload)))
+                            : Container())
+                  ],
                 ),
                 const SizedBox(height: 27),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    if (_equipment == null ||
+                        numberDateController.text.isEmpty) {
+                      return;
+                    }
+                    DateTime careNextDate = generateCareNextDate(
+                      _date,
+                      dropDownRoutine,
+                      int.parse(numberDateController.text),
+                    );
+                    BlocProvider.of<CareBloc>(context, listen: false).add(
+                      CareEventAddData(
+                        filePath: fileUpload,
+                        care: Care(
+                          id: 'id',
+                          user_id: 'user_id',
+                          equipment_id: _equipment!.id,
+                          memo_name: memoNameController.text,
+                          image: 'image',
+                          care_next_time: Timestamp.fromDate(DateTime(
+                            careNextDate.year,
+                            careNextDate.month,
+                            careNextDate.day,
+                            _time.hour,
+                            _time.minute,
+                          )),
+                          routine:
+                              '${numberDateController.text}_${dropDownRoutine.toUpperCase()}',
+                          start_date: Timestamp.fromDate(DateTime(
+                            _date.year,
+                            _date.month,
+                            _date.day,
+                            _time.hour,
+                            _time.minute,
+                          )),
+                          status: 'BAT_DAU',
+                        ),
+                      ),
+                    );
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     height: 56,
@@ -309,9 +458,9 @@ Future<Map<String, String>> _showButtomListExpand(
   return result;
 }
 
-Future<String> _showButtomListEquipment(
+Future<Equipment?> _showButtomListEquipment(
     BuildContext context, List<Equipment> list) async {
-  String result = '';
+  Equipment? result;
   await showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -320,7 +469,7 @@ Future<String> _showButtomListEquipment(
             return ListTile(
               title: Text(equipment.name),
               onTap: () {
-                result = equipment.name;
+                result = equipment;
                 Navigator.pop(context);
               },
             );
@@ -330,33 +479,39 @@ Future<String> _showButtomListEquipment(
   return result;
 }
 
-Future<String> _showButtomList(BuildContext context, List<String> list) async {
-  String result = '';
-  await showModalBottomSheet(
-      context: context,
-      builder: (_) {
-        return ListView(
-          children: list.map((value) {
-            return ListTile(
-              title: Text(value),
-              onTap: () {
-                result = value;
-                Navigator.pop(context);
-              },
-            );
-          }).toList(),
-        );
-      });
-  return result;
+DateTime generateCareNextDate(DateTime startDate, String typeDate, int number) {
+  DateTime newDate;
+  switch (typeDate.toString().toUpperCase()) {
+    case 'DAYS':
+      newDate = DateTime(
+        startDate.year,
+        startDate.month,
+        startDate.day + number,
+      );
+      break;
+    case 'WEEKS':
+      newDate = DateTime(
+        startDate.year,
+        startDate.month,
+        startDate.day + 7 * number,
+      );
+      break;
+    case 'MONTHS':
+      newDate = DateTime(
+        startDate.year,
+        startDate.month + number,
+        startDate.day,
+      );
+      break;
+    case 'YEARS':
+      newDate = DateTime(
+        startDate.year + number,
+        startDate.month,
+        startDate.day,
+      );
+      break;
+    default:
+      newDate = DateTime.now();
+  }
+  return newDate;
 }
-
-List<String> _listMemo = [
-  'Bảo hành màn hình đt',
-  'Bảo hành bàn phím',
-  'Bảo hành loa ngoài',
-];
-List<String> _listTime = [
-  'One Time',
-  'Two Time',
-  'Three Time',
-];

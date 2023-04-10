@@ -12,6 +12,7 @@ class Care extends Equatable {
   final Timestamp care_next_time;
   final String routine;
   final Timestamp start_date;
+  final String status;
 
   const Care({
     required this.id,
@@ -22,6 +23,7 @@ class Care extends Equatable {
     required this.care_next_time,
     required this.routine,
     required this.start_date,
+    required this.status
   });
 
   @override
@@ -33,7 +35,8 @@ class Care extends Equatable {
         image,
         care_next_time,
         routine,
-        start_date
+        start_date,
+        status
       ];
 
   Care copyWith({
@@ -45,6 +48,7 @@ class Care extends Equatable {
     Timestamp? care_next_time,
     String? routine,
     Timestamp? start_date,
+    String? status,
   }) {
     return Care(
       memo_name: memo_name ?? this.memo_name,
@@ -55,6 +59,7 @@ class Care extends Equatable {
       care_next_time: care_next_time ?? this.care_next_time,
       routine: routine ?? this.routine,
       start_date: start_date ?? this.start_date,
+      status: status ?? this.status,
     );
   }
 
@@ -68,10 +73,10 @@ class Care extends Equatable {
       care_next_time: json['care_next_time'],
       routine: json['routine'],
       start_date: json['start_date'],
+      status: json['status'],
     );
   }
-    Map<String, Object?> toJson() =>
-      <String, dynamic>{
+  Map<String, Object?> toJson() => <String, dynamic>{
         'user_id': user_id,
         'equipment_id': equipment_id,
         'memo_name': memo_name,
@@ -79,5 +84,7 @@ class Care extends Equatable {
         'care_next_time': care_next_time,
         'routine': routine,
         'start_date': start_date,
+        'status': status,
       };
 }
+List<String> list = <String>['Days', 'Weeks', 'Months', 'Years'];
