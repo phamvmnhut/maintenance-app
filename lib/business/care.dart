@@ -1,9 +1,6 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divice/domain/repositories/care_repository.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:divice/domain/entities/care.dart';
 
@@ -24,12 +21,17 @@ class CareState {
   Care? care;
   List<Care> careList;
   String careId;
+  bool isCreateProcessing = false;
+  bool isCreated = false;
 
-  CareState(
-      {this.careList = const [],
-      this.careId = '',
-      this.isLoading = true,
-      this.care});
+  CareState({
+    this.careList = const [],
+    this.careId = '',
+    this.isLoading = true,
+    this.care,
+    this.isCreateProcessing = false,
+    this.isCreated = false,
+  });
   CareState.initialState() : this();
 
   CareState copyWith({
@@ -37,12 +39,16 @@ class CareState {
     List<Care>? careList,
     String? careId,
     Care? care,
+    bool? isCreateProcessing,
+    bool? isCreated,
   }) {
     return CareState(
       isLoading: isLoading ?? this.isLoading,
       careList: careList ?? this.careList,
       careId: careId ?? this.careId,
       care: care ?? this.care,
+      isCreateProcessing: isCreateProcessing ?? this.isCreateProcessing,
+      isCreated: isCreated ?? this.isCreated,
     );
   }
 }
@@ -76,7 +82,10 @@ class CareBloc extends Bloc<CareEvent, CareState> {
   }
 
   void _addData(CareEventAddData event, Emitter<CareState> emit) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(
+      isCreateProcessing: true,
+      isCreated: false,
+    ));
     String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference root = FirebaseStorage.instance.ref();
     Reference dirImages = root.child('images');
@@ -96,6 +105,11 @@ class CareBloc extends Bloc<CareEvent, CareState> {
         status: event.care.status);
 
     await _repository.create(d: newCare);
-    emit(state.copyWith(care: event.care, isLoading: false));
+
+    emit(state.copyWith(
+      care: event.care,
+      isCreateProcessing: false,
+      isCreated: true,
+    ));
   }
 }

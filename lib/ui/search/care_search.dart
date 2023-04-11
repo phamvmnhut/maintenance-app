@@ -208,7 +208,8 @@ class _CareSearchState extends State<CareSearch> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                e.start_date.toDate()
+                                                e.start_date
+                                                            .toDate()
                                                             .difference(
                                                                 _nowTime)
                                                             .inHours >
@@ -243,9 +244,10 @@ class _CareSearchState extends State<CareSearch> {
                                                   future:
                                                       getData(e.equipment_id),
                                                   builder: (context, snapshot) {
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState.done) {
+                                                    if (snapshot.connectionState ==
+                                                            ConnectionState
+                                                                .done &&
+                                                        snapshot.hasData) {
                                                       return Text(
                                                         snapshot.data!,
                                                         overflow: TextOverflow

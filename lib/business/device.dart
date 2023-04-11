@@ -1,4 +1,3 @@
-import 'package:dartz/dartz_unsafe.dart';
 import 'package:divice/domain/entities/device.dart';
 import 'package:divice/domain/entities/equipment.dart';
 import 'package:divice/domain/entities/model.dart';
@@ -65,22 +64,26 @@ class DeviceState {
   List<Device> list;
   Map<String, List<Model>> listModel;
   Map<String, List<Equipment>> listEquipment;
+  bool isLoading = false;
 
   DeviceState(
       {this.list = const [],
       this.listModel = const <String, List<Model>>{},
-      this.listEquipment = const <String, List<Equipment>>{}});
+      this.listEquipment = const <String, List<Equipment>>{},
+      this.isLoading = false});
   DeviceState.initialState() : this(list: []);
 
   DeviceState copyWith({
     List<Device>? list,
     Map<String, List<Model>>? listModel,
     Map<String, List<Equipment>>? listEquipment,
+    bool? isLoading,
   }) {
     return DeviceState(
         list: list ?? this.list,
         listModel: listModel ?? this.listModel,
-        listEquipment: listEquipment ?? this.listEquipment);
+        listEquipment: listEquipment ?? this.listEquipment,
+        isLoading: isLoading ?? this.isLoading);
   }
 }
 
@@ -104,6 +107,7 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     on<DeviceEventUpdateEquipment>(_updateEquipment);
   }
   void _getList(DeviceEventGetList event, Emitter<DeviceState> emit) async {
+    emit(state.copyWith(isLoading: true));
     List<Device> l = await _repository.getList(
         param: DeviceRepositoryGetListParam(searchText: ""));
     // emit(DeviceState(list: l));
@@ -132,7 +136,11 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
       // emit(state.copyWith(listEquipment: newListEquipment));
     }
     emit(state.copyWith(
-        list: l, listModel: newListModel, listEquipment: newListEquipment));
+      list: l,
+      listModel: newListModel,
+      listEquipment: newListEquipment,
+      isLoading: false,
+    ));
   }
 
   void _getListModel(
