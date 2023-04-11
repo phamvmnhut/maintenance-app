@@ -15,7 +15,6 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
   int selectedIndex = 0;
   final List<BottomNavigationBarItem> _bottomColor = [
     BottomNavigationBarItem(
-        backgroundColor: Colors.white,
         icon: Container(
             width: 40,
             height: 40,
@@ -119,12 +118,12 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
       data: ThemeData(
           splashColor: Colors.transparent, highlightColor: Colors.transparent),
       child: BottomNavigationBar(
+        backgroundColor: Theme.of(context).backgroundColor,
         type: BottomNavigationBarType.fixed,
         items: _bottomList,
         onTap: (value) {
-          BlocProvider.of<ThemeBloc>(context).add(
-                                          ChangeScreenEvent(
-                                              index: value));
+          BlocProvider.of<ThemeBloc>(context)
+              .add(ChangeScreenEvent(index: value));
           setState(() {
             selectedIndex = value;
             for (int i = 0; i < _bottomList.length; i++) {

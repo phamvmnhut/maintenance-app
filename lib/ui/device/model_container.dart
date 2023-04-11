@@ -1,4 +1,5 @@
 import 'package:divice/business/device.dart';
+import 'package:divice/config/color.dart';
 import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,10 +43,10 @@ class _ModelContainerState extends State<ModelContainer> {
                       children: [
                         Text(
                           model.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15,
-                              color: Colors.black),
+                              color: AppColors.blackColor),
                         ),
                         const SizedBox(width: 5),
                         GestureDetector(
@@ -78,12 +79,12 @@ class _ModelContainerState extends State<ModelContainer> {
                       children: [
                         Text(
                           '${model.count} equipment',
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 13,
-                              color: Color(0xFF9B9B9B)),
+                              color: AppColors.grayColor),
                         ),
-                        const Divider(color: Colors.black),
+                        Divider(color: AppColors.blackColor),
                       ],
                     ),
                     children: [

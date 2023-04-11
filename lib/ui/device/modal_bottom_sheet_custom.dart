@@ -1,3 +1,4 @@
+import 'package:divice/config/color.dart';
 import 'package:flutter/material.dart';
 
 Future<String?> addOrUpdateModal(BuildContext context,
@@ -12,7 +13,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
         return Padding(
           padding: MediaQuery.of(context).viewInsets,
           child: Container(
-            color: Colors.white,
+            color: AppColors.whiteColor,
             alignment: Alignment.topCenter,
             height: 160,
             child: Column(
@@ -23,7 +24,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
                   width: MediaQuery.of(context).size.width * 0.75,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
-                      color: const Color(0xFFF8F8F6)),
+                      color: AppColors.grayColor2),
                   child: TextField(
                     textAlignVertical: TextAlignVertical.center,
                     controller: textController,
@@ -39,7 +40,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
                   children: [
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF53C052)),
+                            backgroundColor: AppColors.greenColor),
                         onPressed: () {
                           if (textController.text.isNotEmpty) {
                             result = textController.text;
@@ -50,7 +51,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
                     const SizedBox(width: 20),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFE43237)),
+                            backgroundColor: AppColors.redColor),
                         onPressed: stringInput.isNotEmpty
                             ? () async {
                                 await alertDialogDelete(context).then((value) {
@@ -86,10 +87,10 @@ Future<String?> alertDialogDelete(BuildContext context) async {
                 result = 'isDelete';
                 Navigator.pop(context);
               },
-              child: const Text(
+              child: Text(
                 'Confirm',
                 style: TextStyle(
-                  color: Colors.red,
+                  color: AppColors.redColor,
                 ),
               )),
           TextButton(

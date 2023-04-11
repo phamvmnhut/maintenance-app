@@ -1,3 +1,4 @@
+import 'package:divice/config/color.dart';
 import 'package:divice/domain/entities/device.dart';
 import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
+                      color: AppColors.grayColor2,
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Padding(
@@ -44,10 +45,10 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                           children: [
                             Text(
                               device.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15,
-                                  color: Colors.black),
+                                  color: AppColors.blackColor),
                             ),
                             const SizedBox(width: 5),
                             GestureDetector(
@@ -81,11 +82,11 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('${device.count} models',
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 13,
-                                    color: Color(0xFF9B9B9B))),
-                            const Divider(color: Colors.black),
+                                    color: AppColors.grayColor)),
+                            Divider(color: AppColors.blackColor),
                           ],
                         ),
                         children: [
@@ -94,7 +95,7 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                             padding: const EdgeInsets.only(left: 15),
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF1BD15D)),
+                                    backgroundColor: AppColors.greenColor),
                                 onPressed: () async {
                                   await addOrUpdateModal(
                                     context,

@@ -1,3 +1,4 @@
+import 'package:divice/config/color.dart';
 import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,10 +76,10 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
                             ],
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 15.0, right: 56),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0, right: 56),
                           child: Divider(
-                            color: Colors.black,
+                            color: AppColors.blackColor,
                           ),
                         )
                       ],
@@ -89,7 +90,7 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
             padding: const EdgeInsets.only(left: 15),
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1BD15D)),
+                    backgroundColor: AppColors.greenColor),
                 onPressed: () async {
                   await addOrUpdateModal(context,
                           hintText: 'Input Equipment name...')

@@ -1,3 +1,4 @@
+import 'package:divice/config/color.dart';
 import 'package:flutter/material.dart';
 
 class DropdownDeviceCustom extends StatelessWidget {
@@ -24,7 +25,7 @@ class DropdownDeviceCustom extends StatelessWidget {
         height: 48,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            color: const Color(0xFFF8F8F7)),
+            color: AppColors.grayColor2),
         child: InkWell(
           onTap: func,
           child: Row(
@@ -37,8 +38,8 @@ class DropdownDeviceCustom extends StatelessWidget {
                         fontSize: 15, fontWeight: FontWeight.w500)),
               ),
               isDropdown
-                  ? const Icon(Icons.arrow_drop_down_rounded,
-                      color: Color(0xFF9B9B9B), size: 15)
+                  ? Icon(Icons.arrow_drop_down_rounded,
+                      color: AppColors.grayColor, size: 15)
                   : const SizedBox()
             ],
           ),
