@@ -5,4 +5,6 @@ abstract class EquipmentRepository {
   Future<bool> update({required String id, required Equipment equipment});
   Future<bool> create({required Equipment equipment});
   Future<Equipment> get({required String id});
+  Future<bool> delete({required String id});
+  Future<void> deleteWithModelId({required String modelId});
 }

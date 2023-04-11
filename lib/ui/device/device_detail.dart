@@ -1,8 +1,7 @@
-
 import 'package:divice/domain/entities/device.dart';
+import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../business/device.dart';
 import 'model_container.dart';
 
@@ -24,6 +23,7 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
         .add(DeviceEventGetList());
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,8 +53,11 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                             GestureDetector(
                                 child: const Icon(Icons.edit, size: 15),
                                 onTap: () async {
-                                  await editDevice(context, device)
-                                      .then((value) {
+                                  await addOrUpdateModal(
+                                    context,
+                                    stringInput: device.name,
+                                    hintText: 'Input Device name...',
+                                  ).then((value) {
                                     if (value != null) {
                                       BlocProvider.of<DeviceBloc>(
                                         context,
@@ -93,8 +96,10 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF1BD15D)),
                                 onPressed: () async {
-                                  await addModel(context, device.id)
-                                      .then((value) {
+                                  await addOrUpdateModal(
+                                    context,
+                                    hintText: 'Input Model name...',
+                                  ).then((value) {
                                     if (value != null) {
                                       BlocProvider.of<DeviceBloc>(context,
                                               listen: false)
@@ -119,91 +124,4 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
           .toList(),
     );
   }
-}
-
-Future<String?> addModel(BuildContext context, String deviceID) async {
-  String? modelName;
-  final modelController = TextEditingController();
-  await showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: Container(
-            alignment: Alignment.topCenter,
-            height: 200,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Text('Model name:'),
-                    const SizedBox(width: 10),
-                    Expanded(
-                        child: TextField(
-                      controller: modelController,
-                    )),
-                  ],
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4169E1)),
-                    onPressed: () {
-                      if (modelController.text.isNotEmpty) {
-                        modelName = modelController.text;
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: const Text('Lưu')),
-              ],
-            ),
-          ),
-        );
-      });
-  return modelName;
-}
-
-Future<String?> editDevice(BuildContext context, Device device) async {
-  String? newDevice;
-  final deviceController = TextEditingController();
-  deviceController.text = device.name;
-  await showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: Container(
-            alignment: Alignment.topCenter,
-            height: 200,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Text('Model name:'),
-                    const SizedBox(width: 10),
-                    Expanded(
-                        child: TextField(
-                      controller: deviceController,
-                    )),
-                  ],
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4169E1)),
-                    onPressed: () {
-                      if (deviceController.text.isNotEmpty) {
-                        newDevice = deviceController.text;
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: const Text('Lưu')),
-              ],
-            ),
-          ),
-        );
-      });
-  return newDevice;
 }

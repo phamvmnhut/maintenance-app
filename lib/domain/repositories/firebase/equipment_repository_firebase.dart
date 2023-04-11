@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divice/domain/entities/equipment.dart';
-
 import '../equipment_repository.dart';
 
 class EquipmentRepositoryFirebase extends EquipmentRepository {
@@ -35,5 +34,20 @@ class EquipmentRepositoryFirebase extends EquipmentRepository {
         .doc(id)
         .update(equipment.toJson())
         .then((value) => true);
+  }
+
+  @override
+  Future<bool> delete({required String id}) {
+    return _equipmentCollection.doc(id).delete().then((value) => true);
+  }
+
+  @override
+  Future<void> deleteWithModelId({required String modelId}) {
+    return _equipmentCollection
+        .where('model_id', isEqualTo: modelId)
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              element.reference.delete();
+            }));
   }
 }

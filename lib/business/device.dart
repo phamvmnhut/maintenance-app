@@ -186,13 +186,31 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
   void _updateModel(
       DeviceEventUpdateModel event, Emitter<DeviceState> emit) async {
     var oldModel = await _modelRepository.get(id: event.modelId);
-    var newModel = Model(
-      id: oldModel.id,
-      device_id: oldModel.device_id,
-      name: event.modelName,
-      count: oldModel.count,
-    );
-    await _modelRepository.update(id: oldModel.id, model: newModel);
+
+    // Trường hợp xóa Model
+    if (event.modelName == 'isDelete') {
+      _modelRepository.delete(id: event.modelId);
+
+      // Cập nhật lại Device count Model
+      var oldDevice = await _repository.get(id: oldModel.device_id);
+      var newDevice = Device(
+        id: oldDevice.id,
+        name: oldDevice.name,
+        count: oldDevice.count - 1,
+      );
+      await _repository.update(id: oldDevice.id, data: newDevice);
+
+      // Xóa Equipment liên quan.
+      await _equipmentRepository.deleteWithModelId(modelId: event.modelId);
+    } else {
+      var newModel = Model(
+        id: oldModel.id,
+        device_id: oldModel.device_id,
+        name: event.modelName,
+        count: oldModel.count,
+      );
+      await _modelRepository.update(id: oldModel.id, model: newModel);
+    }
     emit(state);
   }
 
@@ -207,7 +225,7 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     Model modelOld = await _modelRepository.get(id: event.modelId);
 
     await _modelRepository.update(
-        id: event.modelId,
+        id: modelOld.id,
         model: Model(
             name: modelOld.name,
             id: modelOld.id,
@@ -219,13 +237,27 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
   void _updateEquipment(
       DeviceEventUpdateEquipment event, Emitter<DeviceState> emit) async {
     var oldEquipment = await _equipmentRepository.get(id: event.equipmentId);
-    var newEquipment = Equipment(
-      id: oldEquipment.id,
-      model_id: oldEquipment.model_id,
-      name: event.equipmentName,
-    );
-    await _equipmentRepository.update(
-        id: oldEquipment.id, equipment: newEquipment);
+    // Trường hợp xóa Equipment
+    if (event.equipmentName == 'isDelete') {
+      _equipmentRepository.delete(id: event.equipmentId);
+      // Cập nhật lại Model count Equipment
+      Model modelOld = await _modelRepository.get(id: oldEquipment.model_id);
+      await _modelRepository.update(
+          id: modelOld.id,
+          model: Model(
+              name: modelOld.name,
+              id: modelOld.id,
+              device_id: modelOld.device_id,
+              count: modelOld.count - 1));
+    } else {
+      var newEquipment = Equipment(
+        id: oldEquipment.id,
+        model_id: oldEquipment.model_id,
+        name: event.equipmentName,
+      );
+      await _equipmentRepository.update(
+          id: oldEquipment.id, equipment: newEquipment);
+    }
     emit(state);
   }
 
@@ -236,6 +268,7 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
   }
 
   void _updateDevice(
+    
       DeviceEventUpdateDevice event, Emitter<DeviceState> emit) async {
     var oldDevice = await _repository.get(id: event.deviceId);
     var newDevice = Device(

@@ -1,4 +1,4 @@
-import 'package:divice/domain/entities/equipment.dart';
+import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,8 +55,11 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
                                       ? const Icon(Icons.edit, size: 15)
                                       : Container(),
                                   onTap: () async {
-                                    await editEquipment(context, equipment)
-                                        .then((value) {
+                                    await addOrUpdateModal(
+                                      context,
+                                      stringInput: equipment.name,
+                                      hintText: 'Input Equipment name...',
+                                    ).then((value) {
                                       if (value != null) {
                                         BlocProvider.of<DeviceBloc>(context,
                                                 listen: false)
@@ -88,7 +91,9 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1BD15D)),
                 onPressed: () async {
-                  await addEquipment(context, widget.modelID).then((value) {
+                  await addOrUpdateModal(context,
+                          hintText: 'Input Equipment name...')
+                      .then((value) {
                     if (value != null) {
                       BlocProvider.of<DeviceBloc>(context, listen: false)
                           .add(DeviceEventAddEquipment(
@@ -106,88 +111,4 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
       );
     });
   }
-}
-
-Future<String?> addEquipment(BuildContext context, String modelID) async {
-  String? equipment;
-  final equipmentController = TextEditingController();
-
-  await showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          alignment: Alignment.topCenter,
-          height: 200,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text('Equipment name:'),
-                  const SizedBox(width: 10),
-                  Expanded(
-                      child: TextField(
-                    controller: equipmentController,
-                  )),
-                ],
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF4169E1)),
-                  onPressed: () {
-                    if (equipmentController.text.isNotEmpty) {
-                      equipment = equipmentController.text;
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Text('Lưu')),
-            ],
-          ),
-        );
-      });
-  return equipment;
-}
-
-Future<String?> editEquipment(BuildContext context, Equipment equipment) async {
-  String? newEquipment;
-  final equipmentController = TextEditingController();
-  equipmentController.text = equipment.name;
-  await showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: Container(
-            alignment: Alignment.topCenter,
-            height: 200,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Text('Model name:'),
-                    const SizedBox(width: 10),
-                    Expanded(
-                        child: TextField(
-                      controller: equipmentController,
-                    )),
-                  ],
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4169E1)),
-                    onPressed: () {
-                      if (equipmentController.text.isNotEmpty) {
-                        newEquipment = equipmentController.text;
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: const Text('Lưu')),
-              ],
-            ),
-          ),
-        );
-      });
-  return newEquipment;
 }

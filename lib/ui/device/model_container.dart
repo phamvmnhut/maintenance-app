@@ -1,6 +1,5 @@
 import 'package:divice/business/device.dart';
-import 'package:divice/domain/entities/model.dart';
-import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
+import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,7 +51,11 @@ class _ModelContainerState extends State<ModelContainer> {
                         GestureDetector(
                             child: const Icon(Icons.edit, size: 15),
                             onTap: () async {
-                              await editModel(context, model).then((value) {
+                              await addOrUpdateModal(
+                                context,
+                                stringInput: model.name,
+                                hintText: 'Input Model name...',
+                              ).then((value) {
                                 if (value != null) {
                                   BlocProvider.of<DeviceBloc>(context,
                                           listen: false)
@@ -74,7 +77,7 @@ class _ModelContainerState extends State<ModelContainer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${model.count} enquipment',
+                          '${model.count} equipment',
                           style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 13,
@@ -95,48 +98,4 @@ class _ModelContainerState extends State<ModelContainer> {
               .toList());
     });
   }
-}
-
-Future<String?> editModel(BuildContext context, Model model) async {
-  String? newModel;
-  final modelController = TextEditingController();
-  modelController.text = model.name;
-  await showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: Container(
-            alignment: Alignment.topCenter,
-            height: 200,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Text('Model name:'),
-                    const SizedBox(width: 10),
-                    Expanded(
-                        child: TextField(
-                      controller: modelController,
-                    )),
-                  ],
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4169E1)),
-                    onPressed: () {
-                      if (modelController.text.isNotEmpty) {
-                        newModel = modelController.text;
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: const Text('Lưu')),
-              ],
-            ),
-          ),
-        );
-      });
-  return newModel;
 }
