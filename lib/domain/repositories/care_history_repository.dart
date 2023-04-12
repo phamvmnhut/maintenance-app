@@ -2,9 +2,7 @@ import 'package:divice/domain/entities/care_history.dart';
 
 class CareHistoryRepositoryGetListParam {
   final String care_id;
-  CareHistoryRepositoryGetListParam({
-    required this.care_id
-  });
+  CareHistoryRepositoryGetListParam({required this.care_id});
 }
 
 abstract class CareHistoryRepository {

@@ -1,6 +1,7 @@
 import 'package:divice/business/care_detail.dart';
 import 'package:divice/config/color.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/care_repository_firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,6 +15,7 @@ class CareDetailPage extends StatelessWidget {
       fullscreenDialog: true,
       builder: (context) => BlocProvider(
         create: (context) => CareDetailBloc(
+          careRepository: context.read<CareRepositoryFireBase>(),
           careHistoryRepository: context.read<CareHistoryRepositoryFireBase>(),
           careId: care_id,
         ),
@@ -84,7 +86,7 @@ class _CareDetailViewState extends State<CareDetailView> {
                 child: Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Tên ngd đặt cho device này là Thiết bị điện thoại',
+                      state.care?.memo_name ?? "",
                       softWrap: true,
                       style: const TextStyle(
                         fontSize: 28,
@@ -237,7 +239,7 @@ class _CareDetailViewState extends State<CareDetailView> {
                         Text(S
                             .of(context)
                             .have_care_time
-                            .replaceFirst(RegExp(r'xx'), "3")),
+                            .replaceFirst(RegExp(r'xx'), state.careHistorylist.length.toString())),
                       ],
                     ),
                     GestureDetector(

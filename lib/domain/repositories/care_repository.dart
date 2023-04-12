@@ -1,5 +1,16 @@
-import 'package:divice/domain/entities/care.dart';
+import '../entities/care.dart';
 
-abstract class CareRepository{
-  Future<List<Care>> getListEquipment({required String equipmentID});
+class CareRepositoryGetListParam {
+  final String careId;
+  CareRepositoryGetListParam({
+    required this.careId,
+  });
+}
+
+abstract class CareRepository {
+  Future<List<Care>> getList({required CareRepositoryGetListParam param});
+  Future<Care> get({required String id});
+  Future<bool> update({required String id, required Care data});
+  Future<bool> create({required Care d});
+  Future<bool> delete({required String id});
 }

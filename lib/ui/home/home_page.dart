@@ -70,351 +70,339 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: Scaffold(
-          body: Column(
-            children: [
-              /// Notify Icon
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 26,
-                      right: 35,
-                    ),
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: const Color.fromRGBO(248, 248, 246, 1),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: const Icon(
-                      Icons.notifications_active_outlined,
-                    ),
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            /// Notify Icon
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(
+                    top: 26,
+                    right: 35,
                   ),
-                ],
-              ),
-              Expanded(
-                child: ScrollConfiguration(
-                  behavior: DisableGlowListViewWidget(),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        /// Banner PageView
-                        Container(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 377,
-                                height: 292,
-                                child: PageView(
-                                  controller: controller,
-                                  children: [
-                                    /// Banner
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 28,
-                                        top: 20,
-                                      ),
-                                      child: Stack(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: const [
-                                                      Text(
-                                                        'Hello,',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 28),
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(248, 248, 246, 1),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(
+                    Icons.notifications_active_outlined,
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: ScrollConfiguration(
+                behavior: DisableGlowListViewWidget(),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      /// Banner PageView
+                      Container(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: 377,
+                              height: 292,
+                              child: PageView(
+                                controller: controller,
+                                children: [
+                                  /// Banner
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 28,
+                                      top: 20,
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: const [
+                                                    Text(
+                                                      'Hello,',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 28),
+                                                    ),
+                                                    Text(
+                                                      'Kathryn',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 28),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 16),
+                                                  width: 319,
+                                                  height: 180,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                        243,
+                                                        246,
+                                                        200,
+                                                        1,
                                                       ),
-                                                      Text(
-                                                        'Kathryn',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontSize: 28),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            top: 16),
-                                                    width: 319,
-                                                    height: 180,
-                                                    decoration: BoxDecoration(
-                                                        color: const Color
-                                                            .fromRGBO(
-                                                          243,
-                                                          246,
-                                                          200,
-                                                          1,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              28)),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            24),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const SizedBox(
+                                                          width: 88,
+                                                          height: 48,
+                                                          child: Text(
+                                                            'Your plan for today',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 18,
+                                                            ),
+                                                          ),
                                                         ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(28)),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              24),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          const SizedBox(
-                                                            width: 88,
-                                                            height: 48,
-                                                            child: Text(
-                                                              'Your plan for today',
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 18,
-                                                              ),
+                                                        const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 2),
+                                                          child: Text(
+                                                            '1 of 4 completed',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 11,
+                                                              color: Color
+                                                                  .fromRGBO(0,
+                                                                      0, 0, 1),
                                                             ),
                                                           ),
-                                                          const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: 2),
-                                                            child: Text(
-                                                              '1 of 4 completed',
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontSize: 11,
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        0,
-                                                                        0,
-                                                                        0,
-                                                                        1),
-                                                              ),
+                                                        ),
+                                                        const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 31),
+                                                          child: Text(
+                                                            'Show More',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 13,
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      236,
+                                                                      118,
+                                                                      105,
+                                                                      1),
                                                             ),
                                                           ),
-                                                          const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: 31),
-                                                            child: Text(
-                                                              'Show More',
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 13,
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        236,
-                                                                        118,
-                                                                        105,
-                                                                        1),
-                                                              ),
-                                                            ),
+                                                        ),
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            top: 3,
                                                           ),
-                                                          Container(
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                              top: 3,
-                                                            ),
-                                                            width: 66,
-                                                            height: 2,
-                                                            color: const Color
-                                                                    .fromRGBO(
-                                                                236,
-                                                                118,
-                                                                105,
-                                                                1),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                          width: 66,
+                                                          height: 2,
+                                                          color: const Color
+                                                                  .fromRGBO(
+                                                              236, 118, 105, 1),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Image.asset(
-                                                  'assets/images/home1.png'),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Image.asset(
+                                                'assets/images/home1.png'),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    Container(
-                                      color: Colors.blue,
-                                    ),
-                                    Container(
-                                      color: Colors.green,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  Container(
+                                    color: Colors.blue,
+                                  ),
+                                  Container(
+                                    color: Colors.green,
+                                  ),
+                                ],
                               ),
-                              SmoothPageIndicator(
-                                controller: controller,
-                                count: 3,
-                                effect: const SwapEffect(
-                                  dotHeight: 11,
-                                  dotWidth: 11,
-                                  activeDotColor:
-                                      Color.fromRGBO(27, 209, 93, 1),
-                                  dotColor: Color.fromRGBO(217, 217, 217, 1),
-                                ),
-                              )
-                            ],
-                          ),
+                            ),
+                            SmoothPageIndicator(
+                              controller: controller,
+                              count: 3,
+                              effect: const SwapEffect(
+                                dotHeight: 11,
+                                dotWidth: 11,
+                                activeDotColor: Color.fromRGBO(27, 209, 93, 1),
+                                dotColor: Color.fromRGBO(217, 217, 217, 1),
+                              ),
+                            )
+                          ],
                         ),
+                      ),
 
-                        ///Daily review
-                        Padding(
-                          padding: const EdgeInsets.only(left: 28, right: 28),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                      ///Daily review
+                      Padding(
+                        padding: const EdgeInsets.only(left: 28, right: 28),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Daily Review',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                              ),
+                            ),
+                            dailyReview(
                               const Text(
-                                'Daily Review',
+                                'Bảo hành màn hình',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 17,
                                 ),
                               ),
-                              dailyReview(
-                                const Text(
-                                  'Bảo hành màn hình',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                                const Text(
-                                  '10:00 AM',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(155, 155, 155, 1),
-                                  ),
-                                ),
-                                const Text(
-                                  'Before Eating',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(155, 155, 155, 1),
-                                  ),
+                              const Text(
+                                '10:00 AM',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                  color: Color.fromRGBO(155, 155, 155, 1),
                                 ),
                               ),
-                              dailyReview(
-                                const Text(
-                                  'Naloxone',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                                const Text(
-                                  '10:00 AM',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(155, 155, 155, 1),
-                                  ),
-                                ),
-                                const Text(
-                                  'Before Eating',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(155, 155, 155, 1),
-                                  ),
+                              const Text(
+                                'Before Eating',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                  color: Color.fromRGBO(155, 155, 155, 1),
                                 ),
                               ),
-                              dailyReview(
-                                const Text(
-                                  'Oxycodone',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                                const Text(
-                                  '10:00 AM',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(155, 155, 155, 1),
-                                  ),
-                                ),
-                                const Text(
-                                  'Before Eating',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(155, 155, 155, 1),
-                                  ),
+                            ),
+                            dailyReview(
+                              const Text(
+                                'Naloxone',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17,
                                 ),
                               ),
-                              dailyReview(
-                                const Text(
-                                  'Oxycodone',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                                const Text(
-                                  '10:00 AM',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(155, 155, 155, 1),
-                                  ),
-                                ),
-                                const Text(
-                                  'Before Eating',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(155, 155, 155, 1),
-                                  ),
+                              const Text(
+                                '10:00 AM',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                  color: Color.fromRGBO(155, 155, 155, 1),
                                 ),
                               ),
-                            ],
-                          ),
+                              const Text(
+                                'Before Eating',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                  color: Color.fromRGBO(155, 155, 155, 1),
+                                ),
+                              ),
+                            ),
+                            dailyReview(
+                              const Text(
+                                'Oxycodone',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17,
+                                ),
+                              ),
+                              const Text(
+                                '10:00 AM',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                  color: Color.fromRGBO(155, 155, 155, 1),
+                                ),
+                              ),
+                              const Text(
+                                'Before Eating',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                  color: Color.fromRGBO(155, 155, 155, 1),
+                                ),
+                              ),
+                            ),
+                            dailyReview(
+                              const Text(
+                                'Oxycodone',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17,
+                                ),
+                              ),
+                              const Text(
+                                '10:00 AM',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                  color: Color.fromRGBO(155, 155, 155, 1),
+                                ),
+                              ),
+                              const Text(
+                                'Before Eating',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                  color: Color.fromRGBO(155, 155, 155, 1),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-          //bottomNavigationBar: buildBottomNavigationBar(),
+            ),
+          ],
         ),
+        //bottomNavigationBar: buildBottomNavigationBar(),
       ),
     );
   }

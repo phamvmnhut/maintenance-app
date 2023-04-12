@@ -1,14 +1,15 @@
 import 'package:divice/business/auth.dart';
+import 'package:divice/business/care.dart';
 import 'package:divice/business/device.dart';
 import 'package:divice/business/setting.dart';
-import 'package:divice/domain/repositories/equipment_repository.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
+import 'package:divice/domain/repositories/firebase/care_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/equipment_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
 import 'package:divice/ui/device/add_new_care_ui.dart';
 import 'package:divice/ui/device/device.dart';
-import 'package:divice/ui/search/search.dart';
+import 'package:divice/ui/search/care_search.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,14 +55,34 @@ class App extends StatelessWidget {
         ),
         RepositoryProvider(create: (context) => ModelRepositoryFirebase()),
         RepositoryProvider(create: (context) => EquipmentRepositoryFirebase()),
-        BlocProvider<ThemeBloc>(
-          create: (BuildContext context) => ThemeBloc(),
-        ),
-        BlocProvider<AuthBloc>(
-          create: (BuildContext context) => AuthBloc(),
+        RepositoryProvider(
+          create: (context) => CareRepositoryFireBase(),
         ),
       ],
-      child: const AppM(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<ThemeBloc>(
+            create: (BuildContext context) => ThemeBloc(),
+          ),
+          BlocProvider<AuthBloc>(
+            create: (BuildContext context) => AuthBloc(),
+          ),
+          BlocProvider(
+            create: (context) => DeviceBloc(
+                RepositoryProvider.of<DeviceRepositoryFireBase>(context),
+                RepositoryProvider.of<ModelRepositoryFirebase>(context),
+                RepositoryProvider.of<EquipmentRepositoryFirebase>(context)),
+          ),
+          BlocProvider(
+            create: (context) => CareBloc(
+              RepositoryProvider.of<CareRepositoryFireBase>(context),
+              careRepository: CareRepositoryFireBase(),
+              careId: '',
+            ),
+          ),
+        ],
+        child: const AppM(),
+      ),
     );
   }
 }
@@ -73,7 +94,7 @@ class AppM extends StatelessWidget {
   Widget build(BuildContext context) {
     final screens = [
       const Home(),
-      const Search(),
+      const CareSearch(),
       const AddNewCare(),
       const DevicePage(),
       const SettingPage()
@@ -97,24 +118,12 @@ class AppM extends StatelessWidget {
             if (snapshot.hasData) {
               BlocProvider.of<AuthBloc>(context, listen: false)
                   .add(LoginAuthEvent(user: snapshot.data!));
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) => DeviceBloc(
-                        RepositoryProvider.of<DeviceRepositoryFireBase>(
-                            context),
-                        RepositoryProvider.of<ModelRepositoryFirebase>(context),
-                        RepositoryProvider.of<EquipmentRepositoryFirebase>(
-                            context)),
-                  ),
-                ],
-                child: Scaffold(
-                  body: IndexedStack(
-                    index: state.index,
-                    children: screens,
-                  ),
-                  bottomNavigationBar: const buildBottomNavigationBar(),
+              return Scaffold(
+                body: IndexedStack(
+                  index: state.index,
+                  children: screens,
                 ),
+                bottomNavigationBar: const buildBottomNavigationBar(),
               );
             }
             BlocProvider.of<AuthBloc>(context, listen: false)

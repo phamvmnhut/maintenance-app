@@ -25,8 +25,7 @@ class CareHistoryRepositoryFireBase extends CareHistoryRepository {
   }
 
   @override
-  Future<List<CareHistory>> getList(
-      {required CareHistoryRepositoryGetListParam param}) {
+  Future<List<CareHistory>> getList({required CareHistoryRepositoryGetListParam param}) {
     return _deviceCollection
         .where("care_id", isEqualTo: param.care_id)
         .orderBy('date')

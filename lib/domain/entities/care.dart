@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Care extends Equatable {
@@ -8,9 +9,10 @@ class Care extends Equatable {
   final String equipment_id;
   final String memo_name;
   final String image;
-  final String care_next_time;
+  final Timestamp care_next_time;
   final String routine;
-  final DateTime start_date;
+  final Timestamp start_date;
+  final String status;
 
   const Care({
     required this.id,
@@ -21,6 +23,7 @@ class Care extends Equatable {
     required this.care_next_time,
     required this.routine,
     required this.start_date,
+    required this.status
   });
 
   @override
@@ -32,7 +35,8 @@ class Care extends Equatable {
         image,
         care_next_time,
         routine,
-        start_date
+        start_date,
+        status
       ];
 
   Care copyWith({
@@ -41,9 +45,10 @@ class Care extends Equatable {
     String? equipment_id,
     String? memo_name,
     String? image,
-    String? care_next_time,
+    Timestamp? care_next_time,
     String? routine,
-    DateTime? start_date,
+    Timestamp? start_date,
+    String? status,
   }) {
     return Care(
       memo_name: memo_name ?? this.memo_name,
@@ -54,10 +59,11 @@ class Care extends Equatable {
       care_next_time: care_next_time ?? this.care_next_time,
       routine: routine ?? this.routine,
       start_date: start_date ?? this.start_date,
+      status: status ?? this.status,
     );
   }
 
-  factory Care.fromJson(json) {
+  factory Care.fromJson(DocumentSnapshot json) {
     return Care(
       id: json.id,
       user_id: json['user_id'],
@@ -67,10 +73,10 @@ class Care extends Equatable {
       care_next_time: json['care_next_time'],
       routine: json['routine'],
       start_date: json['start_date'],
+      status: json['status'],
     );
   }
-    Map<String, Object?> toJson() =>
-      <String, dynamic>{
+  Map<String, Object?> toJson() => <String, dynamic>{
         'user_id': user_id,
         'equipment_id': equipment_id,
         'memo_name': memo_name,
@@ -78,5 +84,7 @@ class Care extends Equatable {
         'care_next_time': care_next_time,
         'routine': routine,
         'start_date': start_date,
+        'status': status,
       };
 }
+List<String> list = <String>['Days', 'Weeks', 'Months', 'Years'];

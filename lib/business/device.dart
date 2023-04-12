@@ -88,7 +88,7 @@ class DeviceState {
 }
 
 class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
-  final DeviceRepository _repository;
+  final CareRepository _repository;
   final ModelRepository _modelRepository;
   final EquipmentRepository _equipmentRepository;
 

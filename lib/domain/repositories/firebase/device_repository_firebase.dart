@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divice/domain/entities/device.dart';
 import 'package:divice/domain/repositories/device_repository.dart';
 
-class DeviceRepositoryFireBase extends DeviceRepository {
+class DeviceRepositoryFireBase extends CareRepository {
   final CollectionReference _deviceCollection =
       FirebaseFirestore.instance.collection('devices');
 
@@ -33,6 +33,9 @@ class DeviceRepositoryFireBase extends DeviceRepository {
 
   @override
   Future<bool> update({required String id, required Device data}) {
-    return _deviceCollection.doc(id).update(data.toJson()).then((value) => true);
+    return _deviceCollection
+        .doc(id)
+        .update(data.toJson())
+        .then((value) => true);
   }
 }
