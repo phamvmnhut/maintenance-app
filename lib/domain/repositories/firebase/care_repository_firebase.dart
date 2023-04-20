@@ -23,7 +23,23 @@ class CareRepositoryFireBase extends CareRepository {
 
   @override
   Future<List<Care>> getList({required CareRepositoryGetListParam param}) {
+    if (param.isSortByCareNextTime) {
+      return _careCollection
+          .orderBy("care_next_time", descending: true)
+          .get()
+          .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
+    } else {
+      return _careCollection
+          .get()
+          .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
+    }
+  }
+
+  @override
+  Future<List<Care>> search({required CareRepositorySearchParam param}) {
+    print(param.name);
     return _careCollection
+        .where("memo_name", isGreaterThanOrEqualTo: param.name.toUpperCase())
         .get()
         .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
   }

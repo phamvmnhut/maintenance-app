@@ -1,14 +1,23 @@
 import '../entities/care.dart';
 
 class CareRepositoryGetListParam {
-  final String careId;
-  CareRepositoryGetListParam({
-    required this.careId,
+  final String name;
+  bool isSortByCareNextTime = false;
+  CareRepositoryGetListParam({required this.name, bool? isSortByCareNextTime}) {
+    isSortByCareNextTime = isSortByCareNextTime ?? this.isSortByCareNextTime;
+  }
+}
+
+class CareRepositorySearchParam {
+  final String name;
+  CareRepositorySearchParam({
+    required this.name,
   });
 }
 
 abstract class CareRepository {
   Future<List<Care>> getList({required CareRepositoryGetListParam param});
+  Future<List<Care>> search({required CareRepositorySearchParam param});
   Future<Care> get({required String id});
   Future<bool> update({required String id, required Care data});
   Future<bool> create({required Care d});

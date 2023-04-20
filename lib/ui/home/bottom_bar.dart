@@ -3,19 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business/setting.dart';
 
-class buildBottomNavigationBar extends StatefulWidget {
-  const buildBottomNavigationBar({Key? key}) : super(key: key);
+class BottomNavigationBarCustomize extends StatefulWidget {
+  const BottomNavigationBarCustomize({Key? key}) : super(key: key);
 
   @override
-  State<buildBottomNavigationBar> createState() =>
-      _buildBottomNavigationBarState();
+  State<BottomNavigationBarCustomize> createState() =>
+      _BottomNavigationBarCustomizeState();
 }
 
-class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
+class _BottomNavigationBarCustomizeState extends State<BottomNavigationBarCustomize> {
   int selectedIndex = 0;
   final List<BottomNavigationBarItem> _bottomColor = [
     BottomNavigationBarItem(
-        backgroundColor: Colors.white,
         icon: Container(
             width: 40,
             height: 40,
@@ -120,11 +119,11 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
           splashColor: Colors.transparent, highlightColor: Colors.transparent),
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        backgroundColor: Theme.of(context).cardColor,
         items: _bottomList,
         onTap: (value) {
-          BlocProvider.of<ThemeBloc>(context).add(
-                                          ChangeScreenEvent(
-                                              index: value));
+          BlocProvider.of<ThemeBloc>(context)
+              .add(ChangeScreenEvent(index: value));
           setState(() {
             selectedIndex = value;
             for (int i = 0; i < _bottomList.length; i++) {
