@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business/setting.dart';
 
-class buildBottomNavigationBar extends StatefulWidget {
-  const buildBottomNavigationBar({Key? key}) : super(key: key);
+class BottomNavigationBarCustomize extends StatefulWidget {
+  const BottomNavigationBarCustomize({Key? key}) : super(key: key);
 
   @override
-  State<buildBottomNavigationBar> createState() =>
-      _buildBottomNavigationBarState();
+  State<BottomNavigationBarCustomize> createState() =>
+      _BottomNavigationBarCustomizeState();
 }
 
-class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
+class _BottomNavigationBarCustomizeState extends State<BottomNavigationBarCustomize> {
   int selectedIndex = 0;
   final List<BottomNavigationBarItem> _bottomColor = [
     BottomNavigationBarItem(
@@ -120,6 +120,7 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
       child: BottomNavigationBar(
         backgroundColor: Theme.of(context).backgroundColor,
         type: BottomNavigationBarType.fixed,
+        backgroundColor: Theme.of(context).cardColor,
         items: _bottomList,
         onTap: (value) {
           BlocProvider.of<ThemeBloc>(context)

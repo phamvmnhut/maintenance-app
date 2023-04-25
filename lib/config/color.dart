@@ -9,4 +9,5 @@ class AppColors {
   static Color redColor = const Color.fromRGBO(255, 86, 94, 1);
   static Color orangeColor = const Color.fromRGBO(255, 153, 51, 1);
   static Color blueColor = const Color.fromRGBO(69, 186, 197, 1);
+  static Color yellowColor = const Color.fromARGB(155, 155, 155, 1);
 }

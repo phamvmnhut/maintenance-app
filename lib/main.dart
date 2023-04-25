@@ -93,7 +93,7 @@ class AppM extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screens = [
-      const Home(),
+      const HomePage(),
       const CareSearch(),
       const AddNewCare(),
       const DevicePage(),
@@ -123,7 +123,7 @@ class AppM extends StatelessWidget {
                   index: state.index,
                   children: screens,
                 ),
-                bottomNavigationBar: const buildBottomNavigationBar(),
+                bottomNavigationBar: const BottomNavigationBarCustomize(),
               );
             }
             BlocProvider.of<AuthBloc>(context, listen: false)
