@@ -2,19 +2,21 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divice/business/care.dart';
-import 'package:divice/business/setting.dart';
 import 'package:divice/config/color.dart';
-import 'package:divice/config/status.dart';
 import 'package:divice/domain/entities/care.dart';
 import 'package:divice/domain/entities/equipment.dart';
-import 'package:divice/ui/noti/noti_bar.dart';
+import 'package:divice/ui/care/care_detail.dart';
+import 'package:divice/ui/notification/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../business/device.dart';
-import 'dropdown_custom.dart';
+import '../../../business/device.dart';
 import 'package:intl/intl.dart';
+
+import 'generate/care_next_date.dart';
+import 'widgets/bottom_sheet.dart';
+import 'widgets/dropdown_custom.dart';
 
 class AddNewCare extends StatefulWidget {
   const AddNewCare({super.key});
@@ -24,9 +26,9 @@ class AddNewCare extends StatefulWidget {
 }
 
 class _AddNewCareState extends State<AddNewCare> {
-  String _device = 'Điện thoại | iPhone 14';
+  String _device = '';
   String _modelID = '';
-  String _deviceDetail = 'Màn hình';
+  String _deviceDetail = '';
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay(
     hour: DateTime.now().hour,
@@ -38,11 +40,6 @@ class _AddNewCareState extends State<AddNewCare> {
   String fileUpload = '';
   Equipment? _equipment;
   String dropDownRoutine = list.first;
-  @override
-  void initState() {
-    super.initState();
-    careNextTimeController.text = '2023-04-08 10:00 AM';
-  }
 
   @override
   void didChangeDependencies() {
@@ -51,42 +48,52 @@ class _AddNewCareState extends State<AddNewCare> {
     super.didChangeDependencies();
   }
 
+  _clearControl() {
+    FocusScope.of(context).unfocus();
+    _device = '';
+    _modelID = '';
+    _deviceDetail = '';
+    _date = DateTime.now();
+    _time = TimeOfDay(
+      hour: DateTime.now().hour,
+      minute: DateTime.now().minute,
+    );
+    memoNameController.clear();
+    careNextTimeController.clear();
+    numberDateController.clear();
+    fileUpload = '';
+    _equipment = null;
+    dropDownRoutine = list.first;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CareBloc, CareState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Stack(
-            children: [
-              Scaffold(
-                backgroundColor: AppColors.whiteColor,
-                body: SafeArea(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 28, right: 28),
-                  child: SingleChildScrollView(
+      listener: (context, state) {
+        if (state.isCreated && state.careId.isNotEmpty) {
+          toastInfo(
+            msg: 'Successfully added new care',
+            backgroundColor: AppColors.greenColor,
+          );
+          _clearControl();
+          Navigator.of(context).push(
+            CareDetailPage.route(care_id: state.careId),
+          );
+        }
+      },
+      builder: (context, state) {
+        return Stack(
+          children: [
+            Scaffold(
+              backgroundColor: Theme.of(context).canvasColor,
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 28, right: 28),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 52),
-                        InkWell(
-                          onTap: () => BlocProvider.of<ThemeBloc>(context)
-                              .add(ChangeScreenEvent(index: 0)),
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 48,
-                            width: 48,
-                            decoration: BoxDecoration(
-                              color: AppColors.grayColor2,
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: Icon(
-                              Icons.arrow_back_sharp,
-                              size: 16.0,
-                              color: AppColors.grayColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 32),
                         Container(
                           height: 38,
                           alignment: Alignment.centerLeft,
@@ -109,8 +116,16 @@ class _AddNewCareState extends State<AddNewCare> {
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w500),
                               ),
-                              Image.asset('assets/images/icon_qr.png',
-                                  width: 14, height: 14),
+                              // Image.asset('assets/images/icon_qr.png',
+                              //     width: 14, height: 14),
+                              IconButton(
+                                  onPressed: (() {
+                                    _clearControl();
+                                  }),
+                                  icon: const Icon(
+                                    Icons.playlist_remove,
+                                    color: Colors.red,
+                                  ))
                             ],
                           ),
                         ),
@@ -124,7 +139,7 @@ class _AddNewCareState extends State<AddNewCare> {
                                   image: Image.asset('assets/images/drugs.png'),
                                   isDropdown: true,
                                   func: () async {
-                                    var value = await _showButtomListExpand(
+                                    var value = await showButtomListExpand(
                                         context, state);
                                     if (value.isNotEmpty) {
                                       setState(() {
@@ -146,7 +161,7 @@ class _AddNewCareState extends State<AddNewCare> {
                                   if (state.listEquipment.isNotEmpty &&
                                       state.listEquipment[_modelID] != null) {
                                     var equipment =
-                                        await _showButtomListEquipment(
+                                        await showButtomListEquipment(
                                       context,
                                       state.listEquipment[_modelID]!,
                                     );
@@ -156,6 +171,9 @@ class _AddNewCareState extends State<AddNewCare> {
                                         _equipment = equipment;
                                       });
                                     }
+                                  } else {
+                                    toastInfo(
+                                        msg: 'Please choose Device | Model');
                                   }
                                 },
                               ),
@@ -177,7 +195,7 @@ class _AddNewCareState extends State<AddNewCare> {
                             height: 48,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(14),
-                                color: AppColors.grayColor2),
+                                color: Theme.of(context).cardColor),
                             child: TextFormField(
                               textAlignVertical: TextAlignVertical.center,
                               controller: memoNameController,
@@ -282,7 +300,7 @@ class _AddNewCareState extends State<AddNewCare> {
                           width: MediaQuery.of(context).size.width / 2 - 37,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
-                              color: AppColors.grayColor2),
+                              color: Theme.of(context).cardColor),
                           child: Row(
                             children: [
                               Expanded(
@@ -360,7 +378,7 @@ class _AddNewCareState extends State<AddNewCare> {
                             height: 48,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(14),
-                                color: AppColors.grayColor2),
+                                color: Theme.of(context).cardColor),
                             child: TextFormField(
                               readOnly: true,
                               textAlignVertical: TextAlignVertical.center,
@@ -400,7 +418,7 @@ class _AddNewCareState extends State<AddNewCare> {
                                   Image.asset('assets/images/upload_image.png'),
                             ),
                             Expanded(
-                                child: fileUpload.isNotEmpty
+                                child: fileUpload.isNotEmpty && fileUpload != ''
                                     ? SizedBox(
                                         height: 121,
                                         child: Image.file(File(fileUpload)))
@@ -412,10 +430,9 @@ class _AddNewCareState extends State<AddNewCare> {
                           onTap: () {
                             if (_equipment == null ||
                                 numberDateController.text.isEmpty) {
-                              NotiBar.showSnackBar(
-                                context,
-                                'Please choose Equipment',
-                                status: NotificationStatusEnum.warning,
+                              toastInfo(
+                                msg: 'Please choose Equipment',
+                                backgroundColor: AppColors.orangeColor,
                               );
                               return;
                             }
@@ -464,7 +481,7 @@ class _AddNewCareState extends State<AddNewCare> {
                               borderRadius: BorderRadius.circular(14),
                               color: AppColors.greenColor,
                             ),
-                            child: Text('Xong',
+                            child: Text('Done',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 17,
@@ -475,112 +492,22 @@ class _AddNewCareState extends State<AddNewCare> {
                       ],
                     ),
                   ),
-                )),
+                ),
               ),
-              if (state.isCreateProcessing)
-                Opacity(
-                  opacity: 0.6,
-                  child: ModalBarrier(
-                      dismissible: false, color: AppColors.blackColor),
-                ),
-              if (state.isCreateProcessing)
-                const Center(
-                  child: CircularProgressIndicator(),
-                ),
-            ],
-          );
-        });
-  }
-}
-
-Future<Map<String, String>> _showButtomListExpand(
-    BuildContext context, DeviceState state) async {
-  Map<String, String> result = {};
-  await showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return BlocConsumer<DeviceBloc, DeviceState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              return state.isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ListView(
-                      shrinkWrap: true,
-                      children: state.list.map((device) {
-                        return ExpansionTile(
-                          title: Text(device.name),
-                          leading: const Icon(Icons.devices_other_sharp),
-                          children: state.listModel[device.id]!.map((model) {
-                            return ListTile(
-                                title: Text(model.name),
-                                onTap: () {
-                                  result.addAll({device.name: model.name});
-                                  result.addAll({model.id: model.name});
-                                  Navigator.pop(context);
-                                });
-                          }).toList(),
-                        );
-                      }).toList(),
-                    );
-            });
-      });
-  return result;
-}
-
-Future<Equipment?> _showButtomListEquipment(
-    BuildContext context, List<Equipment> list) async {
-  Equipment? result;
-  await showModalBottomSheet(
-      context: context,
-      builder: (_) {
-        return ListView(
-          children: list.map((equipment) {
-            return ListTile(
-              title: Text(equipment.name),
-              onTap: () {
-                result = equipment;
-                Navigator.pop(context);
-              },
-            );
-          }).toList(),
+            ),
+            if (state.isCreateProcessing)
+              Opacity(
+                opacity: 0.6,
+                child: ModalBarrier(
+                    dismissible: false, color: AppColors.blackColor),
+              ),
+            if (state.isCreateProcessing)
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
+          ],
         );
-      });
-  return result;
-}
-
-DateTime generateCareNextDate(DateTime startDate, String typeDate, int number) {
-  DateTime newDate;
-  switch (typeDate.toString().toUpperCase()) {
-    case 'DAYS':
-      newDate = DateTime(
-        startDate.year,
-        startDate.month,
-        startDate.day + number,
-      );
-      break;
-    case 'WEEKS':
-      newDate = DateTime(
-        startDate.year,
-        startDate.month,
-        startDate.day + 7 * number,
-      );
-      break;
-    case 'MONTHS':
-      newDate = DateTime(
-        startDate.year,
-        startDate.month + number,
-        startDate.day,
-      );
-      break;
-    case 'YEARS':
-      newDate = DateTime(
-        startDate.year + number,
-        startDate.month,
-        startDate.day,
-      );
-      break;
-    default:
-      newDate = DateTime.now();
+      },
+    );
   }
-  return newDate;
 }

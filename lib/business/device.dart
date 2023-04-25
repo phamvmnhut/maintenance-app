@@ -272,7 +272,9 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
   void _addDevice(DeviceEventAddDevice event, Emitter<DeviceState> emit) async {
     var device = Device(id: '', name: event.deviceName, count: 0);
     await _repository.create(d: device);
-    emit(state);
+    List<Device> l = await _repository.getList(
+        param: DeviceRepositoryGetListParam(searchText: ""));
+    emit(state.copyWith(list: l));
   }
 
   void _updateDevice(
@@ -298,5 +300,11 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
       await _repository.update(id: event.deviceId, data: newDevice);
     }
     emit(state);
+    var newDevice = Device(
+        id: oldDevice.id, name: event.deviceName, count: oldDevice.count);
+    await _repository.update(id: event.deviceId, data: newDevice);
+    List<Device> l = await _repository.getList(
+        param: DeviceRepositoryGetListParam(searchText: ""));
+    emit(state.copyWith(list: l));
   }
 }

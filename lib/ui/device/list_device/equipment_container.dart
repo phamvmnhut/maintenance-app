@@ -1,9 +1,9 @@
 import 'package:divice/config/color.dart';
-import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
+import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../business/device.dart';
+import '../../../business/device.dart';
 
 class EquipmentContainer extends StatefulWidget {
   final String modelID;

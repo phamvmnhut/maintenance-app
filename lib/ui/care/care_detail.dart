@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:divice/business/care_detail.dart';
 import 'package:divice/config/color.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
@@ -51,7 +53,7 @@ class _CareDetailViewState extends State<CareDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).canvasColor,
       body: BlocBuilder<CareDetailBloc, CareDetailState>(
         builder: (context, state) => SingleChildScrollView(
           child: Column(
@@ -99,7 +101,7 @@ class _CareDetailViewState extends State<CareDetailView> {
                 padding: const EdgeInsets.symmetric(horizontal: 28),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Text("Điện thoại | Iphone 14"),
                     Text("Màn hình"),
                   ],
@@ -141,8 +143,8 @@ class _CareDetailViewState extends State<CareDetailView> {
                                     const SizedBox(
                                       height: 4,
                                     ),
-                                    Text("21/01/2023"),
-                                    Text("10:30 AM"),
+                                    const Text("21/01/2023"),
+                                    const Text("10:30 AM"),
                                   ],
                                 ),
                               ),
@@ -236,10 +238,9 @@ class _CareDetailViewState extends State<CareDetailView> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Text(S
-                            .of(context)
-                            .have_care_time
-                            .replaceFirst(RegExp(r'xx'), state.careHistorylist.length.toString())),
+                        Text(S.of(context).have_care_time.replaceFirst(
+                            RegExp(r'xx'),
+                            state.careHistorylist.length.toString())),
                       ],
                     ),
                     GestureDetector(
@@ -327,7 +328,9 @@ class _CareDetailViewState extends State<CareDetailView> {
                                                   MainAxisAlignment.start,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.end,
-                                              children: [Icon(Icons.edit_note)],
+                                              children: const [
+                                                Icon(Icons.edit_note),
+                                              ],
                                             ),
                                           )
                                         ],

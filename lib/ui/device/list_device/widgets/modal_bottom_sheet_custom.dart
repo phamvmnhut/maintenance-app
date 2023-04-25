@@ -13,7 +13,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
         return Padding(
           padding: MediaQuery.of(context).viewInsets,
           child: Container(
-            color: AppColors.whiteColor,
+            color: Theme.of(context).canvasColor,
             alignment: Alignment.topCenter,
             height: 160,
             child: Column(
@@ -24,7 +24,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
                   width: MediaQuery.of(context).size.width * 0.75,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(14),
-                      color: AppColors.grayColor2),
+                      color: Theme.of(context).cardColor),
                   child: TextField(
                     textAlignVertical: TextAlignVertical.center,
                     controller: textController,
@@ -47,7 +47,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
                             Navigator.pop(context);
                           }
                         },
-                        child: const Text('Lưu')),
+                        child: const Text('Save')),
                     const SizedBox(width: 20),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -62,7 +62,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
                                 });
                               }
                             : null,
-                        child: const Text('Xóa')),
+                        child: const Text('Delete')),
                   ],
                 ),
               ],

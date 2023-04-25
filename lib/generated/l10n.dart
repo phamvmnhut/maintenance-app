@@ -179,6 +179,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Care as soon`
+  String get care_as_soon {
+    return Intl.message(
+      'Care as soon',
+      name: 'care_as_soon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hello`
+  String get hello {
+    return Intl.message(
+      'Hello',
+      name: 'hello',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

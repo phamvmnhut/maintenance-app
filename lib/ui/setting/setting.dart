@@ -19,7 +19,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).canvasColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +118,7 @@ class _SettingPageState extends State<SettingPage> {
                             builder: (context) {
                               List<Locale> listLocale =
                                   S.delegate.supportedLocales;
-                              return Container(
+                              return SizedBox(
                                 child: ListView.builder(
                                   itemBuilder: (context, index) {
                                     return ListTile(
