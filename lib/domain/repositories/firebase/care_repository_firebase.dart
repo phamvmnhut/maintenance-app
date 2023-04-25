@@ -12,8 +12,8 @@ class CareRepositoryFireBase extends CareRepository {
   }
 
   @override
-  Future<bool> create({required Care d}) {
-    return _careCollection.add(d.toJson()).then((value) => true);
+  Future<String> create({required Care d}) {
+    return _careCollection.add(d.toJson()).then((value) => value.id);
   }
 
   @override
@@ -37,7 +37,6 @@ class CareRepositoryFireBase extends CareRepository {
 
   @override
   Future<List<Care>> search({required CareRepositorySearchParam param}) {
-    print(param.name);
     return _careCollection
         .where("memo_name", isGreaterThanOrEqualTo: param.name.toUpperCase())
         .get()

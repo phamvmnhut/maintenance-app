@@ -1,6 +1,6 @@
 import 'package:divice/business/device.dart';
 import 'package:divice/config/color.dart';
-import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
+import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,10 +43,10 @@ class _ModelContainerState extends State<ModelContainer> {
                       children: [
                         Text(
                           model.name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15,
-                              color: AppColors.blackColor),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
                         ),
                         const SizedBox(width: 5),
                         GestureDetector(

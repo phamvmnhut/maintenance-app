@@ -1,6 +1,6 @@
 import 'package:divice/business/device.dart';
 import 'package:divice/config/color.dart';
-import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
+import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'device_detail.dart';
@@ -30,12 +30,17 @@ class _DevicePageState extends State<DevicePage> {
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).canvasColor,
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: BlocBuilder<DeviceBloc, DeviceState>(
-              builder: (context, state) {
-                return Padding(
+          child: BlocBuilder<DeviceBloc, DeviceState>(
+            builder: (context, state) {
+              if (state.isLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return SingleChildScrollView(
+                child: Padding(
                   padding: const EdgeInsets.only(left: 23, right: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,9 +93,9 @@ class _DevicePageState extends State<DevicePage> {
                       ),
                     ],
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),

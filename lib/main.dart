@@ -7,8 +7,8 @@ import 'package:divice/domain/repositories/firebase/care_repository_firebase.dar
 import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/equipment_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
-import 'package:divice/ui/device/add_new_care_ui.dart';
-import 'package:divice/ui/device/device.dart';
+import 'package:divice/ui/device/new_care/add_new_care_ui.dart';
+import 'package:divice/ui/device/list_device/device.dart';
 import 'package:divice/ui/search/care_search.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';

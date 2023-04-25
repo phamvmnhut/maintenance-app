@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:divice/domain/entities/care_history.dart';
 
 class CareHistoryRepositoryGetListParam {

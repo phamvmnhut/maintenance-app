@@ -38,7 +38,7 @@ class _CareSearchState extends State<CareSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).canvasColor,
       body: BlocBuilder<CareBloc, CareState>(
         builder: (context, state) => SingleChildScrollView(
           child: Column(children: [

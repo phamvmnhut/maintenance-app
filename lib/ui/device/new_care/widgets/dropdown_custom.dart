@@ -25,7 +25,7 @@ class DropdownDeviceCustom extends StatelessWidget {
         height: 48,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            color: AppColors.grayColor2),
+            color: Theme.of(context).cardColor),
         child: InkWell(
           onTap: func,
           child: Row(

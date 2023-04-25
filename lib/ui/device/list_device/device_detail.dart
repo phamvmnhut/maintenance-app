@@ -1,9 +1,9 @@
 import 'package:divice/config/color.dart';
 import 'package:divice/domain/entities/device.dart';
-import 'package:divice/ui/device/modal_bottom_sheet_custom.dart';
+import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../business/device.dart';
+import '../../../business/device.dart';
 import 'model_container.dart';
 
 class ListDeviceDetail extends StatefulWidget {
@@ -19,13 +19,6 @@ class ListDeviceDetail extends StatefulWidget {
 
 class _ListDeviceDetailState extends State<ListDeviceDetail> {
   @override
-  void didChangeDependencies() {
-    BlocProvider.of<DeviceBloc>(context, listen: false)
-        .add(DeviceEventGetList());
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(
       children: widget.lstDevice
@@ -33,7 +26,7 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.grayColor2,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Padding(
@@ -45,10 +38,8 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                           children: [
                             Text(
                               device.name,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15,
-                                  color: AppColors.blackColor),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 15),
                             ),
                             const SizedBox(width: 5),
                             GestureDetector(

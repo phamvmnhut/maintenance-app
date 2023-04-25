@@ -102,13 +102,15 @@ class CareBloc extends Bloc<CareEvent, CareState> {
       isCreateProcessing: true,
       isCreated: false,
     ));
-    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference root = FirebaseStorage.instance.ref();
-    Reference dirImages = root.child('images');
-    Reference fileUpload = dirImages.child(uniqueFileName);
-    await fileUpload.putFile(File(event.filePath));
-    String imageUrl = await fileUpload.getDownloadURL();
-
+    String imageUrl = '';
+    if (event.filePath != '' || event.filePath.isNotEmpty) {
+      String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference root = FirebaseStorage.instance.ref();
+      Reference dirImages = root.child('images');
+      Reference fileUpload = dirImages.child(uniqueFileName);
+      await fileUpload.putFile(File(event.filePath));
+      imageUrl = await fileUpload.getDownloadURL();
+    }
     Care newCare = Care(
         id: '',
         user_id: 'AD',
@@ -120,11 +122,8 @@ class CareBloc extends Bloc<CareEvent, CareState> {
         start_date: event.care.start_date,
         status: event.care.status);
 
-    await _repository.create(d: newCare);
-
+    String careId = await _repository.create(d: newCare);
     emit(state.copyWith(
-      isCreateProcessing: false,
-      isCreated: true,
-    ));
+        isCreateProcessing: false, isCreated: true, careId: careId));
   }
 }
