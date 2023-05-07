@@ -16,6 +16,8 @@ class _CareSearchState extends State<CareSearch> {
   final fieldText = TextEditingController();
   bool _isTapped = false;
   Timer? _timer;
+  final ScrollController _scrollController = ScrollController();
+  int limit = 10;
 
   void timeText() {
     if (_timer?.isActive ?? false) {
@@ -33,6 +35,19 @@ class _CareSearchState extends State<CareSearch> {
     } else {
       _isTapped = false;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        setState(() {
+          limit += 10;
+        });
+      }
+    });
   }
 
   @override
@@ -136,8 +151,10 @@ class _CareSearchState extends State<CareSearch> {
                     ],
                   )
                 : Column(
-                    children:
-                        state.careList.map((e) => CareCard(e: e)).toList(),
+                    children: state.careList
+                        .take(limit)
+                        .map((e) => CareCard(e: e))
+                        .toList(),
                   ),
           ]),
         ),
