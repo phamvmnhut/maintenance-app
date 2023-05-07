@@ -1,62 +1,65 @@
+import 'package:divice/ui/components/care_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+import '../../business/auth.dart';
 import '../../business/care.dart';
-import '../../domain/repositories/firebase/equipment_repository_firebase.dart';
-import '../care/care_detail.dart';
+import '../components/disable_glow_listview_widget.dart';
+import 'package:divice/generated/l10n.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
-  PageController controller = PageController();
+class _HomePageState extends State<HomePage> {
 
-  Future<String> getData(String id) {
-    return RepositoryProvider.of<EquipmentRepositoryFirebase>(context)
-        .get(id: id)
-        .then((value) => value.name);
+  @override
+  void didChangeDependencies() {
+    context.read<CareBloc>().add(CareEventSetup());
+    super.didChangeDependencies();
   }
+
+  PageController controller = PageController();
 
   @override
   Widget build(BuildContext context) {
     DateTime _nowTime = DateTime.now();
     return SafeArea(
       child: Scaffold(
-        body: BlocBuilder<CareBloc, CareState>(
-          builder: (context, state) => Column(
-            children: [
-              /// Notify Icon
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 26,
-                      right: 35,
-                    ),
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: const Color.fromRGBO(248, 248, 246, 1),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: const Icon(
-                      Icons.notifications_active_outlined,
-                    ),
+        body: Column(
+          children: [
+            // Notify Icon
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(
+                    top: 26,
+                    right: 35,
                   ),
-                ],
-              ),
-              Expanded(
-                child: ScrollConfiguration(
-                  behavior: DisableGlowListViewWidget(),
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      /// Banner PageView
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(
+                    Icons.notifications_active_outlined,
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: ScrollConfiguration(
+                behavior: DisableGlowListViewWidget(),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Banner PageView
                       Column(
                         children: [
                           SizedBox(
@@ -82,20 +85,31 @@ class _HomeState extends State<Home> {
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: const [
+                                                children: [
                                                   Text(
-                                                    'Hello,',
-                                                    style: TextStyle(
+                                                    S.of(context).hello,
+                                                    style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 28),
                                                   ),
-                                                  Text(
-                                                    'Kathryn',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 28),
+                                                  BlocBuilder<AuthBloc,
+                                                      AuthState>(
+                                                    builder: (context, state) =>
+                                                        Text(
+                                                      !state.isAuth
+                                                          ? "No Login Account"
+                                                          : state.user!
+                                                                      .displayName ==
+                                                                  null
+                                                              ? "No Name"
+                                                              : state.user!
+                                                                  .displayName!,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 28),
+                                                    ),
                                                   ),
                                                 ],
                                               )
@@ -224,192 +238,30 @@ class _HomeState extends State<Home> {
                           )
                         ],
                       ),
-
-                      ///Daily review
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(left: 28),
-                            child: Text(
-                              'Daily Review',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17,
-                              ),
-                            ),
+                      // Daily review
+                      Padding(
+                        padding: const EdgeInsets.only(left: 28, right: 28),
+                        child: Text(
+                          S.of(context).care_as_soon,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17,
                           ),
-                          state.isLoading
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 12),
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  ],
-                                )
-                              : Column(
-                                  children: state.careList
-                                      .take(3)
-                                      .map(
-                                        (e) => InkWell(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              CareDetailPage.route(
-                                                  care_id: e.id),
-                                            );
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.only(
-                                              top: 12,
-                                              right: 28,
-                                              left: 28,
-                                            ),
-                                            height: 72,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                              color: const Color(0xFFF8F8F6),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 28),
-                                                  child: Image.asset(
-                                                      'assets/images/drugs.png'),
-                                                ),
-                                                Expanded(
-                                                  flex: 2,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 16,
-                                                                bottom: 3),
-                                                        child: Text(
-                                                          e.memo_name,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 15,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 16),
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                              e.care_next_time
-                                                                          .difference(
-                                                                              _nowTime)
-                                                                          .inHours >
-                                                                      24
-                                                                  ? 'after ${e.care_next_time.difference(_nowTime).inDays} days'
-                                                                  : 'after ${e.care_next_time.difference(_nowTime).inHours}h${e.care_next_time.difference(_nowTime).inMinutes}m',
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: const TextStyle(
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          155,
-                                                                          155,
-                                                                          155,
-                                                                          1),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  fontSize: 13),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                left: 5,
-                                                                right: 5,
-                                                              ),
-                                                              child: Container(
-                                                                decoration: BoxDecoration(
-                                                                    color: const Color
-                                                                            .fromARGB(
-                                                                        155,
-                                                                        155,
-                                                                        155,
-                                                                        1),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            5)),
-                                                                height: 4,
-                                                                width: 4,
-                                                              ),
-                                                            ),
-                                                            FutureBuilder(
-                                                                future: getData(e
-                                                                    .equipment_id),
-                                                                builder: (context,
-                                                                    snapshot) {
-                                                                  if (snapshot
-                                                                          .connectionState ==
-                                                                      ConnectionState
-                                                                          .done) {
-                                                                    return Text(
-                                                                      snapshot
-                                                                          .data!,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: const TextStyle(
-                                                                          color: Color.fromARGB(
-                                                                              155,
-                                                                              155,
-                                                                              155,
-                                                                              1),
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
-                                                                          fontSize:
-                                                                              13),
-                                                                    );
-                                                                  }
-                                                                  return const Text(
-                                                                      '');
-                                                                })
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                                const Expanded(
-                                                    child: Icon(Icons
-                                                        .keyboard_arrow_right)),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                        ],
+                        ),
                       ),
-                    ]),
+                      BlocBuilder<CareBloc, CareState>(
+                        builder: (context, state) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: state.careSoonList
+                                .take(4)
+                                .map((e) => CareCard(e: e))
+                                .toList(),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               )
@@ -419,13 +271,5 @@ class _HomeState extends State<Home> {
         //bottomNavigationBar: buildBottomNavigationBar(),
       ),
     );
-  }
-}
-
-class DisableGlowListViewWidget extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
-    return child;
   }
 }

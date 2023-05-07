@@ -1,27 +1,28 @@
+import 'package:divice/config/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business/setting.dart';
 
-class buildBottomNavigationBar extends StatefulWidget {
-  const buildBottomNavigationBar({Key? key}) : super(key: key);
+class BottomNavigationBarCustomize extends StatefulWidget {
+  const BottomNavigationBarCustomize({Key? key}) : super(key: key);
 
   @override
-  State<buildBottomNavigationBar> createState() =>
-      _buildBottomNavigationBarState();
+  State<BottomNavigationBarCustomize> createState() =>
+      _BottomNavigationBarCustomizeState();
 }
 
-class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
+class _BottomNavigationBarCustomizeState
+    extends State<BottomNavigationBarCustomize> {
   int selectedIndex = 0;
   final List<BottomNavigationBarItem> _bottomColor = [
     BottomNavigationBarItem(
-        backgroundColor: Colors.white,
         icon: Container(
             width: 40,
             height: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: Color.fromRGBO(27, 209, 93, 1).withOpacity(0.07),
+              color: AppColors.greenColor.withOpacity(0.07),
             ),
             child: Image.asset('assets/bottom_bar/color/home_page.png')),
         label: ''),
@@ -31,7 +32,7 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
             height: 40,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
-                color: Color.fromRGBO(27, 209, 93, 1).withOpacity(0.07)),
+                color: AppColors.greenColor.withOpacity(0.07)),
             child: Image.asset('assets/bottom_bar/color/search.png')),
         label: ''),
     BottomNavigationBarItem(
@@ -40,7 +41,7 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
             height: 56,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
-              color: Color.fromRGBO(27, 209, 93, 1),
+              color: AppColors.greenColor,
             ),
             child: Image.asset('assets/bottom_bar/no_color/add.png')),
         label: ''),
@@ -50,7 +51,7 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
             height: 40,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
-                color: Color.fromRGBO(27, 209, 93, 1).withOpacity(0.07)),
+                color: AppColors.greenColor.withOpacity(0.07)),
             child: Image.asset('assets/bottom_bar/color/list.png')),
         label: ''),
     BottomNavigationBarItem(
@@ -59,7 +60,7 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
             height: 40,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
-                color: Color.fromRGBO(27, 209, 93, 1).withOpacity(0.07)),
+                color: AppColors.greenColor.withOpacity(0.07)),
             child: Image.asset('assets/bottom_bar/color/setting.png')),
         label: ''),
   ];
@@ -75,7 +76,7 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
             height: 56,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
-              color: Color.fromRGBO(27, 209, 93, 1),
+              color: AppColors.greenColor,
             ),
             child: Image.asset('assets/bottom_bar/no_color/add.png')),
         label: ''),
@@ -91,7 +92,7 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
             height: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: Color.fromRGBO(27, 209, 93, 1).withOpacity(0.07),
+              color: AppColors.greenColor.withOpacity(0.07),
             ),
             child: Image.asset('assets/bottom_bar/color/home_page.png')),
         label: ''),
@@ -103,7 +104,7 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
             height: 56,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
-              color: Color.fromRGBO(27, 209, 93, 1),
+              color: AppColors.greenColor,
             ),
             child: Image.asset('assets/bottom_bar/no_color/add.png')),
         label: ''),
@@ -119,12 +120,12 @@ class _buildBottomNavigationBarState extends State<buildBottomNavigationBar> {
       data: ThemeData(
           splashColor: Colors.transparent, highlightColor: Colors.transparent),
       child: BottomNavigationBar(
+        backgroundColor: Theme.of(context).bottomAppBarColor,
         type: BottomNavigationBarType.fixed,
         items: _bottomList,
         onTap: (value) {
-          BlocProvider.of<ThemeBloc>(context).add(
-                                          ChangeScreenEvent(
-                                              index: value));
+          BlocProvider.of<ThemeBloc>(context)
+              .add(ChangeScreenEvent(index: value));
           setState(() {
             selectedIndex = value;
             for (int i = 0; i < _bottomList.length; i++) {

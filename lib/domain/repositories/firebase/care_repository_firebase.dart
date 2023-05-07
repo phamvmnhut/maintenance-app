@@ -12,8 +12,8 @@ class CareRepositoryFireBase extends CareRepository {
   }
 
   @override
-  Future<bool> create({required Care d}) {
-    return _careCollection.add(d.toJson()).then((value) => true);
+  Future<String> create({required Care d}) {
+    return _careCollection.add(d.toJson()).then((value) => value.id);
   }
 
   @override
@@ -23,8 +23,22 @@ class CareRepositoryFireBase extends CareRepository {
 
   @override
   Future<List<Care>> getList({required CareRepositoryGetListParam param}) {
+    if (param.isSortByCareNextTime) {
+      return _careCollection
+          .orderBy("care_next_time", descending: true)
+          .get()
+          .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
+    } else {
+      return _careCollection
+          .get()
+          .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
+    }
+  }
+
+  @override
+  Future<List<Care>> search({required CareRepositorySearchParam param}) {
     return _careCollection
-        .orderBy('care_next_time')
+        .where("memo_name", isGreaterThanOrEqualTo: param.name.toUpperCase())
         .get()
         .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
   }

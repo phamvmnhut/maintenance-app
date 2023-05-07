@@ -1,4 +1,6 @@
 import 'package:divice/business/device.dart';
+import 'package:divice/config/color.dart';
+import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,38 +39,58 @@ class _ModelContainerState extends State<ModelContainer> {
                   child: ExpansionTile(
                     expandedCrossAxisAlignment: CrossAxisAlignment.start,
                     expandedAlignment: Alignment.centerLeft,
-                    title: Text(
-                      model.name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Colors.black),
+                    title: Row(
+                      children: [
+                        Text(
+                          model.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        GestureDetector(
+                            child: const Icon(Icons.edit, size: 15),
+                            onTap: () async {
+                              await addOrUpdateModal(
+                                context,
+                                stringInput: model.name,
+                                hintText: 'Input Model name...',
+                              ).then((value) {
+                                if (value != null) {
+                                  BlocProvider.of<DeviceBloc>(context,
+                                          listen: false)
+                                      .add(
+                                    DeviceEventUpdateModel(
+                                      modelId: model.id,
+                                      modelName: value,
+                                    ),
+                                  );
+                                  BlocProvider.of<DeviceBloc>(context,
+                                          listen: false)
+                                      .add(DeviceEventGetList());
+                                }
+                              });
+                            }),
+                      ],
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          model.count.toString(),
-                          style: const TextStyle(
+                          '${model.count} equipment',
+                          style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 13,
-                              color: Color(0xFF9B9B9B)),
+                              color: AppColors.grayColor),
                         ),
-                        const Divider(color: Colors.black),
+                        Divider(color: AppColors.blackColor),
                       ],
                     ),
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 18.0),
                         child: EquipmentContainer(modelID: model.id),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1BD15D)),
-                            onPressed: () => print('object2'),
-                            child: const Text('Thêm mới')),
                       ),
                     ],
                   ),

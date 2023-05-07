@@ -9,9 +9,9 @@ class Care extends Equatable {
   final String equipment_id;
   final String memo_name;
   final String image;
-  final DateTime care_next_time;
+  final Timestamp care_next_time;
   final String routine;
-  final DateTime start_date;
+  final Timestamp start_date;
   final String status;
 
   const Care({
@@ -23,7 +23,7 @@ class Care extends Equatable {
     required this.care_next_time,
     required this.routine,
     required this.start_date,
-    required this.status,
+    required this.status
   });
 
   @override
@@ -45,9 +45,9 @@ class Care extends Equatable {
     String? equipment_id,
     String? memo_name,
     String? image,
-    DateTime? care_next_time,
+    Timestamp? care_next_time,
     String? routine,
-    DateTime? start_date,
+    Timestamp? start_date,
     String? status,
   }) {
     return Care(
@@ -70,9 +70,9 @@ class Care extends Equatable {
       equipment_id: json['equipment_id'],
       memo_name: json["memo_name"],
       image: json['image'],
-      care_next_time: (json['care_next_time'] as Timestamp).toDate(),
+      care_next_time: json['care_next_time'],
       routine: json['routine'],
-      start_date: (json['start_date'] as Timestamp).toDate(),
+      start_date: json['start_date'],
       status: json['status'],
     );
   }
@@ -84,6 +84,7 @@ class Care extends Equatable {
         'care_next_time': care_next_time,
         'routine': routine,
         'start_date': start_date,
-        'status': status
+        'status': status,
       };
 }
+List<String> list = <String>['Days', 'Weeks', 'Months', 'Years'];

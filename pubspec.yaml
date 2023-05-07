@@ -46,10 +46,14 @@ dependencies:
   firebase_auth: ^4.2.6
   firebase_auth_platform_interface: ^6.11.8
   firebase_core_platform_interface: ^4.5.3
+  firebase_storage: ^11.1.0
 
   # UI
   flutter_signin_button: ^2.0.0
   google_sign_in: ^5.4.4
+
+  # Image Picker
+  image_picker: ^0.8.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -59,6 +63,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cloud_firestore: ^4.4.3
+  fluttertoast: ^8.2.1
 
 dev_dependencies:
   flutter_test:
@@ -101,11 +106,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  #   - family: Schyler
+  #   - family: Poppins
   #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  #       - asset: assets/fonts/Poppins-Black.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

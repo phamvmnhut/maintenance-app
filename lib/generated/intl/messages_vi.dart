@@ -22,11 +22,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "care_as_soon": MessageLookupByLibrary.simpleMessage("Bảo trì sắp tới"),
         "care_time": MessageLookupByLibrary.simpleMessage("Các lần bảo trì"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Chế độ tối"),
         "general": MessageLookupByLibrary.simpleMessage("Cấu hình chung"),
         "have_care_time":
             MessageLookupByLibrary.simpleMessage("Bạn có xx lần bảo trì"),
+        "hello": MessageLookupByLibrary.simpleMessage("Xin chào"),
         "language": MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
         "logout": MessageLookupByLibrary.simpleMessage("Đăng xuất"),
         "next_time_care":

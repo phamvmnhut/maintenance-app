@@ -11,5 +11,7 @@
   "time_used": "Sức khoẻ",
   "care_time": "Các lần bảo trì",
   "have_care_time": "Bạn có xx lần bảo trì",
-  "xx_day": "xx Ngày"
+  "xx_day": "xx Ngày",
+  "care_as_soon": "Bảo trì sắp tới",
+  "hello": "Xin chào"
 }

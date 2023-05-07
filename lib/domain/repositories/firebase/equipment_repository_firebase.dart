@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divice/domain/entities/equipment.dart';
-
 import '../equipment_repository.dart';
 
 class EquipmentRepositoryFirebase extends EquipmentRepository {
@@ -22,5 +23,33 @@ class EquipmentRepositoryFirebase extends EquipmentRepository {
         .doc(id)
         .get()
         .then((value) => Equipment.fromJson(value));
+  }
+
+  @override
+  Future<bool> create({required Equipment equipment}) {
+    return _equipmentCollection.add(equipment.toJson()).then((value) => true);
+  }
+
+  @override
+  Future<bool> update({required String id, required Equipment equipment}) {
+    return _equipmentCollection
+        .doc(id)
+        .update(equipment.toJson())
+        .then((value) => true);
+  }
+
+  @override
+  Future<bool> delete({required String id}) {
+    return _equipmentCollection.doc(id).delete().then((value) => true);
+  }
+
+  @override
+  Future<void> deleteWithModelId({required String modelId}) {
+    return _equipmentCollection
+        .where('model_id', isEqualTo: modelId)
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              element.reference.delete();
+            }));
   }
 }

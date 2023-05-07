@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:divice/business/auth.dart';
+import 'package:divice/ui/notification/toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -86,10 +87,10 @@ class _AuthGateState extends State<AuthGate> {
   void initState() {
     super.initState();
     authButtons = {
-        Buttons.Google: () => _handleMultiFactorException(
-              _signInWithGoogle,
-            ),
-      };
+      Buttons.Google: () => _handleMultiFactorException(
+            _signInWithGoogle,
+          ),
+    };
   }
 
   @override
@@ -337,9 +338,13 @@ class _AuthGateState extends State<AuthGate> {
     if (email != null) {
       try {
         await _auth.sendPasswordResetEmail(email: email!);
-        ScaffoldSnackbar.of(context).show('Password reset email is sent');
+        if (mounted) {
+          ScaffoldSnackbar.of(context).show('Password reset email is sent');
+        }
       } catch (e) {
-        ScaffoldSnackbar.of(context).show('Error resetting');
+        if (mounted) {
+          ScaffoldSnackbar.of(context).show('Error resetting');
+        }
       }
     }
   }
@@ -399,7 +404,7 @@ class _AuthGateState extends State<AuthGate> {
                 ),
               );
             } on FirebaseAuthException catch (e) {
-              print(e.message);
+              toastInfo(msg: e.toString());
             }
           }
         },
@@ -427,7 +432,9 @@ class _AuthGateState extends State<AuthGate> {
           password: passwordController.text,
         );
         User user = FirebaseAuth.instance.currentUser!;
-        BlocProvider.of<AuthBloc>(context).add(LoginAuthEvent(user: user));
+        if (mounted) {
+          BlocProvider.of<AuthBloc>(context).add(LoginAuthEvent(user: user));
+        }
       } else if (mode == AuthMode.register) {
         await _auth.createUserWithEmailAndPassword(
           email: emailController.text,
@@ -448,6 +455,8 @@ class _AuthGateState extends State<AuthGate> {
       if (kIsWeb) {
         final confirmationResult =
             await _auth.signInWithPhoneNumber(phoneController.text);
+
+        // ignore: use_build_context_synchronously
         final smsCode = await getSmsCodeFromUser(context);
 
         if (smsCode != null) {
@@ -510,7 +519,6 @@ class _AuthGateState extends State<AuthGate> {
       await _auth.signInWithCredential(credential);
     }
   }
-
 }
 
 Future<String?> getSmsCodeFromUser(BuildContext context) async {
