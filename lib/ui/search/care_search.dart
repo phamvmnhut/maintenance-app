@@ -56,6 +56,7 @@ class _CareSearchState extends State<CareSearch> {
       backgroundColor: Theme.of(context).canvasColor,
       body: BlocBuilder<CareBloc, CareState>(
         builder: (context, state) => SingleChildScrollView(
+          controller: _scrollController,
           child: Column(children: [
             Padding(
               padding: const EdgeInsets.only(
