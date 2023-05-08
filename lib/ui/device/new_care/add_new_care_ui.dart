@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divice/business/care.dart';
+import 'package:divice/business/notify.dart';
 import 'package:divice/config/color.dart';
 import 'package:divice/domain/entities/care.dart';
 import 'package:divice/domain/entities/equipment.dart';
@@ -66,6 +67,15 @@ class _AddNewCareState extends State<AddNewCare> {
     dropDownRoutine = list.first;
   }
 
+  var notifyHelper;
+  @override
+  void initState() {
+    super.initState();
+    notifyHelper = NotifyHelper(context);
+    notifyHelper.initializeNotification();
+    notifyHelper.requestIOSPermissions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CareBloc, CareState>(
@@ -120,6 +130,12 @@ class _AddNewCareState extends State<AddNewCare> {
                               //     width: 14, height: 14),
                               IconButton(
                                   onPressed: (() {
+                                    notifyHelper.displayNotification(
+                                      title: 'Tiêu đề thông báo Device',
+                                      body: 'Nội dung của thông báo',
+                                      id: '123',
+                                    );
+                                    notifyHelper.scheduledNotification('Tiêu đề nhắc lịch', 'Nội dung nhắc lịch');
                                     _clearControl();
                                   }),
                                   icon: const Icon(
