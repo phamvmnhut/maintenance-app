@@ -13,5 +13,10 @@
   "have_care_time": "You have xx time care",
   "xx_day": "xx Days",
   "care_as_soon": "Care as soon",
-  "hello": "Hello"
+  "hello": "Hello",
+  "delete": "Delete",
+  "edit": "Edit",
+  "loading": "Loading",
+  "save": "Save",
+  "cancel": "Cancel"
 }

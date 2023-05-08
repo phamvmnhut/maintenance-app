@@ -14,17 +14,16 @@ class Care extends Equatable {
   final Timestamp start_date;
   final String status;
 
-  const Care({
-    required this.id,
-    required this.user_id,
-    required this.equipment_id,
-    required this.memo_name,
-    required this.image,
-    required this.care_next_time,
-    required this.routine,
-    required this.start_date,
-    required this.status
-  });
+  const Care(
+      {required this.id,
+      required this.user_id,
+      required this.equipment_id,
+      required this.memo_name,
+      required this.image,
+      required this.care_next_time,
+      required this.routine,
+      required this.start_date,
+      required this.status});
 
   @override
   List<Object> get props => [
@@ -86,5 +85,17 @@ class Care extends Equatable {
         'start_date': start_date,
         'status': status,
       };
+  static List<String> RoutineType() {
+    return <String>['Days', 'Weeks', 'Months', 'Years'];
+  }
+
+  int getNumberInRoutine() {
+    return int.parse(routine.split("_")[0]);
+  }
+
+  String getTypeInRoutine() {
+    return routine.split("_")[1];
+  }
 }
+
 List<String> list = <String>['Days', 'Weeks', 'Months', 'Years'];

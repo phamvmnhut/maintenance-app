@@ -20,6 +20,11 @@ class CareEventAddData extends CareEvent {
   CareEventAddData({required this.filePath, required this.care});
 }
 
+class CareEventDelete extends CareEvent {
+  final String careId;
+  CareEventDelete({required this.careId});
+}
+
 class CareState {
   bool isLoading = true;
   Care? care;
@@ -75,6 +80,7 @@ class CareBloc extends Bloc<CareEvent, CareState> {
     on<CareEventSetup>(_getSetupData);
     on<CareEventSearch>(_search);
     on<CareEventAddData>(_addData);
+    on<CareEventDelete>(_deleteOne);
   }
   void _getSetupData(CareEventSetup event, Emitter<CareState> emit) async {
     List<Care> listSoon = await _repository.getList(
@@ -125,5 +131,18 @@ class CareBloc extends Bloc<CareEvent, CareState> {
     String careId = await _repository.create(d: newCare);
     emit(state.copyWith(
         isCreateProcessing: false, isCreated: true, careId: careId));
+  }
+
+  void _deleteOne(CareEventDelete event, Emitter<CareState> emit) async {
+    bool result = await _repository.delete(id: event.careId);
+    if (result == true) {
+      List<Care> listSoon = await _repository.getList(
+        param: CareRepositoryGetListParam(name: "", isSortByCareNextTime: true),
+      );
+      List<Care> list = await _repository.search(
+        param: CareRepositorySearchParam(name: ""),
+      );
+      emit(CareState(careSoonList: listSoon, careList: list, isLoading: false));
+    }
   }
 }
