@@ -118,15 +118,16 @@ class CareBloc extends Bloc<CareEvent, CareState> {
       imageUrl = await fileUpload.getDownloadURL();
     }
     Care newCare = Care(
-        id: '',
-        user_id: 'AD',
-        equipment_id: event.care.equipment_id,
-        memo_name: event.care.memo_name,
-        image: imageUrl,
-        care_next_time: event.care.care_next_time,
-        routine: event.care.routine,
-        start_date: event.care.start_date,
-        status: event.care.status);
+      id: '',
+      user_id: 'AD',
+      equipment_id: event.care.equipment_id,
+      memo_name: event.care.memo_name,
+      image: imageUrl,
+      care_next_time: event.care.care_next_time,
+      routine: event.care.routine,
+      start_date: event.care.start_date,
+      status: CareStatus.Active(),
+    );
 
     String careId = await _repository.create(d: newCare);
     emit(state.copyWith(

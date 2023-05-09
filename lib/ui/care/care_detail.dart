@@ -3,11 +3,12 @@
 import 'package:divice/business/care.dart';
 import 'package:divice/business/care_detail.dart';
 import 'package:divice/config/color.dart';
-import 'package:divice/domain/entities/care_history.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/care_repository_firebase.dart';
+import 'package:divice/ui/care/widgets/care_edit_bottomsheet.dart';
 import 'package:divice/ui/care/widgets/care_history_add_bottomsheet.dart';
 import 'package:divice/ui/care/widgets/care_history_edit_or_delete_bottomsheet.dart';
+import 'package:divice/ui/care/widgets/care_status_toggle.dart';
 import 'package:divice/ui/care/widgets/equipment_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,6 @@ import 'package:divice/generated/l10n.dart';
 import 'package:intl/intl.dart';
 
 import '../components/app_alert.dart';
-import '../device/list_device/widgets/modal_bottom_sheet_custom.dart';
 
 class CareDetailPage extends StatelessWidget {
   const CareDetailPage({Key? key}) : super(key: key);
@@ -71,27 +71,34 @@ class _CareDetailViewState extends State<CareDetailView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 52),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Icon(
-                      Icons.arrow_back_sharp,
-                      size: 16.0,
-                      color: AppColors.grayColor,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 48,
+                        width: 48,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          Icons.arrow_back_sharp,
+                          size: 16.0,
+                          color: AppColors.grayColor,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  if (state.care?.status != null)
+                    CareStatusToggle(status: state.care!.status),
+                ],
               ),
               const SizedBox(height: 24),
               Padding(
@@ -349,7 +356,8 @@ class _CareDetailViewState extends State<CareDetailView> {
                                               children: [
                                                 GestureDetector(
                                                   onTap: () {
-                                                    careHistoryEditOrDeleteBottomSheet(context, e);
+                                                    careHistoryEditOrDeleteBottomSheet(
+                                                        context, e);
                                                   },
                                                   child: const Icon(
                                                       Icons.edit_note),
@@ -373,7 +381,9 @@ class _CareDetailViewState extends State<CareDetailView> {
                     Expanded(
                       flex: 1,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          careEditBottomSheet(context, state.care!);
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           height: 56,
