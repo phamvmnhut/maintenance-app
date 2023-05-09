@@ -1,13 +1,22 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:divice/business/care.dart';
 import 'package:divice/business/care_detail.dart';
 import 'package:divice/config/color.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/care_repository_firebase.dart';
+import 'package:divice/ui/care/widgets/care_edit_bottomsheet.dart';
+import 'package:divice/ui/care/widgets/care_history_add_bottomsheet.dart';
+import 'package:divice/ui/care/widgets/care_history_edit_or_delete_bottomsheet.dart';
+import 'package:divice/ui/care/widgets/care_status_toggle.dart';
+import 'package:divice/ui/care/widgets/equipment_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:divice/generated/l10n.dart';
+import 'package:intl/intl.dart';
+
+import '../components/app_alert.dart';
 
 class CareDetailPage extends StatelessWidget {
   const CareDetailPage({Key? key}) : super(key: key);
@@ -50,6 +59,8 @@ class _CareDetailViewState extends State<CareDetailView> {
     super.didChangeDependencies();
   }
 
+  final DateTime _nowTime = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,27 +71,34 @@ class _CareDetailViewState extends State<CareDetailView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 52),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Icon(
-                      Icons.arrow_back_sharp,
-                      size: 16.0,
-                      color: AppColors.grayColor,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 48,
+                        width: 48,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          Icons.arrow_back_sharp,
+                          size: 16.0,
+                          color: AppColors.grayColor,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  if (state.care?.status != null)
+                    CareStatusToggle(status: state.care!.status),
+                ],
               ),
               const SizedBox(height: 24),
               Padding(
@@ -97,16 +115,7 @@ class _CareDetailViewState extends State<CareDetailView> {
                     )),
               ),
               const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text("Điện thoại | Iphone 14"),
-                    Text("Màn hình"),
-                  ],
-                ),
-              ),
+              EquipmentData(equipmentId: state.care?.equipment_id),
               const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -143,8 +152,18 @@ class _CareDetailViewState extends State<CareDetailView> {
                                     const SizedBox(
                                       height: 4,
                                     ),
-                                    const Text("21/01/2023"),
-                                    const Text("10:30 AM"),
+                                    if (state.care?.care_next_time != null)
+                                      Text(
+                                        DateFormat.yMd('es').format(state
+                                            .care!.care_next_time
+                                            .toDate()),
+                                      ),
+                                    if (state.care?.care_next_time != null)
+                                      Text(
+                                        DateFormat.jms().format(state
+                                            .care!.care_next_time
+                                            .toDate()),
+                                      ),
                                   ],
                                 ),
                               ),
@@ -155,15 +174,13 @@ class _CareDetailViewState extends State<CareDetailView> {
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w300,
                                       )),
-                                  Text(
-                                    S.of(context).xx_day.replaceFirst(
-                                          RegExp(r'xx'),
-                                          "30",
-                                        ),
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                  if (state.care?.care_next_time != null)
+                                    Text(
+                                      "${state.care!.getNumberInRoutine()} ${state.care!.getTypeInRoutine()}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
                                 ],
                               )
                             ],
@@ -205,12 +222,18 @@ class _CareDetailViewState extends State<CareDetailView> {
                                     const SizedBox(
                                       height: 4,
                                     ),
-                                    Text(
-                                      S.of(context).xx_day.replaceFirst(
-                                            RegExp(r'xx'),
-                                            "365",
-                                          ),
-                                    ),
+                                    if (state.care?.start_date != null)
+                                      Text(
+                                        S.of(context).xx_day.replaceFirst(
+                                              RegExp(r'xx'),
+                                              _nowTime
+                                                  .difference(state
+                                                      .care!.start_date
+                                                      .toDate())
+                                                  .inDays
+                                                  .toString(),
+                                            ),
+                                      ),
                                   ],
                                 ),
                               ),
@@ -244,7 +267,9 @@ class _CareDetailViewState extends State<CareDetailView> {
                       ],
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        careHistoryAddBottomSheet(context);
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         height: 48,
@@ -314,9 +339,9 @@ class _CareDetailViewState extends State<CareDetailView> {
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
-                                                Text(
-                                                  e.date.toString(),
-                                                )
+                                                Text(DateFormat()
+                                                    .format(e.date)
+                                                    .toString())
                                               ],
                                             ),
                                           ),
@@ -328,8 +353,15 @@ class _CareDetailViewState extends State<CareDetailView> {
                                                   MainAxisAlignment.start,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.end,
-                                              children: const [
-                                                Icon(Icons.edit_note),
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    careHistoryEditOrDeleteBottomSheet(
+                                                        context, e);
+                                                  },
+                                                  child: const Icon(
+                                                      Icons.edit_note),
+                                                ),
                                               ],
                                             ),
                                           )
@@ -349,7 +381,9 @@ class _CareDetailViewState extends State<CareDetailView> {
                     Expanded(
                       flex: 1,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          careEditBottomSheet(context, state.care!);
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           height: 56,
@@ -357,11 +391,13 @@ class _CareDetailViewState extends State<CareDetailView> {
                             borderRadius: BorderRadius.circular(14),
                             color: Theme.of(context).primaryColor,
                           ),
-                          child: const Text('Chỉnh sửa',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17,
-                                  color: Colors.white)),
+                          child: Text(
+                            S.of(context).edit,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
@@ -371,7 +407,17 @@ class _CareDetailViewState extends State<CareDetailView> {
                     Expanded(
                       flex: 1,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          alertDialogDeleteApp(context).then((value) {
+                            if (value == true) {
+                              BlocProvider.of<CareBloc>(
+                                context,
+                                listen: false,
+                              ).add(CareEventDelete(careId: state.careId));
+                              Navigator.pop(context);
+                            }
+                          });
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           height: 56,
@@ -379,11 +425,13 @@ class _CareDetailViewState extends State<CareDetailView> {
                             borderRadius: BorderRadius.circular(14),
                             color: Theme.of(context).errorColor,
                           ),
-                          child: const Text('Xoá',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17,
-                                  color: Colors.white)),
+                          child: Text(
+                            S.of(context).delete,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
                     ),

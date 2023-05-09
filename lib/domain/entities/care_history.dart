@@ -18,6 +18,16 @@ class CareHistory extends Equatable {
     required this.image,
   });
 
+  static CareHistory newEmpty() {
+    return CareHistory(
+      id: '',
+      care_id: '',
+      memo: '',
+      date: DateTime.now(),
+      image: '',
+    );
+  }
+
   @override
   List<Object> get props => [id, care_id, memo, date];
 
@@ -47,11 +57,18 @@ class CareHistory extends Equatable {
     );
   }
 
-  Map<String, Object?> toJson() =>
-      <String, dynamic>{
+  Map<String, Object?> toJson() => <String, dynamic>{
         'care_id': care_id,
         'memo': memo,
-        'date': date,
+        'date': Timestamp.fromDate(
+          DateTime(
+            date.year,
+            date.month,
+            date.day,
+            date.hour,
+            date.minute,
+          ),
+        ),
         'image': image,
       };
 }

@@ -13,5 +13,10 @@
   "have_care_time": "Bạn có xx lần bảo trì",
   "xx_day": "xx Ngày",
   "care_as_soon": "Bảo trì sắp tới",
-  "hello": "Xin chào"
+  "hello": "Xin chào",
+  "delete": "Xoá",
+  "edit": "Chỉnh sửa",
+  "loading": "Đang tải",
+  "save": "Lưu",
+  "cancel": "Huỷ"
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:divice/utils/time.dart';
 import 'package:equatable/equatable.dart';
 
 class Care extends Equatable {
@@ -14,17 +15,16 @@ class Care extends Equatable {
   final Timestamp start_date;
   final String status;
 
-  const Care({
-    required this.id,
-    required this.user_id,
-    required this.equipment_id,
-    required this.memo_name,
-    required this.image,
-    required this.care_next_time,
-    required this.routine,
-    required this.start_date,
-    required this.status
-  });
+  const Care(
+      {required this.id,
+      required this.user_id,
+      required this.equipment_id,
+      required this.memo_name,
+      required this.image,
+      required this.care_next_time,
+      required this.routine,
+      required this.start_date,
+      required this.status});
 
   @override
   List<Object> get props => [
@@ -38,6 +38,20 @@ class Care extends Equatable {
         start_date,
         status
       ];
+
+  static Care newEmpty() {
+    return Care(
+      id: '',
+      user_id: '',
+      equipment_id: '',
+      memo_name: '',
+      image: '',
+      care_next_time: UtilsTimeApp.dateTimeToTimeStamp(DateTime.now()),
+      routine: '',
+      start_date: UtilsTimeApp.dateTimeToTimeStamp(DateTime.now()),
+      status: '',
+    );
+  }
 
   Care copyWith({
     String? id,
@@ -86,5 +100,40 @@ class Care extends Equatable {
         'start_date': start_date,
         'status': status,
       };
+  static List<String> RoutineType() {
+    return <String>['Days', 'Weeks', 'Months', 'Years'];
+  }
+
+  int getNumberInRoutine() {
+    return int.parse(routine.split("_")[0]);
+  }
+
+  String getTypeInRoutine() {
+    return routine.split("_")[1];
+  }
 }
+
 List<String> list = <String>['Days', 'Weeks', 'Months', 'Years'];
+
+class CareStatus {
+  static List<String> Status() {
+    return <String>['ACTIVE', 'CARING', 'ARCHIVED'];
+  }
+
+  static String Active() {
+    return Status()[0];
+  }
+
+  static String Caring() {
+    return Status()[1];
+  }
+
+  static String Archived() {
+    return Status()[2];
+  }
+
+  static String indexToStatus(int index) {
+    if (index < 0 || index >= Status().length) return Status()[0];
+    return Status()[index];
+  }
+}
