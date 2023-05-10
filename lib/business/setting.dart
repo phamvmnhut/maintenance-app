@@ -11,35 +11,42 @@ class ChangeLocaleEvent extends ThemeEvent {
   ChangeLocaleEvent({required this.lo});
 }
 
-class ChangeScreenEvent extends ThemeEvent {
-  int index;
-  ChangeScreenEvent({required this.index});
-}
-
 class ThemeState {
   bool isDarkModeEnabled;
   Locale local;
-  int index;
 
-  ThemeState({required this.isDarkModeEnabled, required this.local, required this.index});
+  ThemeState({
+    required this.isDarkModeEnabled,
+    required this.local,
+  });
 
   ThemeState.initialState()
-      : this(isDarkModeEnabled: false, local: const Locale("en"), index: 0);
+      : this(
+          isDarkModeEnabled: false,
+          local: const Locale("en"),
+        );
+
+  ThemeState copyWith({
+    bool? isDarkModeEnabled,
+    Locale? local,
+  }) {
+    return ThemeState(
+      isDarkModeEnabled: isDarkModeEnabled ?? this.isDarkModeEnabled,
+      local: local ?? this.local,
+    );
+  }
 }
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(ThemeState.initialState()) {
     on<ToggleThemeEvent>((event, emit) {
       emit(ThemeState(
-          isDarkModeEnabled: !state.isDarkModeEnabled, local: state.local, index: state.index));
+        isDarkModeEnabled: !state.isDarkModeEnabled,
+        local: state.local,
+      ));
     });
     on<ChangeLocaleEvent>((event, emit) {
-      emit(ThemeState(
-          isDarkModeEnabled: state.isDarkModeEnabled, local: event.lo, index: state.index));
-    });
-    on<ChangeScreenEvent>((event, emit) {
-      emit(ThemeState(
-          isDarkModeEnabled: state.isDarkModeEnabled, local: state.local, index: event.index));
+      emit(state.copyWith(local: event.lo));
     });
   }
 }

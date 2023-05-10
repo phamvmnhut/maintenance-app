@@ -96,14 +96,7 @@ class _HomePageState extends State<HomePage> {
                                                     AuthState>(
                                                   builder: (context, state) =>
                                                       Text(
-                                                    !state.isAuth
-                                                        ? "No Login Account"
-                                                        : state.user!
-                                                                    .displayName ==
-                                                                null
-                                                            ? "No Name"
-                                                            : state.user!
-                                                                .displayName!,
+                                                    state.userName,
                                                     style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,

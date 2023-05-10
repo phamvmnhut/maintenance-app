@@ -32,43 +32,41 @@ class _SettingPageState extends State<SettingPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(
                       top: 8, left: 32, right: 32, bottom: 8),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 53,
-                        height: 53,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(13),
-                          color: Colors.amberAccent,
+                  child: BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) => Row(
+                      children: [
+                        SizedBox(
+                          width: 53,
+                          height: 53,
+                          child: CircleAvatar(
+                            maxRadius: 60,
+                            backgroundImage: NetworkImage(
+                              state.user?.photoURL ?? placeholderImage,
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            BlocBuilder<AuthBloc, AuthState>(
-                              builder: (context, state) => Text(
-                                !state.isAuth
-                                    ? "No Login Account"
-                                    : state.user!.displayName == null
-                                        ? "No Name"
-                                        : state.user!.displayName!,
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                state.userName,
                                 style: Theme.of(context).textTheme.headline6,
                               ),
-                            ),
-                            const Text("id, media and shopping"),
-                          ],
+                              Text(S.of(context).user_intro),
+                            ],
+                          ),
                         ),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right_outlined,
-                        color: AppColors.grayColor,
-                      ),
-                    ],
+                        Icon(
+                          Icons.keyboard_arrow_right_outlined,
+                          color: AppColors.grayColor,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 onTap: () {
@@ -114,11 +112,17 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                       onTap: () {
                         showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              List<Locale> listLocale =
-                                  S.delegate.supportedLocales;
-                              return SizedBox(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (context) {
+                            List<Locale> listLocale =
+                                S.delegate.supportedLocales;
+                            return Padding(
+                              padding: MediaQuery.of(context).viewInsets,
+                              child: Container(
+                                color: Theme.of(context).canvasColor,
+                                alignment: Alignment.topCenter,
+                                height: 160,
                                 child: ListView.builder(
                                   itemBuilder: (context, index) {
                                     return ListTile(
@@ -133,8 +137,10 @@ class _SettingPageState extends State<SettingPage> {
                                   },
                                   itemCount: listLocale.length,
                                 ),
-                              );
-                            });
+                              ),
+                            );
+                          },
+                        );
                       },
                     ),
                     const Padding(

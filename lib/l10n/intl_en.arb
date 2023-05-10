@@ -18,5 +18,11 @@
   "edit": "Edit",
   "loading": "Loading",
   "save": "Save",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "sent": "Sent",
+  "udpate": "Update",
+  "verify_email": "Verify Email",
+  "update_username": "Update Username",
+  "login": "Login",
+  "user_intro": "id, media and shopping"
 }

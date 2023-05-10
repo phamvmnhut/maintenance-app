@@ -18,5 +18,11 @@
   "edit": "Chỉnh sửa",
   "loading": "Đang tải",
   "save": "Lưu",
-  "cancel": "Huỷ"
+  "cancel": "Huỷ",
+  "sent": "Gửi",
+  "update": "Cập nhật",
+  "verify_email": "Xác thực email",
+  "update_username": "Cập nhật tên đại diện",
+  "login": "Đăng nhập",
+  "user_intro": "Tài khoản, phương tiện và mua sắm"
 }

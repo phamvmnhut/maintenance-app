@@ -1,11 +1,11 @@
-import 'dart:developer';
-
 import 'package:divice/business/auth.dart';
+import 'package:divice/config/color.dart';
 import 'package:divice/generated/l10n.dart';
+import 'package:divice/ui/auth/widgets/profile_update_username_bottomsheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'auth.dart';
 
@@ -19,263 +19,214 @@ class ProfilePage extends StatefulWidget {
   ProfilePageState createState() => ProfilePageState();
 }
 
-class ProfilePageState extends State<ProfilePage> {
-  late User user;
-  late TextEditingController controller;
-  final phoneController = TextEditingController();
-
-  String? photoURL;
-
-  bool showSaveButton = false;
-  bool isLoading = false;
-
+class ProfilePageState extends State<ProfilePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   @override
   void initState() {
-    user = FirebaseAuth.instance.currentUser!;
-    controller = TextEditingController(text: user.displayName);
-
-    controller.addListener(_onNameChanged);
-
-    FirebaseAuth.instance.userChanges().listen((event) {
-      if (event != null && mounted) {
-        setState(() {
-          user = event;
-        });
-        BlocProvider.of<AuthBloc>(context, listen: false)
-            .add(LoginAuthEvent(user: user));
-      }
-    });
-
-    log(user.toString());
-
+    _tabController = TabController(length: 3, vsync: this);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.removeListener(_onNameChanged);
-
-    super.dispose();
-  }
-
-  void setIsLoading() {
-    setState(() {
-      isLoading = !isLoading;
-    });
-  }
-
-  void _onNameChanged() {
-    setState(() {
-      if (controller.text == user.displayName || controller.text.isEmpty) {
-        showSaveButton = false;
-      } else {
-        showSaveButton = true;
-      }
-    });
-  }
-
-  List get userProviders => user.providerData.map((e) => e.providerId).toList();
-
-  Future updateDisplayName() async {
-    await user.updateDisplayName(controller.text);
-
-    setState(() {
-      showSaveButton = false;
-    });
-
-    // ignore: use_build_context_synchronously
-    ScaffoldSnackbar.of(context).show('Name updated');
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
-      child: Scaffold(
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+      child: BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
+        User userState = authState.user!;
+        return Scaffold(
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 52),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 52),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 32),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 48,
-                          width: 48,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: const Icon(
-                            Icons.arrow_back_sharp,
-                            size: 16.0,
-                            color: Color(0xFF9B9B9B),
-                          ),
-                        ),
+                  const SizedBox(width: 32),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 48,
+                      width: 48,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(14),
                       ),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        maxRadius: 60,
-                        backgroundImage: NetworkImage(
-                          user.photoURL ?? placeholderImage,
-                        ),
-                      ),
-                      Positioned.directional(
-                        textDirection: Directionality.of(context),
-                        end: 0,
-                        bottom: 0,
-                        child: Material(
-                          clipBehavior: Clip.antiAlias,
-                          color: Theme.of(context).colorScheme.secondary,
-                          borderRadius: BorderRadius.circular(40),
-                          child: InkWell(
-                            onTap: () async {
-                              // final photoURL = await getPhotoURLFromUser();
-                              //
-                              // if (photoURL != null) {
-                              //   await user.updatePhotoURL(photoURL);
-                              // }
-                            },
-                            radius: 50,
-                            child: const SizedBox(
-                              width: 35,
-                              height: 35,
-                              child: Icon(Icons.edit),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    textAlign: TextAlign.center,
-                    controller: controller,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      alignLabelWithHint: true,
-                      label: Center(
-                        child: Text(
-                          'Click to add a display name',
-                        ),
+                      child: Icon(
+                        Icons.arrow_back_sharp,
+                        size: 16.0,
+                        color: AppColors.grayColor,
                       ),
                     ),
                   ),
-                  Text(user.email ?? user.phoneNumber ?? 'User'),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (userProviders.contains('phone'))
-                        const Icon(Icons.phone),
-                      if (userProviders.contains('password'))
-                        const Icon(Icons.mail),
-                      if (userProviders.contains('google.com'))
-                        SizedBox(
-                          width: 24,
-                          child: Image.network(
-                            'https://upload.wikimedia.org/wikipedia/commons/0/09/IOS_Google_icon.png',
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () {
-                      user.sendEmailVerification();
-                    },
-                    child: const Text('Verify Email'),
-                  ),
-                  const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: _signOut,
-                    child: Text(S.of(context).logout),
-                  ),
                 ],
               ),
-            ),
-            Positioned.directional(
-              textDirection: Directionality.of(context),
-              end: 40,
-              top: 40,
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: !showSaveButton
-                    ? SizedBox(key: UniqueKey())
-                    : TextButton(
-                        onPressed: isLoading ? null : updateDisplayName,
-                        child: const Text('Save changes'),
+              const SizedBox(height: 10),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: Theme.of(context).cardColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 20),
+                      Stack(
+                        children: [
+                          CircleAvatar(
+                            maxRadius: 40,
+                            backgroundImage: NetworkImage(
+                              userState.photoURL ?? placeholderImage,
+                            ),
+                          ),
+                          Positioned.directional(
+                            textDirection: Directionality.of(context),
+                            end: 0,
+                            bottom: 0,
+                            child: Material(
+                              clipBehavior: Clip.antiAlias,
+                              color: Theme.of(context).colorScheme.secondary,
+                              borderRadius: BorderRadius.circular(40),
+                              child: InkWell(
+                                onTap: () async {
+                                  ImagePicker imagePicker = ImagePicker();
+                                  XFile? file = await imagePicker.pickImage(
+                                      source: ImageSource.gallery);
+                                  if (file != null) {
+                                    BlocProvider.of<AuthBloc>(context,
+                                            listen: false)
+                                        .add(
+                                      AuthEventUpdateUser(imagePath: file.path),
+                                    );
+                                  }
+                                },
+                                radius: 50,
+                                child: const SizedBox(
+                                  width: 25,
+                                  height: 25,
+                                  child: Icon(Icons.edit, size: 16),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
+                      const SizedBox(width: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(authState.userName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1
+                                  ?.copyWith(fontWeight: FontWeight.bold)),
+                          Text(
+                            "Username",
+                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                                color: AppColors.grayColor,
+                                fontWeight: FontWeight.normal),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(userState.email ?? "",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1
+                                  ?.copyWith(fontWeight: FontWeight.bold)),
+                          Text(
+                            "Email",
+                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                                color: AppColors.grayColor,
+                                fontWeight: FontWeight.normal),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<String?> getPhotoURLFromUser() async {
-    String? photoURL;
-
-    // Update the UI - wait for the user to enter the SMS code
-    await showDialog<String>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('New image Url:'),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Update'),
-            ),
-            OutlinedButton(
-              onPressed: () {
-                photoURL = null;
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
-          content: Container(
-            padding: const EdgeInsets.all(20),
-            child: TextField(
-              onChanged: (value) {
-                photoURL = value;
-              },
-              textAlign: TextAlign.center,
-              autofocus: true,
-            ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: TabBar(
+                  unselectedLabelColor: AppColors.grayColor,
+                  labelColor: AppColors.greenColor,
+                  tabs: const [
+                    Tab(
+                      icon: Icon(Icons.person),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.shop),
+                    ),
+                    Tab(
+                      icon: Icon(Icons.podcasts),
+                    )
+                  ],
+                  controller: _tabController,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                ),
+              ),
+              Flexible(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 20),
+                        TextButton(
+                          onPressed: () {
+                            profileUpdateUsernameBottomSheet(
+                                context, authState.userName);
+                          },
+                          child: Text(S.of(context).update_username),
+                        ),
+                        const SizedBox(height: 5),
+                        TextButton(
+                          onPressed: () {
+                            BlocProvider.of<AuthBloc>(context)
+                                .add(AuthEventSentEmailVerify());
+                          },
+                          child: Text(S.of(context).verify_email),
+                        ),
+                        const SizedBox(height: 5),
+                        TextButton(
+                          onPressed: () {
+                            BlocProvider.of<AuthBloc>(context, listen: false)
+                                .add(AuthEventLogout());
+                            if (mounted) {
+                              // Navigator.of(context).pushAndRemoveUntil(
+                              //     MaterialPageRoute(
+                              //         builder: (context) => const AuthGate()),
+                              //     (Route<dynamic> route) => false);
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text(S.of(context).logout),
+                        ),
+                      ],
+                    ),
+                    const Center(
+                      child: Text("Coming soon"),
+                    ),
+                    const Center(
+                      child: Text("Coming soon"),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
-      },
+        // }
+      }),
     );
-
-    return photoURL;
-  }
-
-  Future<void> _signOut() async {
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
-    if (mounted) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const AuthGate()),
-          (Route<dynamic> route) => false);
-    }
   }
 }

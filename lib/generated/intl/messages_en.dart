@@ -34,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hello": MessageLookupByLibrary.simpleMessage("Hello"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading"),
+        "login": MessageLookupByLibrary.simpleMessage("Login"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "next_time_care":
             MessageLookupByLibrary.simpleMessage("Next Time Care"),
@@ -42,8 +43,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Privacy and Policy"),
         "reminder": MessageLookupByLibrary.simpleMessage("Reminder"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "sent": MessageLookupByLibrary.simpleMessage("Sent"),
         "setting": MessageLookupByLibrary.simpleMessage("Setting"),
         "time_used": MessageLookupByLibrary.simpleMessage("Time used"),
+        "udpate": MessageLookupByLibrary.simpleMessage("Update"),
+        "update_username":
+            MessageLookupByLibrary.simpleMessage("Update Username"),
+        "user_intro":
+            MessageLookupByLibrary.simpleMessage("id, media and shopping"),
+        "verify_email": MessageLookupByLibrary.simpleMessage("Verify Email"),
         "xx_day": MessageLookupByLibrary.simpleMessage("xx Days")
       };
 }

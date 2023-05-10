@@ -9,6 +9,7 @@ import 'package:divice/domain/repositories/firebase/equipment_repository_firebas
 import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
 import 'package:divice/ui/device/new_care/add_new_care_ui.dart';
 import 'package:divice/ui/device/list_device/device.dart';
+import 'package:divice/ui/home/home_gate.dart';
 import 'package:divice/ui/search/care_search.dart';
 import 'package:divice/ui/setting/setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -81,29 +82,21 @@ class App extends StatelessWidget {
             ),
           ),
         ],
-        child: const AppM(),
+        child: const AppTheme(),
       ),
     );
   }
 }
 
-class AppM extends StatelessWidget {
-  const AppM({Key? key}) : super(key: key);
+class AppTheme extends StatelessWidget {
+  const AppTheme({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final screens = [
-      const HomePage(),
-      const CareSearch(),
-      const AddNewCare(),
-      const DevicePage(),
-      const SettingPage()
-    ];
-
     return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) => MaterialApp(
+      builder: (context, themeState) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: state.isDarkModeEnabled ? darkTheme : lightTheme,
+        theme: themeState.isDarkModeEnabled ? darkTheme : lightTheme,
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -111,27 +104,38 @@ class AppM extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        locale: state.local,
-        home: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              BlocProvider.of<AuthBloc>(context, listen: false)
-                  .add(LoginAuthEvent(user: snapshot.data!));
-              return Scaffold(
-                body: IndexedStack(
-                  index: state.index,
-                  children: screens,
-                ),
-                bottomNavigationBar: const BottomNavigationBarCustomize(),
-              );
-            }
-            BlocProvider.of<AuthBloc>(context, listen: false)
-                .add(LogoutAuthEvent());
-            return const AuthGate();
-          },
-        ),
+        locale: themeState.local,
+        home: const AppAuth(),
       ),
+    );
+  }
+}
+
+class AppAuth extends StatefulWidget {
+  const AppAuth({Key? key}) : super(key: key);
+
+  @override
+  State<AppAuth> createState() => _AppAuthState();
+}
+
+class _AppAuthState extends State<AppAuth> {
+  @override
+  void didChangeDependencies() {
+    context.read<AuthBloc>().add(AuthEventSetup());
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      buildWhen: (pre, cur) => pre.isAuth != cur.isAuth,
+      builder: (context, authState) {
+        if (authState.isAuth) {
+          return const HomeGate();
+        } else {
+          return const AuthGate();
+        }
+      },
     );
   }
 }

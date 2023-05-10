@@ -34,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "hello": MessageLookupByLibrary.simpleMessage("Xin chào"),
         "language": MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
         "loading": MessageLookupByLibrary.simpleMessage("Đang tải"),
+        "login": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
         "logout": MessageLookupByLibrary.simpleMessage("Đăng xuất"),
         "next_time_care":
             MessageLookupByLibrary.simpleMessage("Bào trì lần kế"),
@@ -42,8 +43,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Chính sách bảo mật và quyền riêng tư"),
         "reminder": MessageLookupByLibrary.simpleMessage("Nhắc nhở"),
         "save": MessageLookupByLibrary.simpleMessage("Lưu"),
+        "sent": MessageLookupByLibrary.simpleMessage("Gửi"),
         "setting": MessageLookupByLibrary.simpleMessage("Cài đặt"),
         "time_used": MessageLookupByLibrary.simpleMessage("Sức khoẻ"),
+        "update_username":
+            MessageLookupByLibrary.simpleMessage("Cập nhật tên đại diện"),
+        "user_intro": MessageLookupByLibrary.simpleMessage(
+            "Tài khoản, phương tiện và mua sắm"),
+        "verify_email": MessageLookupByLibrary.simpleMessage("Xác thực email"),
         "xx_day": MessageLookupByLibrary.simpleMessage("xx Ngày")
       };
 }
