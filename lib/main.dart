@@ -88,8 +88,19 @@ class App extends StatelessWidget {
   }
 }
 
-class AppTheme extends StatelessWidget {
+class AppTheme extends StatefulWidget {
   const AppTheme({Key? key}) : super(key: key);
+
+  @override
+  State<AppTheme> createState() => _AppThemeState();
+}
+
+class _AppThemeState extends State<AppTheme> {
+  @override
+  void initState() {
+    context.read<ThemeBloc>().add(ThemeEventSetup());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
