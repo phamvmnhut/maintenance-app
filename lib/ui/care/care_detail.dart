@@ -5,6 +5,7 @@ import 'package:divice/business/care_detail.dart';
 import 'package:divice/config/color.dart';
 import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
 import 'package:divice/domain/repositories/firebase/care_repository_firebase.dart';
+import 'package:divice/domain/services/notify.dart';
 import 'package:divice/ui/auth/auth.dart';
 import 'package:divice/ui/care/widgets/care_edit_bottomsheet.dart';
 import 'package:divice/ui/care/widgets/care_history_add_bottomsheet.dart';
@@ -443,6 +444,9 @@ class _CareDetailViewState extends State<CareDetailView> {
                                   context,
                                   listen: false,
                                 ).add(CareEventDelete(careId: state.careId));
+                                NotifyHelper(context)
+                                    .cancelNotificationSchedule(
+                                        state.careId.hashCode);
                                 Navigator.pop(context);
                               }
                             });

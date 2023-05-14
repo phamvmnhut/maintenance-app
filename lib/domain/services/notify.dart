@@ -120,7 +120,7 @@ class NotifyHelper {
   scheduledNotification(
       String title, String body, DateTime dateTime, String careId) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
+      careId.hashCode,
       title,
       body,
       _convertTime(dateTime),
@@ -153,5 +153,9 @@ class NotifyHelper {
       scheduleDate = scheduleDate.add(const Duration(days: 1));
     }
     return scheduleDate;
+  }
+
+  cancelNotificationSchedule(int id) {
+    flutterLocalNotificationsPlugin.cancel(id);
   }
 }
