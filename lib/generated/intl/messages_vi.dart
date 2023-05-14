@@ -22,14 +22,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "cancel": MessageLookupByLibrary.simpleMessage("Huỷ"),
         "care_as_soon": MessageLookupByLibrary.simpleMessage("Bảo trì sắp tới"),
         "care_time": MessageLookupByLibrary.simpleMessage("Các lần bảo trì"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Chế độ tối"),
+        "delete": MessageLookupByLibrary.simpleMessage("Xoá"),
+        "edit": MessageLookupByLibrary.simpleMessage("Chỉnh sửa"),
         "general": MessageLookupByLibrary.simpleMessage("Cấu hình chung"),
         "have_care_time":
             MessageLookupByLibrary.simpleMessage("Bạn có xx lần bảo trì"),
         "hello": MessageLookupByLibrary.simpleMessage("Xin chào"),
         "language": MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
+        "loading": MessageLookupByLibrary.simpleMessage("Đang tải"),
+        "login": MessageLookupByLibrary.simpleMessage("Đăng nhập"),
         "logout": MessageLookupByLibrary.simpleMessage("Đăng xuất"),
         "next_time_care":
             MessageLookupByLibrary.simpleMessage("Bào trì lần kế"),
@@ -37,8 +42,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "privacy_policy": MessageLookupByLibrary.simpleMessage(
             "Chính sách bảo mật và quyền riêng tư"),
         "reminder": MessageLookupByLibrary.simpleMessage("Nhắc nhở"),
+        "save": MessageLookupByLibrary.simpleMessage("Lưu"),
+        "sent": MessageLookupByLibrary.simpleMessage("Gửi"),
         "setting": MessageLookupByLibrary.simpleMessage("Cài đặt"),
         "time_used": MessageLookupByLibrary.simpleMessage("Sức khoẻ"),
+        "update_username":
+            MessageLookupByLibrary.simpleMessage("Cập nhật tên đại diện"),
+        "user_intro": MessageLookupByLibrary.simpleMessage(
+            "Tài khoản, phương tiện và mua sắm"),
+        "verify_email": MessageLookupByLibrary.simpleMessage("Xác thực email"),
         "xx_day": MessageLookupByLibrary.simpleMessage("xx Ngày")
       };
 }

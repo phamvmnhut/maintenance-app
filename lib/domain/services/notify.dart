@@ -1,7 +1,12 @@
+import 'package:divice/business/care_detail.dart';
+import 'package:divice/domain/repositories/device_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+import '../../ui/care/care_detail.dart';
 
 class NotifyHelper {
   BuildContext context;
@@ -9,8 +14,18 @@ class NotifyHelper {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin(); //
 
-  initializeNotification() async {
+  final channelId = 'device-care';
+  final channelName = 'device-care';
+  final channelDescription = 'receive reminder notifications device care';
+
+  _configureLocalTimezone() async {
     tz.initializeTimeZones();
+    final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZone));
+  }
+
+  initializeNotification() async {
+    _configureLocalTimezone();
     // this is for latest iOS settings
     final DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings(
@@ -42,10 +57,11 @@ class NotifyHelper {
         );
   }
 
-  displayNotification({required String title, required String body, required String id}) async {
-    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-        'your channel id', 'your channel name',
-        channelDescription: 'Your channel description',
+  displayNotification(
+      {required String title, required String body, required String id}) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        channelId, channelName,
+        channelDescription: channelDescription,
         importance: Importance.max,
         priority: Priority.high);
 
@@ -54,7 +70,6 @@ class NotifyHelper {
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
-  if(id!='123'){
     await flutterLocalNotificationsPlugin.show(
       2,
       title,
@@ -62,7 +77,6 @@ class NotifyHelper {
       platformChannelSpecifics,
       payload: 'It could be anything you pass',
     );
-    }
   }
 
   void onDidReceiveLocalNotification(
@@ -94,27 +108,50 @@ class NotifyHelper {
   void onDidReceiveNotificationResponse(
       NotificationResponse notificationResponse) async {
     final String? payload = notificationResponse.payload;
-    if (notificationResponse.payload != null) {
-      print('notification payload: $payload');
+    if (payload != null) {
+      await Navigator.of(context).push(
+        CareDetailPage.route(care_id: payload),
+      );
+    } else {
+      debugPrint('Payload is null');
     }
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
-    // );
   }
 
-  scheduledNotification(String title, String body) async {
+  scheduledNotification(
+      String title, String body, DateTime dateTime, String careId) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
-        3,
-        title,
-        body,
-        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 15)),
-        const NotificationDetails(
-            android: AndroidNotificationDetails(
-                'your channel id', 'your channel name',
-                channelDescription: 'your channel description')),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
+      0,
+      title,
+      body,
+      _convertTime(dateTime),
+      //tz.TZDateTime.now(tz.local).add(const Duration(seconds: 15)),
+      NotificationDetails(
+          android: AndroidNotificationDetails(
+        channelId,
+        channelName,
+        channelDescription: channelDescription,
+      )),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.dateAndTime,
+      payload: careId,
+    );
+  }
+
+  tz.TZDateTime _convertTime(DateTime dateTime) {
+    //final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduleDate = tz.TZDateTime(
+      tz.local,
+      dateTime.year,
+      dateTime.month,
+      dateTime.day,
+      dateTime.hour,
+      dateTime.minute,
+    );
+    if (scheduleDate.isBefore(dateTime)) {
+      scheduleDate = scheduleDate.add(const Duration(days: 1));
+    }
+    return scheduleDate;
   }
 }

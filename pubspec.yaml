@@ -68,6 +68,7 @@ dependencies:
   fluttertoast: ^8.2.1
   flutter_local_notifications: ^14.0.0+1
   flutter_native_timezone: ^2.0.0
+  shared_preferences: ^2.1.1
 
 dev_dependencies:
   flutter_test:

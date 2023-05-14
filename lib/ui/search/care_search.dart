@@ -16,6 +16,8 @@ class _CareSearchState extends State<CareSearch> {
   final fieldText = TextEditingController();
   bool _isTapped = false;
   Timer? _timer;
+  final ScrollController _scrollController = ScrollController();
+  int limit = 10;
 
   void timeText() {
     if (_timer?.isActive ?? false) {
@@ -36,11 +38,25 @@ class _CareSearchState extends State<CareSearch> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        setState(() {
+          limit += 10;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       body: BlocBuilder<CareBloc, CareState>(
         builder: (context, state) => SingleChildScrollView(
+          controller: _scrollController,
           child: Column(children: [
             Padding(
               padding: const EdgeInsets.only(
@@ -136,8 +152,10 @@ class _CareSearchState extends State<CareSearch> {
                     ],
                   )
                 : Column(
-                    children:
-                        state.careList.map((e) => CareCard(e: e)).toList(),
+                    children: state.careList
+                        .take(limit)
+                        .map((e) => CareCard(e: e))
+                        .toList(),
                   ),
           ]),
         ),

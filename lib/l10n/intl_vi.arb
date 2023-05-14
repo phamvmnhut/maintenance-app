@@ -13,5 +13,16 @@
   "have_care_time": "Bạn có xx lần bảo trì",
   "xx_day": "xx Ngày",
   "care_as_soon": "Bảo trì sắp tới",
-  "hello": "Xin chào"
+  "hello": "Xin chào",
+  "delete": "Xoá",
+  "edit": "Chỉnh sửa",
+  "loading": "Đang tải",
+  "save": "Lưu",
+  "cancel": "Huỷ",
+  "sent": "Gửi",
+  "update": "Cập nhật",
+  "verify_email": "Xác thực email",
+  "update_username": "Cập nhật tên đại diện",
+  "login": "Đăng nhập",
+  "user_intro": "Tài khoản, phương tiện và mua sắm"
 }

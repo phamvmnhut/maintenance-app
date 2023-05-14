@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:divice/business/auth.dart';
+import 'package:divice/generated/l10n.dart';
 import 'package:divice/ui/notification/toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -12,37 +13,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../config/color.dart';
+
 typedef OAuthSignIn = void Function();
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-/// Helper class to show a snackbar using the passed context.
-class ScaffoldSnackbar {
-  // ignore: public_member_api_docs
-  ScaffoldSnackbar(this._context);
-
-  /// The scaffold of current context.
-  factory ScaffoldSnackbar.of(BuildContext context) {
-    return ScaffoldSnackbar(context);
-  }
-
-  final BuildContext _context;
-
-  /// Helper method to show a SnackBar.
-  void show(String message) {
-    ScaffoldMessenger.of(_context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(message),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-  }
-}
-
-/// The mode of the current auth session, either [AuthMode.login] or [AuthMode.register].
-// ignore: public_member_api_docs
 enum AuthMode { login, register, phone }
 
 extension on AuthMode {
@@ -53,9 +29,7 @@ extension on AuthMode {
           : 'Register';
 }
 
-/// Entrypoint example for various sign-in flows with Firebase.
 class AuthGate extends StatefulWidget {
-  // ignore: public_member_api_docs
   const AuthGate({Key? key}) : super(key: key);
 
   @override
@@ -75,9 +49,15 @@ class _AuthGateState extends State<AuthGate> {
 
   bool isLoading = false;
 
-  void setIsLoading() {
+  void setOnLoading() {
     setState(() {
-      isLoading = !isLoading;
+      isLoading = true;
+    });
+  }
+
+  void setOffLoading() {
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -112,6 +92,12 @@ class _AuthGateState extends State<AuthGate> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset('assets/images/drugs.png'),
+                            ],
+                          ),
                           Visibility(
                             visible: error.isNotEmpty,
                             child: MaterialBanner(
@@ -126,7 +112,7 @@ class _AuthGateState extends State<AuthGate> {
                                     });
                                   },
                                   child: const Text(
-                                    'dismiss',
+                                    'Dismiss',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 )
@@ -166,19 +152,19 @@ class _AuthGateState extends State<AuthGate> {
                                 ),
                               ],
                             ),
-                          if (mode == AuthMode.phone)
-                            TextFormField(
-                              controller: phoneController,
-                              decoration: const InputDecoration(
-                                hintText: '+12345678910',
-                                labelText: 'Phone number',
-                                border: OutlineInputBorder(),
-                              ),
-                              validator: (value) =>
-                                  value != null && value.isNotEmpty
-                                      ? null
-                                      : 'Required',
-                            ),
+                          // if (mode == AuthMode.phone)
+                          //   TextFormField(
+                          //     controller: phoneController,
+                          //     decoration: const InputDecoration(
+                          //       hintText: '+84 123456789',
+                          //       labelText: 'Phone number',
+                          //       border: OutlineInputBorder(),
+                          //     ),
+                          //     validator: (value) =>
+                          //         value != null && value.isNotEmpty
+                          //             ? null
+                          //             : 'Required',
+                          //   ),
                           const SizedBox(height: 20),
                           SizedBox(
                             width: double.infinity,
@@ -223,32 +209,32 @@ class _AuthGateState extends State<AuthGate> {
                                 ),
                               )
                               .toList(),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: OutlinedButton(
-                              onPressed: isLoading
-                                  ? null
-                                  : () {
-                                      if (mode != AuthMode.phone) {
-                                        setState(() {
-                                          mode = AuthMode.phone;
-                                        });
-                                      } else {
-                                        setState(() {
-                                          mode = AuthMode.login;
-                                        });
-                                      }
-                                    },
-                              child: isLoading
-                                  ? const CircularProgressIndicator.adaptive()
-                                  : Text(
-                                      mode != AuthMode.phone
-                                          ? 'Sign in with Phone Number'
-                                          : 'Sign in with Email and Password',
-                                    ),
-                            ),
-                          ),
+                          // SizedBox(
+                          //   width: double.infinity,
+                          //   height: 50,
+                          //   child: OutlinedButton(
+                          //     onPressed: isLoading
+                          //         ? null
+                          //         : () {
+                          //             if (mode != AuthMode.phone) {
+                          //               setState(() {
+                          //                 mode = AuthMode.phone;
+                          //               });
+                          //             } else {
+                          //               setState(() {
+                          //                 mode = AuthMode.login;
+                          //               });
+                          //             }
+                          //           },
+                          //     child: isLoading
+                          //         ? const CircularProgressIndicator.adaptive()
+                          //         : Text(
+                          //             mode != AuthMode.phone
+                          //                 ? 'Sign in with Phone Number'
+                          //                 : 'Sign in with Email and Password',
+                          //           ),
+                          //   ),
+                          // ),
                           const SizedBox(height: 20),
                           if (mode != AuthMode.phone)
                             RichText(
@@ -278,20 +264,20 @@ class _AuthGateState extends State<AuthGate> {
                               ),
                             ),
                           const SizedBox(height: 10),
-                          RichText(
-                            text: TextSpan(
-                              style: Theme.of(context).textTheme.bodyLarge,
-                              children: [
-                                const TextSpan(text: 'Or '),
-                                TextSpan(
-                                  text: 'continue as guest',
-                                  style: const TextStyle(color: Colors.blue),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = _anonymousAuth,
-                                ),
-                              ],
-                            ),
-                          ),
+                          // RichText(
+                          //   text: TextSpan(
+                          //     style: Theme.of(context).textTheme.bodyLarge,
+                          //     children: [
+                          //       const TextSpan(text: 'Or '),
+                          //       TextSpan(
+                          //         text: 'continue as guest',
+                          //         style: const TextStyle(color: Colors.blue),
+                          //         recognizer: TapGestureRecognizer()
+                          //           ..onTap = _anonymousAuth,
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -307,29 +293,60 @@ class _AuthGateState extends State<AuthGate> {
 
   Future _resetPassword() async {
     String? email;
-    await showDialog(
+    await showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return AlertDialog(
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Send'),
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            color: Theme.of(context).canvasColor,
+            alignment: Alignment.topCenter,
+            height: 160,
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                Container(
+                  height: 48,
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: Theme.of(context).cardColor),
+                  child: TextField(
+                    textCapitalization: TextCapitalization.sentences,
+                    textAlignVertical: TextAlignVertical.center,
+                    onChanged: (value) {
+                      email = value;
+                    },
+                    decoration: const InputDecoration(
+                        hintText: "Enter your email",
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.email_outlined)),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.greenColor),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(S.of(context).sent)),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.orangeColor),
+                        onPressed: () {
+                          email = null;
+                          Navigator.pop(context);
+                        },
+                        child: Text(S.of(context).cancel)),
+                  ],
+                ),
+              ],
             ),
-          ],
-          content: ListView(
-            shrinkWrap: true,
-            children: [
-              const Text('Enter your email'),
-              const SizedBox(height: 20),
-              TextFormField(
-                onChanged: (value) {
-                  email = value;
-                },
-              ),
-            ],
           ),
         );
       },
@@ -339,18 +356,18 @@ class _AuthGateState extends State<AuthGate> {
       try {
         await _auth.sendPasswordResetEmail(email: email!);
         if (mounted) {
-          ScaffoldSnackbar.of(context).show('Password reset email is sent');
+          ToastType.toastInfo(msg: "Password reset email is sent");
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldSnackbar.of(context).show('Error resetting');
+          ToastType.toastError(msg: "Error resetting");
         }
       }
     }
   }
 
   Future<void> _anonymousAuth() async {
-    setIsLoading();
+    setOnLoading();
 
     try {
       await _auth.signInAnonymously();
@@ -363,14 +380,14 @@ class _AuthGateState extends State<AuthGate> {
         error = '$e';
       });
     } finally {
-      setIsLoading();
+      setOnLoading();
     }
   }
 
   Future<void> _handleMultiFactorException(
     Future<void> Function() authFunction,
   ) async {
-    setIsLoading();
+    setOnLoading();
     try {
       await authFunction();
     } on FirebaseAuthMultiFactorException catch (e) {
@@ -419,13 +436,13 @@ class _AuthGateState extends State<AuthGate> {
         error = '$e';
       });
     } finally {
-      setIsLoading();
+      setOffLoading();
     }
   }
 
   Future<void> _emailAndPassword() async {
     if (formKey.currentState?.validate() ?? false) {
-      setIsLoading();
+      setOnLoading();
       if (mode == AuthMode.login) {
         await _auth.signInWithEmailAndPassword(
           email: emailController.text,
@@ -433,7 +450,7 @@ class _AuthGateState extends State<AuthGate> {
         );
         User user = FirebaseAuth.instance.currentUser!;
         if (mounted) {
-          BlocProvider.of<AuthBloc>(context).add(LoginAuthEvent(user: user));
+          BlocProvider.of<AuthBloc>(context).add(AuthEventLogin(user: user));
         }
       } else if (mode == AuthMode.register) {
         await _auth.createUserWithEmailAndPassword(

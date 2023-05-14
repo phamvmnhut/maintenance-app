@@ -22,14 +22,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "care_as_soon": MessageLookupByLibrary.simpleMessage("Care as soon"),
         "care_time": MessageLookupByLibrary.simpleMessage("Care time"),
         "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
+        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+        "edit": MessageLookupByLibrary.simpleMessage("Edit"),
         "general": MessageLookupByLibrary.simpleMessage("General"),
         "have_care_time":
             MessageLookupByLibrary.simpleMessage("You have xx time care"),
         "hello": MessageLookupByLibrary.simpleMessage("Hello"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
+        "loading": MessageLookupByLibrary.simpleMessage("Loading"),
+        "login": MessageLookupByLibrary.simpleMessage("Login"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "next_time_care":
             MessageLookupByLibrary.simpleMessage("Next Time Care"),
@@ -37,8 +42,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "privacy_policy":
             MessageLookupByLibrary.simpleMessage("Privacy and Policy"),
         "reminder": MessageLookupByLibrary.simpleMessage("Reminder"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
+        "sent": MessageLookupByLibrary.simpleMessage("Sent"),
         "setting": MessageLookupByLibrary.simpleMessage("Setting"),
         "time_used": MessageLookupByLibrary.simpleMessage("Time used"),
+        "udpate": MessageLookupByLibrary.simpleMessage("Update"),
+        "update_username":
+            MessageLookupByLibrary.simpleMessage("Update Username"),
+        "user_intro":
+            MessageLookupByLibrary.simpleMessage("id, media and shopping"),
+        "verify_email": MessageLookupByLibrary.simpleMessage("Verify Email"),
         "xx_day": MessageLookupByLibrary.simpleMessage("xx Days")
       };
 }

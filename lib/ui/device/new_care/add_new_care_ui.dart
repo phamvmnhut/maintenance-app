@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divice/business/care.dart';
-import 'package:divice/business/notify.dart';
 import 'package:divice/config/color.dart';
 import 'package:divice/domain/entities/care.dart';
 import 'package:divice/domain/entities/equipment.dart';
@@ -14,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../business/device.dart';
 import 'package:intl/intl.dart';
-
+import 'package:divice/domain/services/notify.dart';
 import 'generate/care_next_date.dart';
 import 'widgets/bottom_sheet.dart';
 import 'widgets/dropdown_custom.dart';
@@ -41,6 +40,7 @@ class _AddNewCareState extends State<AddNewCare> {
   String fileUpload = '';
   Equipment? _equipment;
   String dropDownRoutine = list.first;
+  late DateTime nextTime;
 
   @override
   void didChangeDependencies() {
@@ -67,7 +67,7 @@ class _AddNewCareState extends State<AddNewCare> {
     dropDownRoutine = list.first;
   }
 
-  var notifyHelper;
+  late NotifyHelper notifyHelper;
   @override
   void initState() {
     super.initState();
@@ -85,7 +85,14 @@ class _AddNewCareState extends State<AddNewCare> {
             msg: 'Successfully added new care',
             backgroundColor: AppColors.greenColor,
           );
+          notifyHelper.scheduledNotification(
+            'Device Care Notification',
+            memoNameController.text,
+            nextTime,
+            state.careId
+          );
           _clearControl();
+
           Navigator.of(context).push(
             CareDetailPage.route(care_id: state.careId),
           );
@@ -130,12 +137,6 @@ class _AddNewCareState extends State<AddNewCare> {
                               //     width: 14, height: 14),
                               IconButton(
                                   onPressed: (() {
-                                    notifyHelper.displayNotification(
-                                      title: 'Tiêu đề thông báo Device',
-                                      body: 'Nội dung của thông báo',
-                                      id: '123',
-                                    );
-                                    notifyHelper.scheduledNotification('Tiêu đề nhắc lịch', 'Nội dung nhắc lịch');
                                     _clearControl();
                                   }),
                                   icon: const Icon(
@@ -459,6 +460,13 @@ class _AddNewCareState extends State<AddNewCare> {
                                   ? 0
                                   : int.parse(numberDateController.text),
                             );
+                            nextTime = DateTime(
+                              careNextDate.year,
+                              careNextDate.month,
+                              careNextDate.day,
+                              _time.hour,
+                              _time.minute,
+                            );
                             BlocProvider.of<CareBloc>(context, listen: false)
                                 .add(
                               CareEventAddData(
@@ -469,13 +477,7 @@ class _AddNewCareState extends State<AddNewCare> {
                                   equipment_id: _equipment!.id,
                                   memo_name: memoNameController.text,
                                   image: 'image',
-                                  care_next_time: Timestamp.fromDate(DateTime(
-                                    careNextDate.year,
-                                    careNextDate.month,
-                                    careNextDate.day,
-                                    _time.hour,
-                                    _time.minute,
-                                  )),
+                                  care_next_time: Timestamp.fromDate(nextTime),
                                   routine:
                                       '${numberDateController.text}_${dropDownRoutine.toUpperCase()}',
                                   start_date: Timestamp.fromDate(DateTime(

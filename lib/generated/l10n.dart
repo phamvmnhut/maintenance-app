@@ -199,6 +199,116 @@ class S {
       args: [],
     );
   }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading`
+  String get loading {
+    return Intl.message(
+      'Loading',
+      name: 'loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sent`
+  String get sent {
+    return Intl.message(
+      'Sent',
+      name: 'sent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update`
+  String get udpate {
+    return Intl.message(
+      'Update',
+      name: 'udpate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify Email`
+  String get verify_email {
+    return Intl.message(
+      'Verify Email',
+      name: 'verify_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Username`
+  String get update_username {
+    return Intl.message(
+      'Update Username',
+      name: 'update_username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get login {
+    return Intl.message(
+      'Login',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `id, media and shopping`
+  String get user_intro {
+    return Intl.message(
+      'id, media and shopping',
+      name: 'user_intro',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

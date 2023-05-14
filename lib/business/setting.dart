@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:divice/domain/services/share_reference.dart';
+import 'package:divice/generated/l10n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class ThemeEvent {}
@@ -11,35 +13,70 @@ class ChangeLocaleEvent extends ThemeEvent {
   ChangeLocaleEvent({required this.lo});
 }
 
-class ChangeScreenEvent extends ThemeEvent {
-  int index;
-  ChangeScreenEvent({required this.index});
-}
+class ThemeEventSetup extends ThemeEvent {}
 
 class ThemeState {
   bool isDarkModeEnabled;
   Locale local;
-  int index;
 
-  ThemeState({required this.isDarkModeEnabled, required this.local, required this.index});
+  ThemeState({
+    required this.isDarkModeEnabled,
+    required this.local,
+  });
+
+  bool get defaultIsDarkMode => false;
+  Locale get defaultLanguage => const Locale("en");
 
   ThemeState.initialState()
-      : this(isDarkModeEnabled: false, local: const Locale("en"), index: 0);
+      : this(
+          isDarkModeEnabled: false,
+          local: const Locale("en"),
+        );
+
+  ThemeState copyWith({
+    bool? isDarkModeEnabled,
+    Locale? local,
+  }) {
+    return ThemeState(
+      isDarkModeEnabled: isDarkModeEnabled ?? this.isDarkModeEnabled,
+      local: local ?? this.local,
+    );
+  }
 }
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(ThemeState.initialState()) {
     on<ToggleThemeEvent>((event, emit) {
+      bool newIsDarkMode = !state.isDarkModeEnabled;
       emit(ThemeState(
-          isDarkModeEnabled: !state.isDarkModeEnabled, local: state.local, index: state.index));
+        isDarkModeEnabled: newIsDarkMode,
+        local: state.local,
+      ));
+      ShareReferenceService.saveDarkMode(newIsDarkMode);
     });
     on<ChangeLocaleEvent>((event, emit) {
-      emit(ThemeState(
-          isDarkModeEnabled: state.isDarkModeEnabled, local: event.lo, index: state.index));
+      emit(state.copyWith(local: event.lo));
+      ShareReferenceService.saveLanguageMode(event.lo);
     });
-    on<ChangeScreenEvent>((event, emit) {
-      emit(ThemeState(
-          isDarkModeEnabled: state.isDarkModeEnabled, local: state.local, index: event.index));
-    });
+    on<ThemeEventSetup>(_setupTheme);
+  }
+
+  void _setupTheme(ThemeEventSetup event, Emitter<ThemeState> emit) async {
+    bool isDarkMode = await ShareReferenceService.getDarkMode() ??
+        ThemeState.initialState().defaultIsDarkMode;
+
+    String? localeString = await ShareReferenceService.getLanguageMode();
+    Locale local = ThemeState.initialState().defaultLanguage;
+
+    if (localeString != null) {
+      for (var element in S.delegate.supportedLocales) {
+        if (element.toString() == localeString) {
+          local = element;
+          break;
+        }
+      }
+    }
+
+    emit(state.copyWith(isDarkModeEnabled: isDarkMode, local: local));
   }
 }

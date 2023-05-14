@@ -1,12 +1,12 @@
 import 'package:divice/config/color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../business/setting.dart';
 
 class BottomNavigationBarCustomize extends StatefulWidget {
-  const BottomNavigationBarCustomize({Key? key}) : super(key: key);
-
+  const BottomNavigationBarCustomize(
+      {Key? key, required this.indexScreen, required this.switchScreen})
+      : super(key: key);
+  final int indexScreen;
+  final Function switchScreen;
   @override
   State<BottomNavigationBarCustomize> createState() =>
       _BottomNavigationBarCustomizeState();
@@ -14,7 +14,6 @@ class BottomNavigationBarCustomize extends StatefulWidget {
 
 class _BottomNavigationBarCustomizeState
     extends State<BottomNavigationBarCustomize> {
-  int selectedIndex = 0;
   final List<BottomNavigationBarItem> _bottomColor = [
     BottomNavigationBarItem(
         icon: Container(
@@ -124,12 +123,10 @@ class _BottomNavigationBarCustomizeState
         type: BottomNavigationBarType.fixed,
         items: _bottomList,
         onTap: (value) {
-          BlocProvider.of<ThemeBloc>(context)
-              .add(ChangeScreenEvent(index: value));
+          widget.switchScreen(value);
           setState(() {
-            selectedIndex = value;
             for (int i = 0; i < _bottomList.length; i++) {
-              if (i == selectedIndex) {
+              if (i == value) {
                 _bottomList[i] = _bottomColor[i];
               } else {
                 _bottomList[i] = _bottomNoColor[i];

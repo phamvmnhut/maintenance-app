@@ -7,8 +7,15 @@ class CareRepositoryFireBase extends CareRepository {
       FirebaseFirestore.instance.collection('cares');
 
   @override
-  Future<Care> get({required String id}) {
-    return _careCollection.doc(id).get().then((value) => Care.fromJson(value));
+  Future<Care?> get({required String id}) {
+      return _careCollection.doc(id).get().then((value) {
+        if (value.exists) {
+         return Care.fromJson(value);
+        } else {
+          return null;
+        }
+      });
+
   }
 
   @override
