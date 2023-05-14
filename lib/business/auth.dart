@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -64,8 +65,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _logoutUser(AuthEventLogout event, Emitter<AuthState> emit) async {
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
+    try {
+      await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+
     emit(state.copyWith(isAuth: false, user: null));
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:divice/domain/entities/device.dart';
 import 'package:divice/domain/entities/equipment.dart';
 import 'package:divice/domain/entities/model.dart';

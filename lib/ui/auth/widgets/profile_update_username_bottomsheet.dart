@@ -4,9 +4,6 @@ import 'package:divice/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../business/care_detail.dart';
-import '../../../domain/entities/care_history.dart';
-
 Future<void> profileUpdateUsernameBottomSheet(
   BuildContext contextx,
   String oldName,

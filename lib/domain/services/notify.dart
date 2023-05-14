@@ -1,5 +1,5 @@
-import 'package:divice/business/care_detail.dart';
-import 'package:divice/domain/repositories/device_repository.dart';
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -15,7 +15,7 @@ class NotifyHelper {
       FlutterLocalNotificationsPlugin(); //
 
   final channelId = 'device-care';
-  final channelName = 'device-care';
+  final channelName = 'Device Care';
   final channelDescription = 'receive reminder notifications device care';
 
   _configureLocalTimezone() async {
@@ -35,7 +35,7 @@ class NotifyHelper {
             onDidReceiveLocalNotification: onDidReceiveLocalNotification);
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings('launcher_notification');
 
     final InitializationSettings initializationSettings =
         InitializationSettings(

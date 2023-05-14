@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
 import 'package:divice/business/auth.dart';
 import 'package:divice/config/color.dart';
 import 'package:divice/generated/l10n.dart';
@@ -6,8 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'auth.dart';
 
 const placeholderImage =
     'https://upload.wikimedia.org/wikipedia/commons/c/cd/Portrait_Placeholder_Square.png';

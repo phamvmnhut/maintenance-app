@@ -76,5 +76,4 @@ Future<void> careHistoryAddBottomSheet(
           ),
         );
       });
-  return null;
 }

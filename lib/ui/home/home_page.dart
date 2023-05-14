@@ -25,7 +25,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime _nowTime = DateTime.now();
     return SafeArea(
       child: Scaffold(
         body: Column(

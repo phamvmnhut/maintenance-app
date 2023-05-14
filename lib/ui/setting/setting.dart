@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:divice/business/auth.dart';
 import 'package:divice/config/color.dart';
 import 'package:divice/generated/l10n.dart';
