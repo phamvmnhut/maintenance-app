@@ -85,12 +85,8 @@ class _AddNewCareState extends State<AddNewCare> {
             msg: 'Successfully added new care',
             backgroundColor: AppColors.greenColor,
           );
-          notifyHelper.scheduledNotification(
-            'Device Care Notification',
-            memoNameController.text,
-            nextTime,
-            state.careId
-          );
+          notifyHelper.scheduledNotification('Device Care Notification',
+              memoNameController.text, nextTime, state.careId);
           _clearControl();
 
           Navigator.of(context).push(
@@ -445,10 +441,16 @@ class _AddNewCareState extends State<AddNewCare> {
                         const SizedBox(height: 27),
                         GestureDetector(
                           onTap: () {
-                            if (_equipment == null ||
-                                numberDateController.text.isEmpty) {
+                            if (_equipment == null) {
                               toastInfo(
                                 msg: 'Please choose Equipment',
+                                backgroundColor: AppColors.orangeColor,
+                              );
+                              return;
+                            }
+                            if (numberDateController.text.isEmpty) {
+                              toastInfo(
+                                msg: 'Please choose number (Days, Weeks..)',
                                 backgroundColor: AppColors.orangeColor,
                               );
                               return;
@@ -472,8 +474,8 @@ class _AddNewCareState extends State<AddNewCare> {
                               CareEventAddData(
                                 filePath: fileUpload,
                                 care: Care(
-                                  id: 'id',
-                                  user_id: 'user_id',
+                                  id: '',
+                                  user_id: '', // add in business
                                   equipment_id: _equipment!.id,
                                   memo_name: memoNameController.text,
                                   image: 'image',

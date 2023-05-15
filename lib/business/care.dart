@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:divice/domain/repositories/care_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:divice/domain/entities/care.dart';
@@ -17,7 +18,10 @@ class CareEventSetup extends CareEvent {}
 class CareEventAddData extends CareEvent {
   final String filePath;
   final Care care;
-  CareEventAddData({required this.filePath, required this.care});
+  CareEventAddData({
+    required this.filePath,
+    required this.care,
+  });
 }
 
 class CareEventDelete extends CareEvent {
@@ -85,9 +89,11 @@ class CareBloc extends Bloc<CareEvent, CareState> {
   void _getSetupData(CareEventSetup event, Emitter<CareState> emit) async {
     List<Care> listSoon = await _repository.getList(
       param: CareRepositoryGetListParam(name: "", isSortByCareNextTime: true),
+      userId: FirebaseAuth.instance.currentUser?.uid,
     );
     List<Care> list = await _repository.search(
       param: CareRepositorySearchParam(name: ""),
+      userId: FirebaseAuth.instance.currentUser?.uid,
     );
     emit(CareState(careSoonList: listSoon, careList: list, isLoading: false));
   }
@@ -96,7 +102,9 @@ class CareBloc extends Bloc<CareEvent, CareState> {
     emit(state.copyWith(isLoading: true));
     try {
       List<Care> l = await _repository.search(
-          param: CareRepositorySearchParam(name: event.name));
+        param: CareRepositorySearchParam(name: event.name),
+        userId: FirebaseAuth.instance.currentUser!.uid,
+      );
       emit(state.copyWith(careList: l, isLoading: false));
     } catch (e) {
       emit(state.copyWith(isLoading: false));
@@ -119,7 +127,7 @@ class CareBloc extends Bloc<CareEvent, CareState> {
     }
     Care newCare = Care(
       id: '',
-      user_id: 'AD',
+      user_id: FirebaseAuth.instance.currentUser!.uid,
       equipment_id: event.care.equipment_id,
       memo_name: event.care.memo_name,
       image: imageUrl,
@@ -138,10 +146,12 @@ class CareBloc extends Bloc<CareEvent, CareState> {
     bool result = await _repository.delete(id: event.careId);
     if (result == true) {
       List<Care> listSoon = await _repository.getList(
-        param: CareRepositoryGetListParam(name: "", isSortByCareNextTime: true),
-      );
+          param:
+              CareRepositoryGetListParam(name: "", isSortByCareNextTime: true),
+          userId: FirebaseAuth.instance.currentUser?.uid);
       List<Care> list = await _repository.search(
         param: CareRepositorySearchParam(name: ""),
+        userId: FirebaseAuth.instance.currentUser?.uid,
       );
       emit(CareState(careSoonList: listSoon, careList: list, isLoading: false));
     }

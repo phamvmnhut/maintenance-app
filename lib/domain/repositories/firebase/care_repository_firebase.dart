@@ -8,14 +8,13 @@ class CareRepositoryFireBase extends CareRepository {
 
   @override
   Future<Care?> get({required String id}) {
-      return _careCollection.doc(id).get().then((value) {
-        if (value.exists) {
-         return Care.fromJson(value);
-        } else {
-          return null;
-        }
-      });
-
+    return _careCollection.doc(id).get().then((value) {
+      if (value.exists) {
+        return Care.fromJson(value);
+      } else {
+        return null;
+      }
+    });
   }
 
   @override
@@ -29,22 +28,31 @@ class CareRepositoryFireBase extends CareRepository {
   }
 
   @override
-  Future<List<Care>> getList({required CareRepositoryGetListParam param}) {
+  Future<List<Care>> getList({
+    required CareRepositoryGetListParam param,
+    required userId,
+  }) {
     if (param.isSortByCareNextTime) {
       return _careCollection
+          .where('user_id', isEqualTo: userId)
           .orderBy("care_next_time", descending: true)
           .get()
           .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
     } else {
       return _careCollection
+          .where('user_id', isEqualTo: userId)
           .get()
           .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
     }
   }
 
   @override
-  Future<List<Care>> search({required CareRepositorySearchParam param}) {
+  Future<List<Care>> search({
+    required CareRepositorySearchParam param,
+    required userId,
+  }) {
     return _careCollection
+        .where('user_id', isEqualTo: userId)
         .where("memo_name", isGreaterThanOrEqualTo: param.name.toUpperCase())
         .get()
         .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());

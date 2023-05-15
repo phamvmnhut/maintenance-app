@@ -16,8 +16,14 @@ class CareRepositorySearchParam {
 }
 
 abstract class CareRepository {
-  Future<List<Care>> getList({required CareRepositoryGetListParam param});
-  Future<List<Care>> search({required CareRepositorySearchParam param});
+  Future<List<Care>> getList({
+    required CareRepositoryGetListParam param,
+    required userId,
+  });
+  Future<List<Care>> search({
+    required CareRepositorySearchParam param,
+    required userId,
+  });
   Future<Care?> get({required String id});
   Future<bool> update({required String id, required Care data});
   Future<String> create({required Care d});
