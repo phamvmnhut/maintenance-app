@@ -17,13 +17,28 @@ class CareCard extends StatefulWidget {
 }
 
 class _CareCardState extends State<CareCard> {
-  final DateTime _nowTime = DateTime.now();
+  DateTime _nowTime = DateTime.now();
   Image imageDrugs = Image.asset('assets/images/drugs.png');
 
   Future<String> getData(String id) {
     return RepositoryProvider.of<EquipmentRepositoryFirebase>(context)
         .get(id: id)
         .then((value) => value.name);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _nowTime = DateTime.now();
+        timeFormat();
+      });
+    });
   }
 
   @override
