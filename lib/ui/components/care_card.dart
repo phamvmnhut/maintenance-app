@@ -17,28 +17,12 @@ class CareCard extends StatefulWidget {
 }
 
 class _CareCardState extends State<CareCard> {
-  DateTime _nowTime = DateTime.now();
   Image imageDrugs = Image.asset('assets/images/drugs.png');
 
   Future<String> getData(String id) {
     return RepositoryProvider.of<EquipmentRepositoryFirebase>(context)
         .get(id: id)
         .then((value) => value.name);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
-
-  void _startTimer() {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _nowTime = DateTime.now();
-        timeFormat();
-      });
-    });
   }
 
   @override
@@ -94,13 +78,9 @@ class _CareCardState extends State<CareCard> {
                     padding: const EdgeInsets.only(left: 16),
                     child: Row(
                       children: [
-                        Text(
-                          timeFormat(),
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: AppColors.yellowColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13),
+                        _Timer(
+                          timeAfter: widget.e.start_date.toDate(),
+                          careNextTime: widget.e.care_next_time.toDate(),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -147,12 +127,51 @@ class _CareCardState extends State<CareCard> {
       ),
     );
   }
+}
+
+class _Timer extends StatefulWidget {
+  const _Timer({Key? key, required this.timeAfter, required this.careNextTime})
+      : super(key: key);
+  final DateTime timeAfter;
+  final DateTime careNextTime;
+  @override
+  State<_Timer> createState() => _TimerState();
+}
+
+class _TimerState extends State<_Timer> {
+  DateTime _nowTime = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _nowTime = DateTime.now();
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      timeFormat(),
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+          color: AppColors.yellowColor,
+          fontWeight: FontWeight.w500,
+          fontSize: 13),
+    );
+  }
 
   String timeFormat() {
-    Duration timeAfter = widget.e.care_next_time.toDate().difference(_nowTime);
+    Duration timeAfter = widget.timeAfter.difference(_nowTime);
     int timeAfterHours = timeAfter.inHours;
 
-    Duration timeBefore = _nowTime.difference(widget.e.care_next_time.toDate());
+    Duration timeBefore = _nowTime.difference(widget.careNextTime);
     int timeBeforeHours = timeBefore.inHours;
 
     return timeAfterHours > 0
