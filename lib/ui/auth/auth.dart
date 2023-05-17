@@ -97,7 +97,10 @@ class _AuthGateState extends State<AuthGate> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset('assets/images/drugs.png'),
+                              Image.asset(
+                                'assets/icon/app_icon.png',
+                                height: 200,
+                              ),
                             ],
                           ),
                           Visibility(

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bluewave.divice">
    <application
-        android:label="Maintenance To-do List"
+        android:label="Maintenance"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
