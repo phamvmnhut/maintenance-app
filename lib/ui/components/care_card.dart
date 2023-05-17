@@ -17,12 +17,28 @@ class CareCard extends StatefulWidget {
 }
 
 class _CareCardState extends State<CareCard> {
-  final DateTime _nowTime = DateTime.now();
+  DateTime _nowTime = DateTime.now();
+  Image imageDrugs = Image.asset('assets/images/drugs.png');
 
   Future<String> getData(String id) {
     return RepositoryProvider.of<EquipmentRepositoryFirebase>(context)
         .get(id: id)
         .then((value) => value.name);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _nowTime = DateTime.now();
+        timeFormat();
+      });
+    });
   }
 
   @override
@@ -47,8 +63,16 @@ class _CareCardState extends State<CareCard> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 28),
-              child: Image.asset('assets/images/drugs.png'),
+              padding: const EdgeInsets.only(left: 12),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10), // Image border
+                child: SizedBox.fromSize(
+                  size: const Size.fromRadius(16), // Image radius
+                  child: widget.e.image != ''
+                      ? Image.network(widget.e.image, fit: BoxFit.cover)
+                      : imageDrugs,
+                ),
+              ),
             ),
             Expanded(
               child: Column(
@@ -71,13 +95,7 @@ class _CareCardState extends State<CareCard> {
                     child: Row(
                       children: [
                         Text(
-                          widget.e.start_date
-                                      .toDate()
-                                      .difference(_nowTime)
-                                      .inHours >
-                                  24
-                              ? 'after ${widget.e.start_date.toDate().difference(_nowTime).inDays} days'
-                              : 'after ${widget.e.start_date.toDate().difference(_nowTime).inHours}h${widget.e.start_date.toDate().difference(_nowTime).inMinutes}m',
+                          timeFormat(),
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               color: AppColors.yellowColor,
@@ -103,13 +121,15 @@ class _CareCardState extends State<CareCard> {
                               if (snapshot.connectionState ==
                                       ConnectionState.done &&
                                   snapshot.hasData) {
-                                return Text(
-                                  snapshot.data!,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: AppColors.yellowColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 13),
+                                return Expanded(
+                                  child: Text(
+                                    snapshot.data!,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: AppColors.yellowColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13),
+                                  ),
                                 );
                               }
                               return const Text('');
@@ -126,5 +146,25 @@ class _CareCardState extends State<CareCard> {
         ),
       ),
     );
+  }
+
+  String timeFormat() {
+    Duration timeAfter = widget.e.care_next_time.toDate().difference(_nowTime);
+    int timeAfterHours = timeAfter.inHours;
+
+    Duration timeBefore = _nowTime.difference(widget.e.care_next_time.toDate());
+    int timeBeforeHours = timeBefore.inHours;
+
+    return timeAfterHours > 0
+        ? timeAfterHours > 24
+            ? 'After ${timeAfter.inDays} ${timeAfter.inDays > 1 ? 'days' : 'day'}'
+            : timeAfterHours < 24 && timeAfterHours > 0
+                ? 'After ${timeAfterHours}h${timeAfter.inMinutes % 60}m'
+                : ''
+        : timeBeforeHours > 24
+            ? '${timeBefore.inDays} ${timeBefore.inDays > 1 ? 'days ago' : 'day ago'}'
+            : timeBeforeHours < 24 && timeBeforeHours > 0
+                ? '${timeBeforeHours}h${timeBefore.inMinutes % 60}m ago'
+                : '';
   }
 }
