@@ -1,16 +1,28 @@
-https://stackoverflow.com/questions/52060516/flutter-how-to-change-android-minsdkversion-in-flutter-project
+# Welcome to Maintenance To-do list app
+Hi! We are a team with the heart to make some little app but be useful. A **Maintenance To-do list** app is one of that. 
+It help you to reminder your maintenance task for all your device which you maybe forget that.
+If you like our app or idea, you can take a start on this repo. It's as the best encourage for us.
 
+## Process
+
+## Contribute
+(phamvmnhut)[github.com/phamvmnhut]
+
+## Thanks for researching for some bug and task
+- Change android minSdk
+https://stackoverflow.com/questions/52060516/flutter-how-to-change-android-minsdkversion-in-flutter-project
+- Multidex bug
 https://stackoverflow.com/questions/49886597/multidex-issue-with-flutter
 
-search in firebase
+- Search in firebase
 https://stackoverflow.com/questions/52627194/search-by-pattern-on-cloud-firestore-collection/52627798#52627798
 
-change icon local push notification [size image = 96x96]
+- Change icon local push notification [size image = 96x96]
 https://stackoverflow.com/questions/72541908/how-to-change-local-notification-icon
-change icon firebase push notification
+- Change icon firebase push notification
 https://stackoverflow.com/questions/46676014/how-to-change-the-android-notification-icon-status-bar-icon-for-push-notificatio
 
-flutter_launcher_icons v0.11.0
+- flutter_launcher_icons v0.11.0
 ```
 flutter_icons:
   android: "launcher_icon"
@@ -24,7 +36,7 @@ flutter_icons:
 flutter pub run flutter_launcher_icons
 ```
 
-change package name
+- Change package name
 https://pub.dev/packages/change_app_package_name
 ```bash
 flutter pub run change_app_package_name:main com.phamvmnhut.maintenance
