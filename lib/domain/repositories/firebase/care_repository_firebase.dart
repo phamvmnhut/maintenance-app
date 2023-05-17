@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divice/domain/entities/care.dart';
-import 'package:divice/domain/repositories/care_repository.dart';
+import 'package:maintenance/domain/entities/care.dart';
+import 'package:maintenance/domain/repositories/care_repository.dart';
 
 class CareRepositoryFireBase extends CareRepository {
   final CollectionReference _careCollection =

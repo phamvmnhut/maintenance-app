@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:divice/business/care.dart';
+import 'package:maintenance/business/care.dart';
 import '../components/care_card.dart';
 
 class CareSearch extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:divice/config/color.dart';
+import 'package:maintenance/config/color.dart';
 import 'package:flutter/material.dart';
 
 class DropdownDeviceCustom extends StatelessWidget {

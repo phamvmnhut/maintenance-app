@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divice/domain/entities/equipment.dart';
+import 'package:maintenance/domain/entities/equipment.dart';
 import '../equipment_repository.dart';
 
 class EquipmentRepositoryFirebase extends EquipmentRepository {

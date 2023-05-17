@@ -1,5 +1,5 @@
-import 'package:divice/config/color.dart';
-import 'package:divice/domain/entities/device.dart';
+import 'package:maintenance/config/color.dart';
+import 'package:maintenance/domain/entities/device.dart';
 import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

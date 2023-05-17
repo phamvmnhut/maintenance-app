@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divice/domain/entities/model.dart';
-import 'package:divice/domain/repositories/model_repository.dart';
+import 'package:maintenance/domain/entities/model.dart';
+import 'package:maintenance/domain/repositories/model_repository.dart';
 
 class ModelRepositoryFirebase extends ModelRepository {
   final CollectionReference _modelCollection =

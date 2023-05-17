@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:divice/config/color.dart';
+import 'package:maintenance/config/color.dart';
 import 'package:flutter/material.dart';
 
 final lightTheme = ThemeData(

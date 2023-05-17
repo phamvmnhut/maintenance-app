@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:divice/config/color.dart';
-import 'package:divice/domain/entities/care.dart';
-import 'package:divice/domain/repositories/firebase/equipment_repository_firebase.dart';
+import 'package:maintenance/config/color.dart';
+import 'package:maintenance/domain/entities/care.dart';
+import 'package:maintenance/domain/repositories/firebase/equipment_repository_firebase.dart';
 
 import '../care/care_detail.dart';
 

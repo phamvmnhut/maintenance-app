@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divice/utils/time.dart';
+import 'package:maintenance/utils/time.dart';
 import 'package:equatable/equatable.dart';
 
 class Care extends Equatable {

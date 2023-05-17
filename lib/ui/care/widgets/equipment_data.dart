@@ -1,13 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:divice/domain/entities/device.dart';
-import 'package:divice/domain/entities/equipment.dart';
-import 'package:divice/domain/entities/model.dart';
-import 'package:divice/domain/repositories/firebase/device_repository_firebase.dart';
-import 'package:divice/domain/repositories/firebase/model_repository_firebase.dart';
-import 'package:divice/domain/repositories/firebase/equipment_repository_firebase.dart';
+import 'package:maintenance/domain/entities/device.dart';
+import 'package:maintenance/domain/entities/equipment.dart';
+import 'package:maintenance/domain/entities/model.dart';
+import 'package:maintenance/domain/repositories/firebase/device_repository_firebase.dart';
+import 'package:maintenance/domain/repositories/firebase/model_repository_firebase.dart';
+import 'package:maintenance/domain/repositories/firebase/equipment_repository_firebase.dart';
 
-import 'package:divice/generated/l10n.dart';
+import 'package:maintenance/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
-import 'package:divice/business/auth.dart';
-import 'package:divice/config/color.dart';
-import 'package:divice/generated/l10n.dart';
-import 'package:divice/ui/auth/widgets/profile_update_username_bottomsheet.dart';
+import 'package:maintenance/business/auth.dart';
+import 'package:maintenance/config/color.dart';
+import 'package:maintenance/generated/l10n.dart';
+import 'package:maintenance/ui/auth/widgets/profile_update_username_bottomsheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

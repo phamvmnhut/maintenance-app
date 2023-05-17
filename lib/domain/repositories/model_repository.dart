@@ -1,4 +1,4 @@
-import 'package:divice/domain/entities/model.dart';
+import 'package:maintenance/domain/entities/model.dart';
 
 abstract class ModelRepository {
   Future<List<Model>> getListModel({required String deviceID});

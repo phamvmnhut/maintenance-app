@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divice/domain/entities/care_history.dart';
-import 'package:divice/domain/repositories/care_history_repository.dart';
+import 'package:maintenance/domain/entities/care_history.dart';
+import 'package:maintenance/domain/repositories/care_history_repository.dart';
 
 class CareHistoryRepositoryFireBase extends CareHistoryRepository {
   final CollectionReference _deviceCollection =

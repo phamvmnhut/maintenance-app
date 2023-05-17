@@ -1,10 +1,10 @@
-import 'package:divice/domain/entities/device.dart';
-import 'package:divice/domain/entities/equipment.dart';
-import 'package:divice/domain/entities/model.dart';
-import 'package:divice/domain/repositories/equipment_repository.dart';
+import 'package:maintenance/domain/entities/device.dart';
+import 'package:maintenance/domain/entities/equipment.dart';
+import 'package:maintenance/domain/entities/model.dart';
+import 'package:maintenance/domain/repositories/equipment_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:divice/domain/repositories/device_repository.dart';
+import 'package:maintenance/domain/repositories/device_repository.dart';
 
 import '../domain/repositories/model_repository.dart';
 

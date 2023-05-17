@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bluewave.divice">
+    package="com.phamvmnhut.maintenance">
    <application
         android:label="Maintenance"
         android:name="${applicationName}"

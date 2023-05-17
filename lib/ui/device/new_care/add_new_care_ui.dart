@@ -1,19 +1,19 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divice/business/care.dart';
-import 'package:divice/config/color.dart';
-import 'package:divice/domain/entities/care.dart';
-import 'package:divice/domain/entities/equipment.dart';
-import 'package:divice/ui/care/care_detail.dart';
-import 'package:divice/ui/notification/toast.dart';
+import 'package:maintenance/business/care.dart';
+import 'package:maintenance/config/color.dart';
+import 'package:maintenance/domain/entities/care.dart';
+import 'package:maintenance/domain/entities/equipment.dart';
+import 'package:maintenance/ui/care/care_detail.dart';
+import 'package:maintenance/ui/notification/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../business/device.dart';
 import 'package:intl/intl.dart';
-import 'package:divice/domain/services/notify.dart';
+import 'package:maintenance/domain/services/notify.dart';
 import 'generate/care_next_date.dart';
 import 'widgets/bottom_sheet.dart';
 import 'widgets/dropdown_custom.dart';

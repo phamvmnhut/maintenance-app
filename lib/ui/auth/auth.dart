@@ -4,9 +4,9 @@
 
 // ignore_for_file: unused_element
 
-import 'package:divice/business/auth.dart';
-import 'package:divice/generated/l10n.dart';
-import 'package:divice/ui/notification/toast.dart';
+import 'package:maintenance/business/auth.dart';
+import 'package:maintenance/generated/l10n.dart';
+import 'package:maintenance/ui/notification/toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';

@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:divice/domain/repositories/care_repository.dart';
+import 'package:maintenance/domain/repositories/care_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:divice/domain/entities/care.dart';
+import 'package:maintenance/domain/entities/care.dart';
 
 abstract class CareEvent {}
 

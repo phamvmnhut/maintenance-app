@@ -1,21 +1,21 @@
 // ignore_for_file: non_constant_identifier_names, deprecated_member_use
 
-import 'package:divice/business/care.dart';
-import 'package:divice/business/care_detail.dart';
-import 'package:divice/config/color.dart';
-import 'package:divice/domain/repositories/firebase/care_history_repository_firebase.dart';
-import 'package:divice/domain/repositories/firebase/care_repository_firebase.dart';
-import 'package:divice/domain/services/notify.dart';
-import 'package:divice/ui/care/widgets/care_edit_bottomsheet.dart';
-import 'package:divice/ui/care/widgets/care_history_add_bottomsheet.dart';
-import 'package:divice/ui/care/widgets/care_history_edit_or_delete_bottomsheet.dart';
-import 'package:divice/ui/care/widgets/care_status_toggle.dart';
-import 'package:divice/ui/care/widgets/equipment_data.dart';
-import 'package:divice/ui/home/home_gate.dart';
+import 'package:maintenance/business/care.dart';
+import 'package:maintenance/business/care_detail.dart';
+import 'package:maintenance/config/color.dart';
+import 'package:maintenance/domain/repositories/firebase/care_history_repository_firebase.dart';
+import 'package:maintenance/domain/repositories/firebase/care_repository_firebase.dart';
+import 'package:maintenance/domain/services/notify.dart';
+import 'package:maintenance/ui/care/widgets/care_edit_bottomsheet.dart';
+import 'package:maintenance/ui/care/widgets/care_history_add_bottomsheet.dart';
+import 'package:maintenance/ui/care/widgets/care_history_edit_or_delete_bottomsheet.dart';
+import 'package:maintenance/ui/care/widgets/care_status_toggle.dart';
+import 'package:maintenance/ui/care/widgets/equipment_data.dart';
+import 'package:maintenance/ui/home/home_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:divice/generated/l10n.dart';
+import 'package:maintenance/generated/l10n.dart';
 import 'package:intl/intl.dart';
 
 import '../components/app_alert.dart';

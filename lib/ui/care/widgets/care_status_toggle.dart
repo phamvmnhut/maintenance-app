@@ -1,5 +1,5 @@
-import 'package:divice/business/care_detail.dart';
-import 'package:divice/domain/entities/care.dart';
+import 'package:maintenance/business/care_detail.dart';
+import 'package:maintenance/domain/entities/care.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

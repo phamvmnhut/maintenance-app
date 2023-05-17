@@ -1,6 +1,6 @@
-import 'package:divice/business/auth.dart';
-import 'package:divice/config/color.dart';
-import 'package:divice/generated/l10n.dart';
+import 'package:maintenance/business/auth.dart';
+import 'package:maintenance/config/color.dart';
+import 'package:maintenance/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

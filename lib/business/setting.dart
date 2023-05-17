@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:divice/domain/services/share_reference.dart';
-import 'package:divice/generated/l10n.dart';
+import 'package:maintenance/domain/services/share_reference.dart';
+import 'package:maintenance/generated/l10n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class ThemeEvent {}

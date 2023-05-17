@@ -1,11 +1,11 @@
-import 'package:divice/ui/components/care_card.dart';
+import 'package:maintenance/ui/components/care_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../business/auth.dart';
 import '../../business/care.dart';
 import '../components/disable_glow_listview_widget.dart';
-import 'package:divice/generated/l10n.dart';
+import 'package:maintenance/generated/l10n.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

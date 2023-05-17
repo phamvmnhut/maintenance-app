@@ -1,4 +1,4 @@
-import 'package:divice/domain/entities/device.dart';
+import 'package:maintenance/domain/entities/device.dart';
 
 class DeviceRepositoryGetListParam {
   final String searchText;

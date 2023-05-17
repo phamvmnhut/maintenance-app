@@ -24,3 +24,8 @@ flutter_icons:
 flutter pub run flutter_launcher_icons
 ```
 
+change package name
+https://pub.dev/packages/change_app_package_name
+```bash
+flutter pub run change_app_package_name:main com.phamvmnhut.maintenance
+```
