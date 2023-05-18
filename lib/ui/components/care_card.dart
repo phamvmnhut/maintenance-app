@@ -79,7 +79,7 @@ class _CareCardState extends State<CareCard> {
                     child: Row(
                       children: [
                         _Timer(
-                          timeAfter: widget.e.start_date.toDate(),
+                          timeAfter: widget.e.care_next_time.toDate(),
                           careNextTime: widget.e.care_next_time.toDate(),
                         ),
                         Padding(
