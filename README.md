@@ -11,17 +11,17 @@ If you like our app or idea, you can take a start on this repo. It's as the best
 - (nnanthanh)[github.com/nnanthanh]
 
 ## Thanks for researching for some bug and task
-- Change android minSdk
+- Change android minSdk   
 https://stackoverflow.com/questions/52060516/flutter-how-to-change-android-minsdkversion-in-flutter-project
-- Multidex bug
+- Multidex bug   
 https://stackoverflow.com/questions/49886597/multidex-issue-with-flutter
 
-- Search in firebase
+- Search in firebase   
 https://stackoverflow.com/questions/52627194/search-by-pattern-on-cloud-firestore-collection/52627798#52627798
 
-- Change icon local push notification [size image = 96x96]
+- Change icon local push notification [size image = 96x96]   
 https://stackoverflow.com/questions/72541908/how-to-change-local-notification-icon
-- Change icon firebase push notification
+- Change icon firebase push notification   
 https://stackoverflow.com/questions/46676014/how-to-change-the-android-notification-icon-status-bar-icon-for-push-notificatio
 
 - flutter_launcher_icons v0.11.0
@@ -38,8 +38,16 @@ flutter_icons:
 flutter pub run flutter_launcher_icons
 ```
 
-- Change package name
+- Change package name   
 https://pub.dev/packages/change_app_package_name
 ```bash
 flutter pub run change_app_package_name:main com.phamvmnhut.maintenance
 ```
+
+- Create an upload keystore    
+if you had keystore, you just create key.properties into your project.
+```bash
+& 'C:\Program Files\Android\Android Studio\jre\bin\keytool.exe' -genkey -v -keystore 'C:\upload-keystore.jks' -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+```
+- Find the last version for kotlin_version corresponding with com.android.tools.build:gradle   
+https://kotlinlang.org/docs/gradle-configure-project.html#apply-the-plugin
