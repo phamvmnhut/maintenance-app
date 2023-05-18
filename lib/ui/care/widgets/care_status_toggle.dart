@@ -30,15 +30,14 @@ class _CareStatusToggleState extends State<CareStatusToggle> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(6),
+      margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         color: Theme.of(context).cardColor,
       ),
       child: ToggleButtons(
         isSelected: isSelected,
-        selectedColor: Colors.white,
         color: Theme.of(context).cardColor,
-        fillColor: Colors.white,
         renderBorder: false,
         borderRadius: BorderRadius.circular(12),
         children: [
