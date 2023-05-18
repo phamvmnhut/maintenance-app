@@ -6,7 +6,9 @@ If you like our app or idea, you can take a start on this repo. It's as the best
 ## Process
 
 ## Contribute
-(phamvmnhut)[github.com/phamvmnhut]
+- (phamvmnhut)[github.com/phamvmnhut]
+- (HuuDuc0804)[github.com/HuuDuc0804]
+- (nnanthanh)[github.com/nnanthanh]
 
 ## Thanks for researching for some bug and task
 - Change android minSdk
