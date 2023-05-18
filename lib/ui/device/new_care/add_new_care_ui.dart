@@ -93,6 +93,8 @@ class _AddNewCareState extends State<AddNewCare> {
           Navigator.of(context).push(
             CareDetailPage.route(care_id: state.careId),
           );
+          BlocProvider.of<CareBloc>(context, listen: false)
+              .add(CareEventAddDataDone());
         }
       },
       builder: (context, state) {

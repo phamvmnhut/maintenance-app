@@ -24,6 +24,8 @@ class CareEventAddData extends CareEvent {
   });
 }
 
+class CareEventAddDataDone extends CareEvent {}
+
 class CareEventDelete extends CareEvent {
   final String careId;
   CareEventDelete({required this.careId});
@@ -84,6 +86,7 @@ class CareBloc extends Bloc<CareEvent, CareState> {
     on<CareEventSetup>(_getSetupData);
     on<CareEventSearch>(_search);
     on<CareEventAddData>(_addData);
+    on<CareEventAddDataDone>(_addDataDone);
     on<CareEventDelete>(_deleteOne);
   }
   void _getSetupData(CareEventSetup event, Emitter<CareState> emit) async {
@@ -140,6 +143,10 @@ class CareBloc extends Bloc<CareEvent, CareState> {
     String careId = await _repository.create(d: newCare);
     emit(state.copyWith(
         isCreateProcessing: false, isCreated: true, careId: careId));
+  }
+
+  void _addDataDone(CareEventAddDataDone event, Emitter<CareState> emit) async {
+    emit(state.copyWith(isCreated: false));
   }
 
   void _deleteOne(CareEventDelete event, Emitter<CareState> emit) async {
