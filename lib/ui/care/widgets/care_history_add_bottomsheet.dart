@@ -35,10 +35,10 @@ Future<void> careHistoryAddBottomSheet(
                     textCapitalization: TextCapitalization.sentences,
                     textAlignVertical: TextAlignVertical.center,
                     controller: textController,
-                    decoration: const InputDecoration(
-                        hintText: "Care check today",
+                    decoration: InputDecoration(
+                        hintText: S.of(context).care_hint,
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.format_color_text_rounded)),
+                        prefixIcon: const Icon(Icons.format_color_text_rounded)),
                   ),
                 ),
                 Row(

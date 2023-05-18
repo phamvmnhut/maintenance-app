@@ -309,6 +309,266 @@ class S {
       args: [],
     );
   }
+
+  /// `Type for search`
+  String get search_hint {
+    return Intl.message(
+      'Type for search',
+      name: 'search_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your device care`
+  String get your_device_care {
+    return Intl.message(
+      'Your device care',
+      name: 'your_device_care',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Successfully added new care`
+  String get msg_add_care_success {
+    return Intl.message(
+      'Successfully added new care',
+      name: 'msg_add_care_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add new device care`
+  String get add_new_care {
+    return Intl.message(
+      'Add new device care',
+      name: 'add_new_care',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device`
+  String get device {
+    return Intl.message(
+      'Device',
+      name: 'device',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please choose Device | Model`
+  String get please_choose_device_model {
+    return Intl.message(
+      'Please choose Device | Model',
+      name: 'please_choose_device_model',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Memo name`
+  String get memo_name {
+    return Intl.message(
+      'Memo name',
+      name: 'memo_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Date`
+  String get start_date {
+    return Intl.message(
+      'Start Date',
+      name: 'start_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Care next time`
+  String get care_next_time {
+    return Intl.message(
+      'Care next time',
+      name: 'care_next_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Information`
+  String get information {
+    return Intl.message(
+      'Information',
+      name: 'information',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please choose Equipment`
+  String get please_choose_equipment {
+    return Intl.message(
+      'Please choose Equipment',
+      name: 'please_choose_equipment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please choose number (Days, Weeks..)`
+  String get please_choose_day_week {
+    return Intl.message(
+      'Please choose number (Days, Weeks..)',
+      name: 'please_choose_day_week',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get done {
+    return Intl.message(
+      'Done',
+      name: 'done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input Model name...`
+  String get model_hint {
+    return Intl.message(
+      'Input Model name...',
+      name: 'model_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `xx Equipments`
+  String get xx_equipment {
+    return Intl.message(
+      'xx Equipments',
+      name: 'xx_equipment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input Equipment name...`
+  String get equipment_hint {
+    return Intl.message(
+      'Input Equipment name...',
+      name: 'equipment_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add new`
+  String get add_new {
+    return Intl.message(
+      'Add new',
+      name: 'add_new',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input Device name...`
+  String get device_hint {
+    return Intl.message(
+      'Input Device name...',
+      name: 'device_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `xx Models`
+  String get xx_model {
+    return Intl.message(
+      'xx Models',
+      name: 'xx_model',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Warning`
+  String get warning {
+    return Intl.message(
+      'Warning',
+      name: 'warning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you really want to delete?`
+  String get msg_delete {
+    return Intl.message(
+      'Do you really want to delete?',
+      name: 'msg_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Can't find Device Care!`
+  String get not_found_device_care {
+    return Intl.message(
+      'Can\'t find Device Care!',
+      name: 'not_found_device_care',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Return`
+  String get return_text {
+    return Intl.message(
+      'Return',
+      name: 'return_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input Care name...`
+  String get care_hint {
+    return Intl.message(
+      'Input Care name...',
+      name: 'care_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input Care History name...`
+  String get care_history_hint {
+    return Intl.message(
+      'Input Care History name...',
+      name: 'care_history_hint',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

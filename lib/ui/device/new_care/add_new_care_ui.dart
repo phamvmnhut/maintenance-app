@@ -5,6 +5,7 @@ import 'package:maintenance/business/care.dart';
 import 'package:maintenance/config/color.dart';
 import 'package:maintenance/domain/entities/care.dart';
 import 'package:maintenance/domain/entities/equipment.dart';
+import 'package:maintenance/generated/l10n.dart';
 import 'package:maintenance/ui/care/care_detail.dart';
 import 'package:maintenance/ui/notification/toast.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,7 @@ class _AddNewCareState extends State<AddNewCare> {
       listener: (context, state) {
         if (state.isCreated && state.careId.isNotEmpty) {
           toastInfo(
-            msg: 'Successfully added new care',
+            msg: S.of(context).msg_add_care_success,
             backgroundColor: AppColors.greenColor,
           );
           notifyHelper.scheduledNotification('Device Care Notification',
@@ -110,9 +111,9 @@ class _AddNewCareState extends State<AddNewCare> {
                         Container(
                           height: 38,
                           alignment: Alignment.centerLeft,
-                          child: const Text(
-                            'Add new device care',
-                            style: TextStyle(
+                          child: Text(
+                            S.of(context).add_new_care,
+                            style: const TextStyle(
                                 fontSize: 28, fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -124,9 +125,9 @@ class _AddNewCareState extends State<AddNewCare> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Text(
-                                'Device',
-                                style: TextStyle(
+                              Text(
+                                S.of(context).device,
+                                style: const TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w500),
                               ),
                               // Image.asset('assets/images/icon_qr.png',
@@ -186,7 +187,9 @@ class _AddNewCareState extends State<AddNewCare> {
                                     }
                                   } else {
                                     toastInfo(
-                                        msg: 'Please choose Device | Model');
+                                        msg: S
+                                            .of(context)
+                                            .please_choose_device_model);
                                   }
                                 },
                               ),
@@ -197,9 +200,9 @@ class _AddNewCareState extends State<AddNewCare> {
                         Container(
                           height: 38,
                           alignment: Alignment.centerLeft,
-                          child: const Text(
-                            'Memo name',
-                            style: TextStyle(
+                          child: Text(
+                            S.of(context).memo_name,
+                            style: const TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w500),
                           ),
                         ),
@@ -218,16 +221,16 @@ class _AddNewCareState extends State<AddNewCare> {
                               ),
                             )),
                         const SizedBox(height: 18),
-                        const Text(
-                          'Notification',
-                          style: TextStyle(
+                        Text(
+                          S.of(context).notification,
+                          style: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w500),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 14.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 14.0),
                           child: Text(
-                            'Start Date',
-                            style: TextStyle(
+                            S.of(context).start_date,
+                            style: const TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.w300),
                           ),
                         ),
@@ -376,12 +379,12 @@ class _AddNewCareState extends State<AddNewCare> {
                             ],
                           ),
                         ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.only(left: 14.0, top: 7, bottom: 4),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 14.0, top: 7, bottom: 4),
                           child: Text(
-                            'Care next time',
-                            style: TextStyle(
+                            S.of(context).care_next_time,
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
@@ -408,9 +411,9 @@ class _AddNewCareState extends State<AddNewCare> {
                         Container(
                           height: 38,
                           alignment: Alignment.centerLeft,
-                          child: const Text(
-                            'Information',
-                            style: TextStyle(
+                          child: Text(
+                            S.of(context).information,
+                            style: const TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w500),
                           ),
                         ),
@@ -443,14 +446,14 @@ class _AddNewCareState extends State<AddNewCare> {
                           onTap: () {
                             if (_equipment == null) {
                               toastInfo(
-                                msg: 'Please choose Equipment',
+                                msg: S.of(context).please_choose_equipment,
                                 backgroundColor: AppColors.orangeColor,
                               );
                               return;
                             }
                             if (numberDateController.text.isEmpty) {
                               toastInfo(
-                                msg: 'Please choose number (Days, Weeks..)',
+                                msg: S.of(context).please_choose_day_week,
                                 backgroundColor: AppColors.orangeColor,
                               );
                               return;
@@ -501,7 +504,7 @@ class _AddNewCareState extends State<AddNewCare> {
                               borderRadius: BorderRadius.circular(14),
                               color: AppColors.greenColor,
                             ),
-                            child: Text('Done',
+                            child: Text(S.of(context).done,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 17,

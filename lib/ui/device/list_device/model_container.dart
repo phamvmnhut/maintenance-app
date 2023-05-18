@@ -1,5 +1,6 @@
 import 'package:maintenance/business/device.dart';
 import 'package:maintenance/config/color.dart';
+import 'package:maintenance/generated/l10n.dart';
 import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,7 +56,7 @@ class _ModelContainerState extends State<ModelContainer> {
                               await addOrUpdateModal(
                                 context,
                                 stringInput: model.name,
-                                hintText: 'Input Model name...',
+                                hintText: S.of(context).model_hint,
                               ).then((value) {
                                 if (value != null) {
                                   BlocProvider.of<DeviceBloc>(context,
@@ -78,7 +79,7 @@ class _ModelContainerState extends State<ModelContainer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${model.count} equipment',
+                          S.of(context).xx_equipment.replaceFirst(RegExp(r'xx'), model.count.toString()),
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 13,

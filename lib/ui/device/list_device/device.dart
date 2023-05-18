@@ -1,5 +1,6 @@
 import 'package:maintenance/business/device.dart';
 import 'package:maintenance/config/color.dart';
+import 'package:maintenance/generated/l10n.dart';
 import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,9 +49,9 @@ class _DevicePageState extends State<DevicePage> {
                       const SizedBox(height: 41),
                       Container(
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Device List',
-                          style: TextStyle(
+                        child: Text(
+                          S.of(context).device,
+                          style: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -65,7 +66,7 @@ class _DevicePageState extends State<DevicePage> {
                         onTap: () async {
                           await addOrUpdateModal(
                             context,
-                            hintText: 'Input Device name...',
+                            hintText: S.of(context).device_hint,
                           ).then((value) {
                             if (value != null) {
                               BlocProvider.of<DeviceBloc>(context,
@@ -84,7 +85,7 @@ class _DevicePageState extends State<DevicePage> {
                             borderRadius: BorderRadius.circular(14),
                             color: AppColors.greenColor,
                           ),
-                          child: Text('Thêm mới',
+                          child: Text(S.of(context).add_new,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 17,

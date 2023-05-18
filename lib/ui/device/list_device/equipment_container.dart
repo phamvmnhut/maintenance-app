@@ -1,4 +1,5 @@
 import 'package:maintenance/config/color.dart';
+import 'package:maintenance/generated/l10n.dart';
 import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,7 +60,7 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
                                     await addOrUpdateModal(
                                       context,
                                       stringInput: equipment.name,
-                                      hintText: 'Input Equipment name...',
+                                      hintText: S.of(context).equipment_hint,
                                     ).then((value) {
                                       if (value != null) {
                                         BlocProvider.of<DeviceBloc>(context,
@@ -93,7 +94,7 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
                     backgroundColor: AppColors.greenColor),
                 onPressed: () async {
                   await addOrUpdateModal(context,
-                          hintText: 'Input Equipment name...')
+                          hintText: S.of(context).equipment_hint)
                       .then((value) {
                     if (value != null) {
                       BlocProvider.of<DeviceBloc>(context, listen: false)
@@ -106,7 +107,7 @@ class _EquipmentContainerState extends State<EquipmentContainer> {
                     }
                   });
                 },
-                child: const Text('Thêm mới')),
+                child: Text(S.of(context).add_new)),
           ),
         ],
       );

@@ -76,7 +76,7 @@ class _CareDetailViewState extends State<CareDetailView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Can\'t find Device Care!'),
+                Text(S.of(context).not_found_device_care),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -84,7 +84,7 @@ class _CareDetailViewState extends State<CareDetailView> {
                         MaterialPageRoute(
                             builder: (context) => const HomeGate()));
                   },
-                  child: const Text('Return'),
+                  child: Text(S.of(context).return_text),
                 )
               ],
             ),

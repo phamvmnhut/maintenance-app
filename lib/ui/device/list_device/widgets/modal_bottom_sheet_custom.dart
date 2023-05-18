@@ -1,5 +1,6 @@
 import 'package:maintenance/config/color.dart';
 import 'package:flutter/material.dart';
+import 'package:maintenance/generated/l10n.dart';
 
 Future<String?> addOrUpdateModal(BuildContext context,
     {String hintText = '', String stringInput = ''}) async {
@@ -47,7 +48,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
                             Navigator.pop(context);
                           }
                         },
-                        child: const Text('Save')),
+                        child: Text(S.of(context).save)),
                     const SizedBox(width: 20),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -62,7 +63,7 @@ Future<String?> addOrUpdateModal(BuildContext context,
                                 });
                               }
                             : null,
-                        child: const Text('Delete')),
+                        child: Text(S.of(context).delete)),
                   ],
                 ),
               ],
@@ -79,8 +80,8 @@ Future<String?> alertDialogDelete(BuildContext context) async {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Warning!'),
-        content: const Text('Do you really want to delete?'),
+        title: Text(S.of(context).warning),
+        content: Text(S.of(context).msg_delete),
         actions: [
           TextButton(
               onPressed: () {
@@ -88,7 +89,7 @@ Future<String?> alertDialogDelete(BuildContext context) async {
                 Navigator.pop(context);
               },
               child: Text(
-                'Confirm',
+                S.of(context).confirm,
                 style: TextStyle(
                   color: AppColors.redColor,
                 ),
@@ -97,7 +98,7 @@ Future<String?> alertDialogDelete(BuildContext context) async {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Cancel'))
+              child: Text(S.of(context).cancel))
         ],
       );
     },

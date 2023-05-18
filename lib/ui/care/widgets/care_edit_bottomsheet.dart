@@ -10,8 +10,8 @@ Future<void> careEditBottomSheet(
   BuildContext contextx,
   Care care,
 ) async {
-  final careNametextController = TextEditingController();
-  careNametextController.text = care.memo_name;
+  final careNameTextController = TextEditingController();
+  careNameTextController.text = care.memo_name;
   await showModalBottomSheet(
       isScrollControlled: true,
       context: contextx,
@@ -34,11 +34,11 @@ Future<void> careEditBottomSheet(
                   child: TextField(
                     textCapitalization: TextCapitalization.sentences,
                     textAlignVertical: TextAlignVertical.center,
-                    controller: careNametextController,
-                    decoration: const InputDecoration(
-                        hintText: "Update today",
+                    controller: careNameTextController,
+                    decoration: InputDecoration(
+                        hintText: S.of(context).device_hint,
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.format_color_text_rounded)),
+                        prefixIcon: const Icon(Icons.format_color_text_rounded)),
                   ),
                 ),
                 Row(
@@ -48,11 +48,11 @@ Future<void> careEditBottomSheet(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.greenColor),
                         onPressed: () {
-                          if (careNametextController.text.isNotEmpty) {
+                          if (careNameTextController.text.isNotEmpty) {
                             BlocProvider.of<CareDetailBloc>(contextx,
                                     listen: false)
                                 .add(CareDetailEventUpdateCare(
-                              memo_name: careNametextController.text,
+                              memo_name: careNameTextController.text,
                             ));
                             Navigator.pop(context);
                           }

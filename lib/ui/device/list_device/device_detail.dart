@@ -1,5 +1,6 @@
 import 'package:maintenance/config/color.dart';
 import 'package:maintenance/domain/entities/device.dart';
+import 'package:maintenance/generated/l10n.dart';
 import 'widgets/modal_bottom_sheet_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,7 +49,7 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                                   await addOrUpdateModal(
                                     context,
                                     stringInput: device.name,
-                                    hintText: 'Input Device name...',
+                                    hintText: S.of(context).device_hint,
                                   ).then((value) {
                                     if (value != null) {
                                       BlocProvider.of<DeviceBloc>(
@@ -72,7 +73,9 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${device.count} models',
+                            Text(
+                                S.of(context).xx_model.replaceFirst(
+                                    RegExp(r'xx'), device.count.toString()),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 13,
@@ -90,7 +93,7 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                                 onPressed: () async {
                                   await addOrUpdateModal(
                                     context,
-                                    hintText: 'Input Model name...',
+                                    hintText: S.of(context).model_hint,
                                   ).then((value) {
                                     if (value != null) {
                                       BlocProvider.of<DeviceBloc>(context,
@@ -104,7 +107,7 @@ class _ListDeviceDetailState extends State<ListDeviceDetail> {
                                     }
                                   });
                                 },
-                                child: const Text('Thêm mới')),
+                                child: Text(S.of(context).add_new)),
                           ),
                         ],
                       ),

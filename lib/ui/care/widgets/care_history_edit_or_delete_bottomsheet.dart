@@ -35,10 +35,10 @@ Future<void> careHistoryEditOrDeleteBottomSheet(
                     textCapitalization: TextCapitalization.sentences,
                     textAlignVertical: TextAlignVertical.center,
                     controller: textController,
-                    decoration: const InputDecoration(
-                        hintText: "Update check today",
+                    decoration: InputDecoration(
+                        hintText: S.of(context).care_history_hint,
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.format_color_text_rounded)),
+                        prefixIcon: const Icon(Icons.format_color_text_rounded)),
                   ),
                 ),
                 Row(

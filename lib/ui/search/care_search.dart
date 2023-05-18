@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:maintenance/business/care.dart';
+import 'package:maintenance/generated/l10n.dart';
 import '../components/care_card.dart';
 
 class CareSearch extends StatefulWidget {
@@ -77,7 +78,7 @@ class _CareSearchState extends State<CareSearch> {
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             prefixIcon: Image.asset('assets/images/search.png'),
-                            hintText: 'Search',
+                            hintText: S.of(context).search_hint,
                             suffixIcon: _isTapped
                                 ? IconButton(
                                     onPressed: () {
@@ -125,15 +126,15 @@ class _CareSearchState extends State<CareSearch> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
+              children: [
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 51,
                     left: 32,
                   ),
                   child: Text(
-                    'Your device care',
-                    style: TextStyle(
+                    S.of(context).your_device_care,
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                     ),
