@@ -7,7 +7,9 @@ class AdModService {
   static String? get bannerAdUnitId {
     if (Platform.isAndroid) {
       // Debug
-      return 'ca-app-pub-3940256099942544/6300978111';
+      // return 'ca-app-pub-3940256099942544/6300978111';
+      // Release
+      return 'ca-app-pub-9737736194691230/9207420260';
     } else {
       return '';
     }
