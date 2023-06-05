@@ -1,3 +1,4 @@
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:maintenance/business/auth.dart';
 import 'package:maintenance/business/care.dart';
 import 'package:maintenance/business/device.dart';
@@ -23,6 +24,7 @@ bool shouldUseFirebaseEmulator = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

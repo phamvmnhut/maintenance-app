@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'package:maintenance/business/care.dart';
+import 'package:maintenance/domain/services/admod.dart';
 import 'package:maintenance/generated/l10n.dart';
 import '../components/care_card.dart';
 
@@ -14,6 +16,7 @@ class CareSearch extends StatefulWidget {
 }
 
 class _CareSearchState extends State<CareSearch> {
+  BannerAd? bannerAd;
   final fieldText = TextEditingController();
   bool _isTapped = false;
   Timer? _timer;
@@ -49,11 +52,28 @@ class _CareSearchState extends State<CareSearch> {
         });
       }
     });
+    _createBannerAd();
+  }
+
+  _createBannerAd() {
+    bannerAd = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: AdModService.bannerAdUnitId!,
+      listener: AdModService.bannerAdListener,
+      request: const AdRequest(),
+    )..load();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: bannerAd == null
+          ? Container()
+          : Container(
+              height: 50,
+              margin: const EdgeInsets.all(5),
+              child: AdWidget(ad: bannerAd!),
+            ),
       backgroundColor: Theme.of(context).canvasColor,
       body: BlocBuilder<CareBloc, CareState>(
         builder: (context, state) => SingleChildScrollView(

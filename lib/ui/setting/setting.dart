@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:maintenance/business/auth.dart';
 import 'package:maintenance/config/color.dart';
 import 'package:maintenance/generated/l10n.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../business/setting.dart';
+import '../../domain/services/admod.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -17,10 +19,34 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  BannerAd? bannerAd;
+
+  _createBannerAd() {
+    bannerAd = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: AdModService.bannerAdUnitId!,
+      listener: AdModService.bannerAdListener,
+      request: const AdRequest(),
+    )..load();
+  }
+
+  @override
+  void initState() {
+    _createBannerAd();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: bannerAd == null
+            ? Container()
+            : Container(
+                height: 50,
+                margin: const EdgeInsets.all(5),
+                child: AdWidget(ad: bannerAd!),
+              ),
         backgroundColor: Theme.of(context).canvasColor,
         body: SingleChildScrollView(
           child: Column(
