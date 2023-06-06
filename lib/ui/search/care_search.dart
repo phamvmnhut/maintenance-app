@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'package:maintenance/business/care.dart';
 import 'package:maintenance/domain/services/admod.dart';
 import 'package:maintenance/generated/l10n.dart';
+import 'package:maintenance/ui/components/disable_glow_listview_widget.dart';
 import '../components/care_card.dart';
 
 class CareSearch extends StatefulWidget {
@@ -16,6 +18,7 @@ class CareSearch extends StatefulWidget {
 }
 
 class _CareSearchState extends State<CareSearch> {
+  bool isShowSearchText = true;
   BannerAd? bannerAd;
   final fieldText = TextEditingController();
   bool _isTapped = false;
@@ -51,6 +54,16 @@ class _CareSearchState extends State<CareSearch> {
           limit += 10;
         });
       }
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        setState(() {
+          isShowSearchText = false;
+        });
+      } else {
+        setState(() {
+          isShowSearchText = true;
+        });
+      }
     });
     _createBannerAd();
   }
@@ -64,6 +77,15 @@ class _CareSearchState extends State<CareSearch> {
     )..load();
   }
 
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,17 +97,48 @@ class _CareSearchState extends State<CareSearch> {
               child: AdWidget(ad: bannerAd!),
             ),
       backgroundColor: Theme.of(context).canvasColor,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Show refresh indicator programmatically on button tap.
+          _refreshIndicatorKey.currentState?.show();
+        },
+        child: const Icon(Icons.refresh),
+      ),
       body: BlocBuilder<CareBloc, CareState>(
-        builder: (context, state) => SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(children: [
+        builder: (context, state) => Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedSize(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut, // Curve của animation
+              child: Visibility(
+                visible: isShowSearchText,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 60,
+                    left: 32,
+                  ),
+                  child: Text(
+                    S.of(context).your_device_care,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Padding(
-              padding: const EdgeInsets.only(
-                top: 70,
+              padding: EdgeInsets.only(
+                top: isShowSearchText ? 10 : 50,
                 left: 32,
                 right: 32,
+                bottom: 20,
               ),
               child: Row(
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
                     child: Container(
@@ -99,16 +152,17 @@ class _CareSearchState extends State<CareSearch> {
                             border: InputBorder.none,
                             prefixIcon: Image.asset('assets/images/search.png'),
                             hintText: S.of(context).search_hint,
-                            suffixIcon: _isTapped
-                                ? IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        fieldText.clear();
-                                        _isTapped = false;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.close))
-                                : null),
+                            suffixIcon: Visibility(
+                              visible: _isTapped,
+                              child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      fieldText.clear();
+                                      _isTapped = false;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.close)),
+                            )),
                         onTap: () {
                           setState(() {
                             checkEmpty();
@@ -144,41 +198,29 @@ class _CareSearchState extends State<CareSearch> {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 51,
-                    left: 32,
-                  ),
-                  child: Text(
-                    S.of(context).your_device_care,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                    ),
+            Visibility(
+              visible: !state.isLoading,
+              child: Expanded(
+                child: ScrollConfiguration(
+                  behavior: DisableGlowListViewWidget(),
+                  child: RefreshIndicator(
+                    key: _refreshIndicatorKey,
+                    onRefresh: () async {
+                      context
+                          .read<CareBloc>()
+                          .add(CareEventSearch(name: fieldText.text));
+                    },
+                    child: ListView(
+                        controller: _scrollController,
+                        children: state.careList
+                            .take(limit)
+                            .map((e) => CareCard(e: e))
+                            .toList()),
                   ),
                 ),
-              ],
+              ),
             ),
-            state.isLoading
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.only(top: 12),
-                        child: CircularProgressIndicator(),
-                      ),
-                    ],
-                  )
-                : Column(
-                    children: state.careList
-                        .take(limit)
-                        .map((e) => CareCard(e: e))
-                        .toList(),
-                  ),
-          ]),
+          ],
         ),
       ),
     );
