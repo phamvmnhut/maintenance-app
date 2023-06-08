@@ -53,7 +53,8 @@ class CareRepositoryFireBase extends CareRepository {
   }) {
     return _careCollection
         .where('user_id', isEqualTo: userId)
-        .where("memo_name", isGreaterThanOrEqualTo: param.name.toUpperCase())
+        .where('memo_name', isGreaterThanOrEqualTo: param.name)
+        .where('memo_name', isLessThanOrEqualTo: '${param.name}\uf8ff')
         .get()
         .then((value) => value.docs.map((e) => Care.fromJson(e)).toList());
   }
