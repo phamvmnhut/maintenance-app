@@ -53,17 +53,17 @@ class _DevicePageState extends State<DevicePage> {
               ),
         backgroundColor: Theme.of(context).canvasColor,
         body: SafeArea(
-          child: Column(
-            children: [
-              BlocBuilder<DeviceBloc, DeviceState>(
-                builder: (context, state) {
-                  if (state.isLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return SingleChildScrollView(
-                    child: Padding(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                BlocBuilder<DeviceBloc, DeviceState>(
+                  builder: (context, state) {
+                    if (state.isLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return Padding(
                       padding: const EdgeInsets.only(left: 23, right: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,12 +78,12 @@ class _DevicePageState extends State<DevicePage> {
                             ),
                           ),
                           const SizedBox(height: 21),
-
+          
                           //Container 1 device
                           ListDeviceDetail(
                             lstDevice: state.list,
                           ),
-
+          
                           GestureDetector(
                             onTap: () async {
                               await addOrUpdateModal(
@@ -117,11 +117,11 @@ class _DevicePageState extends State<DevicePage> {
                           ),
                         ],
                       ),
-                    ),
-                  );
-                },
-              ),
-            ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
