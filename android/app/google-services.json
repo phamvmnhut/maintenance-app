@@ -1,93 +1,56 @@
 {
   "project_info": {
-    "project_number": "238089058839",
-    "firebase_url": "https://divice-829e1-default-rtdb.firebaseio.com",
-    "project_id": "divice-829e1",
-    "storage_bucket": "divice-829e1.appspot.com"
+    "project_number": "582937559215",
+    "project_id": "maintenance-80a52",
+    "storage_bucket": "maintenance-80a52.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:238089058839:android:0f23949f4808974811fa52",
+        "mobilesdk_app_id": "1:582937559215:android:52f8c1f1655c91cd73545a",
         "android_client_info": {
-          "package_name": "com.bluewave.divice"
+          "package_name": "com.phamvmnhut.maintenance"
         }
       },
       "oauth_client": [
         {
-          "client_id": "238089058839-2o8ke1nkv270v3h6gtjfdm5m7rnqchjq.apps.googleusercontent.com",
+          "client_id": "582937559215-1ocles04usc1rt74o9jrtsj80c3ilnji.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.bluewave.divice",
-            "certificate_hash": "87677535001eb3f80cc1eb353b77eda4f6cca68c"
+            "package_name": "com.phamvmnhut.maintenance",
+            "certificate_hash": "45b17b3e62af1156a93fac4a0b4cef35fd7eb7da"
           }
         },
         {
-          "client_id": "238089058839-qqg8d4orcu60ptk76p8gfdeurdiur0h9.apps.googleusercontent.com",
+          "client_id": "582937559215-kgqsj69d09as0ujb7uvigstumek6lcud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.phamvmnhut.maintenance",
+            "certificate_hash": "f58ff44703cd14521ed1783d78562e377660ca94"
+          }
+        },
+        {
+          "client_id": "582937559215-qdrnm2c9504shshctv9od9ef40p75en6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDq7SSuHLiEi-_UC7Bx9lEgXS7XrzATNDY"
+          "current_key": "AIzaSyDXgSFG7KibQmcT-Nm5t5xwF3DMRoPShFw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "238089058839-3btu2oced30fvae1ddv9kag30gn2ln76.apps.googleusercontent.com",
+              "client_id": "582937559215-in4qggpa6u166tfq3qfhpuqotrivmfj5.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "238089058839-2amooh0f3gbmudr9pql3fj3tnm07tfhc.apps.googleusercontent.com",
+              "client_id": "582937559215-4fjgnr10gvgblqoj0397c4t54epj5aqo.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.weatherApp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:238089058839:android:6ea399570667d05911fa52",
-        "android_client_info": {
-          "package_name": "com.example.weather_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "238089058839-ve7jc237dm502jok8a6n7adk9hki7shf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.weather_app",
-            "certificate_hash": "c018a2902d18968cf0f3d3f9e117e29783e41178"
-          }
-        },
-        {
-          "client_id": "238089058839-qqg8d4orcu60ptk76p8gfdeurdiur0h9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDq7SSuHLiEi-_UC7Bx9lEgXS7XrzATNDY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "238089058839-3btu2oced30fvae1ddv9kag30gn2ln76.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "238089058839-2amooh0f3gbmudr9pql3fj3tnm07tfhc.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.weatherApp"
+                "bundle_id": "com.phamvmnhut.maintenance"
               }
             }
           ]
