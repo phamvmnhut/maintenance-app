@@ -539,6 +539,11 @@ class _AuthGateState extends State<AuthGate> {
 
       // Once signed in, return the UserCredential
       await _auth.signInWithCredential(credential);
+
+      User user = FirebaseAuth.instance.currentUser!;
+      if (mounted) {
+        BlocProvider.of<AuthBloc>(context).add(AuthEventLogin(user: user));
+      }
     }
   }
 }
