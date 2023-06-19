@@ -89,13 +89,6 @@ class _CareSearchState extends State<CareSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: bannerAd == null
-          ? Container()
-          : Container(
-              height: 50,
-              margin: const EdgeInsets.all(5),
-              child: AdWidget(ad: bannerAd!),
-            ),
       backgroundColor: Theme.of(context).canvasColor,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -212,10 +205,23 @@ class _CareSearchState extends State<CareSearch> {
                     },
                     child: ListView(
                         controller: _scrollController,
-                        children: state.careList
-                            .take(limit)
-                            .map((e) => CareCard(e: e))
-                            .toList()),
+                        children:
+                            state.careList.asMap().entries.take(limit).map((e) {
+                          return Column(
+                            children: [
+                              bannerAd == null
+                                  ? Container()
+                                  : e.key != 5
+                                      ? Container()
+                                      : Container(
+                                          height: 50,
+                                          margin: const EdgeInsets.all(5),
+                                          child: AdWidget(ad: bannerAd!),
+                                        ),
+                              CareCard(e: e.value),
+                            ],
+                          );
+                        }).toList()),
                   ),
                 ),
               ),
