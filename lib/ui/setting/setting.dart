@@ -7,6 +7,7 @@ import 'package:maintenance/generated/l10n.dart';
 import 'package:maintenance/ui/auth/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maintenance/ui/setting/privacy_policy.dart';
 
 import '../../business/setting.dart';
 import '../../domain/services/admod.dart';
@@ -275,7 +276,10 @@ class _SettingPageState extends State<SettingPage> {
                     ],
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const PrivacyPolicy()));
+                },
               ),
             ],
           ),

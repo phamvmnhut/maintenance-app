@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:maintenance/business/auth.dart';
 import 'package:maintenance/business/care.dart';
@@ -25,6 +26,8 @@ bool shouldUseFirebaseEmulator = false;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -101,19 +104,35 @@ class _AppThemeState extends State<AppTheme> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, themeState) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: themeState.isDarkModeEnabled ? darkTheme : lightTheme,
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        locale: themeState.local,
-        home: const AppAuth(),
-      ),
+      builder: (context, themeState) {
+        SystemChrome.setSystemUIOverlayStyle(
+          SystemUiOverlayStyle(
+              systemNavigationBarColor: Colors.transparent,
+              systemNavigationBarIconBrightness: themeState.isDarkModeEnabled
+                  ? lightTheme.brightness
+                  : darkTheme.brightness,
+              statusBarColor: Colors.transparent,
+              statusBarBrightness: themeState.isDarkModeEnabled
+                  ? lightTheme.brightness
+                  : darkTheme.brightness,
+              statusBarIconBrightness: themeState.isDarkModeEnabled
+                  ? lightTheme.brightness
+                  : darkTheme.brightness),
+        );
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: themeState.isDarkModeEnabled ? darkTheme : lightTheme,
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          locale: themeState.local,
+          home: const AppAuth(),
+        );
+      },
     );
   }
 }

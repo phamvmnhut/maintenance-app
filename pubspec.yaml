@@ -16,7 +16,7 @@ dependencies:
   flutter_bloc: ^8.1.2
 
   # Utils
-  intl: ^0.17.0
+  intl: ^0.18.0
   dartz: ^0.10.1
   equatable: ^2.0.5
   # data_connection_checker: ^0.3.4
@@ -51,6 +51,7 @@ dependencies:
 
   # Ads
   google_mobile_ads: ^3.0.0
+  flutter_markdown: ^0.6.15
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
    - assets/icon/
    - assets/bottom_bar/no_color/
    - assets/bottom_bar/color/
+   - assets/docs/
 
 flutter_intl:
   enabled: true
