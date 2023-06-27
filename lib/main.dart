@@ -3,6 +3,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:maintenance/business/auth.dart';
 import 'package:maintenance/business/care.dart';
 import 'package:maintenance/business/device.dart';
+import 'package:maintenance/business/notify.dart';
 import 'package:maintenance/business/setting.dart';
 import 'package:maintenance/domain/repositories/firebase/care_history_repository_firebase.dart';
 import 'package:maintenance/domain/repositories/firebase/care_repository_firebase.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'config/theme.dart';
 
+import 'domain/repositories/local/notify_repository_sqflite.dart';
 import 'firebase_options.dart';
 import 'generated/l10n.dart';
 import 'ui/auth/auth.dart';
@@ -26,6 +28,7 @@ bool shouldUseFirebaseEmulator = false;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
+  await DbHelper.initDb();
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
 
@@ -58,6 +61,9 @@ class App extends StatelessWidget {
         RepositoryProvider(
           create: (context) => CareRepositoryFireBase(),
         ),
+        RepositoryProvider(
+          create: (context) => DbHelper(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -78,6 +84,11 @@ class App extends StatelessWidget {
               RepositoryProvider.of<CareRepositoryFireBase>(context),
               careRepository: CareRepositoryFireBase(),
               careId: '',
+            ),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => NotifyBloc(
+              RepositoryProvider.of<DbHelper>(context),
             ),
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:maintenance/ui/components/care_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maintenance/ui/notification/notification_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../business/auth.dart';
 import '../../business/care.dart';
@@ -33,19 +34,25 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(
-                    top: 26,
-                    right: 35,
+                GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationPage()),
                   ),
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Icon(
-                    Icons.notifications_active_outlined,
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                      top: 26,
+                      right: 35,
+                    ),
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(
+                      Icons.notifications_active_outlined,
+                    ),
                   ),
                 ),
               ],

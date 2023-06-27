@@ -6,7 +6,6 @@
 
 import 'package:maintenance/business/auth.dart';
 import 'package:maintenance/generated/l10n.dart';
-import 'package:maintenance/ui/notification/toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -16,6 +15,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../config/color.dart';
+import '../../utils/toast.dart';
 
 typedef OAuthSignIn = void Function();
 
