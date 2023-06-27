@@ -1,8 +1,9 @@
+
 class NotificationModel {
   int? id;
   String? careId;
   String? memoName;
-  String? dateTime;
+  int? dateTime;
   int? seen;
 
   NotificationModel({

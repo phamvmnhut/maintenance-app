@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:maintenance/business/notify.dart';
 import 'package:maintenance/domain/entities/notification.dart';
 import 'package:maintenance/ui/care/care_detail.dart';
@@ -50,15 +51,22 @@ Widget notificationItem(
                     notificationModel.memoName!,
                     style: TextStyle(
                       fontSize: 15,
-                      fontWeight: notificationModel.seen == 0 ? FontWeight.w600 : FontWeight.w300,
+                      fontWeight: notificationModel.seen == 0
+                          ? FontWeight.w600
+                          : FontWeight.w300,
                     ),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    notificationModel.dateTime.toString(),
+                    DateFormat('dd/MM/yyyy HH:mm:ss')
+                        .format(DateTime.fromMillisecondsSinceEpoch(
+                            notificationModel.dateTime! * 1000))
+                        .toString(),
                     style: TextStyle(
                       fontSize: 12,
-                      fontWeight: notificationModel.seen == 0 ? FontWeight.w600 : FontWeight.w300,
+                      fontWeight: notificationModel.seen == 0
+                          ? FontWeight.w600
+                          : FontWeight.w300,
                     ),
                   ),
                 ],

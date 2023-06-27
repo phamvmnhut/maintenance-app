@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:maintenance/domain/entities/notification.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
@@ -23,7 +24,7 @@ class DbHelper extends NotifyRepository {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 careId STRING,
                 memoName TEXT,
-                dateTime STRING,
+                dateTime INTEGER,
                 seen INTEGER
               )
               ''');
@@ -36,8 +37,10 @@ class DbHelper extends NotifyRepository {
 
   @override
   Future<List<NotificationModel>> getAll() async {
-    List<Map<String, dynamic>> notifys =
-        await _database!.query(_tableName, orderBy: 'id DESC');
+    List<Map<String, dynamic>> notifys = await _database!.query(_tableName,
+        orderBy: 'id DESC',
+        where: 'dateTime <= ?',
+        whereArgs: [Timestamp.now().seconds]);
     var notifyList =
         notifys.map((data) => NotificationModel.fromJson(data)).toList();
     return notifyList;
@@ -58,5 +61,16 @@ class DbHelper extends NotifyRepository {
       1,
       id,
     ]);
+  }
+
+  @override
+  Future<int?> getHaveNotify() async {
+    List<Map<String, dynamic>> notifys = await _database!.query(_tableName,
+        orderBy: 'id DESC',
+        where: 'dateTime <= ? AND seen = 0',
+        whereArgs: [Timestamp.now().seconds]);
+    var notifyList =
+        notifys.map((data) => NotificationModel.fromJson(data)).toList();
+    return notifyList.length;
   }
 }

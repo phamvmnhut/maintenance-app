@@ -1,3 +1,4 @@
+import 'package:maintenance/business/notify.dart';
 import 'package:maintenance/ui/components/care_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     context.read<CareBloc>().add(CareEventSetup());
+    context.read<NotifyBloc>().add(NotifyEventCheckNotSeen());
     super.didChangeDependencies();
   }
 
@@ -39,21 +41,39 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                         builder: (context) => const NotificationPage()),
                   ),
-                  child: Container(
-                    margin: const EdgeInsets.only(
-                      top: 26,
-                      right: 35,
-                    ),
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: const Icon(
-                      Icons.notifications_active_outlined,
-                    ),
-                  ),
+                  child: BlocBuilder<NotifyBloc, NotifyState>(
+                      builder: (context, state) {
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                            top: 26,
+                            right: 35,
+                          ),
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: const Icon(
+                            Icons.notifications_active_outlined,
+                          ),
+                        ),
+                        state.notSeen
+                            ? Container(
+                                height: 14,
+                                width: 14,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    );
+                  }),
                 ),
               ],
             ),

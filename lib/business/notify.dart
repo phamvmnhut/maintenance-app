@@ -18,12 +18,18 @@ class NotifyEventAdd extends NotifyEvent {
   NotifyEventAdd({required this.model});
 }
 
+class NotifyEventCheckNotSeen extends NotifyEvent {
+  NotifyEventCheckNotSeen();
+}
+
 class NotifyState {
   List<NotificationModel> list;
   bool isLoading;
+  bool notSeen;
   NotifyState({
     this.list = const [],
     this.isLoading = false,
+    this.notSeen = false,
   });
 
   NotifyState.initialState() : this(list: []);
@@ -31,9 +37,12 @@ class NotifyState {
   NotifyState copyWith({
     List<NotificationModel>? list,
     bool? isLoading,
+    bool? notSeen,
   }) {
     return NotifyState(
-        list: list ?? this.list, isLoading: isLoading ?? this.isLoading);
+        list: list ?? this.list,
+        isLoading: isLoading ?? this.isLoading,
+        notSeen: notSeen ?? this.notSeen);
   }
 }
 
@@ -43,6 +52,7 @@ class NotifyBloc extends Bloc<NotifyEvent, NotifyState> {
     on<NotifyEventGetList>(_getAll);
     on<NotifyEventAdd>(_insert);
     on<NotifyEventUpdate>(_update);
+    on<NotifyEventCheckNotSeen>(_seen);
   }
 
   FutureOr<void> _getAll(
@@ -75,5 +85,11 @@ class NotifyBloc extends Bloc<NotifyEvent, NotifyState> {
       list: list,
       isLoading: false,
     ));
+  }
+
+  FutureOr<void> _seen(
+      NotifyEventCheckNotSeen event, Emitter<NotifyState> emit) async {
+    var count = await _repository.getHaveNotify();
+    emit(state.copyWith(notSeen: (count != null && count > 0)));
   }
 }
