@@ -149,9 +149,11 @@ class _TimerState extends State<_Timer> {
 
   void _startTimer() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _nowTime = DateTime.now();
-      });
+      if (mounted) {
+        setState(() {
+          _nowTime = DateTime.now();
+        });
+      }
     });
   }
 

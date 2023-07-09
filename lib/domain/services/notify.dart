@@ -1,8 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:maintenance/business/notify.dart';
+import 'package:maintenance/domain/entities/notification.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -105,6 +109,7 @@ class NotifyHelper {
     //   ),
     // );
   }
+
   void onDidReceiveNotificationResponse(
       NotificationResponse notificationResponse) async {
     final String? payload = notificationResponse.payload;
@@ -137,6 +142,15 @@ class NotifyHelper {
       matchDateTimeComponents: DateTimeComponents.dateAndTime,
       payload: careId,
     );
+    var model = NotificationModel(
+      careId: careId,
+      memoName: body,
+      dateTime: Timestamp.fromDate(dateTime).seconds,
+      seen: 0,
+    );
+    if (context.mounted) {
+      context.read<NotifyBloc>().add(NotifyEventAdd(model: model));
+    }
   }
 
   tz.TZDateTime _convertTime(DateTime dateTime) {
