@@ -249,7 +249,18 @@ class _SettingPageState extends State<SettingPage> {
                     ],
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Image.asset(
+                          'assets/guide.gif',
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
               const SizedBox(
                 height: 32,
