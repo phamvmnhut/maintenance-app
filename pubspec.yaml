@@ -52,6 +52,7 @@ dependencies:
   # Ads
   google_mobile_ads: ^3.0.0
   flutter_markdown: ^0.6.15
+  sqflite: ^2.2.8+4
 
 dev_dependencies:
   flutter_test:
